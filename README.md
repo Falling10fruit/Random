@@ -28,9 +28,20 @@ Why do you use an **insert tag** for an <ins>underline</ins>? Why not this?: < u
 
 I'm a human-sized elephant.
 
- - "Hello, thank you for contacting the Anti Charles Defender help center. What might be your answer?"
+ - "Hello, thank you for contacting the Anti Charles Defender help center. What might be your problem?"
  - "My defender isn't working"
  - "For that, you must type out that you turned it on first"
  - "Wouldn't that be a little akward?"
  - "No"
- - "Wh- ew
+ - "Wh- MY NAME IS CHARLES"
+ - "Too bad for you"
+ - "How come you're not affected?"
+ - "Because we are better than you in our product's eye's, so we don't need to deal with that fuss"
+ - "Why don't you enable it in our's too?"
+ - "So you'll be forced to buy our premium package of course!"
+ - "Wait, there's a premium version of this Anti Charles Defender?"
+ - "Yes! Would you be interested to bu-"
+ - "Nope, goodbye"
+ - "Oh okay, tell us if you're interest-" *Call has been closed*.
+
+Well that was unhelpful.
