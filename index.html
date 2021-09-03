@@ -5,22 +5,71 @@
 		<title>Test</title>
 		<style>
 			body {
-				margin:10%;
+				margin-top: 0%;
+				margin-left: 2%;
+				margin-right: 2%;
+				margin-bottom:2%;
 				background-image: url('Assets/Something.png');
+				font-family: sans-serif;
 			}
 
 			h1 {
-				border-bottom: 2px ridge;
+				border-bottom: 2px solid;
 				padding-bottom: 5px;
+			}
+
+			p {
+				line-height: 1.5;
+			}
+
+			#Header {
+				position:fixed;
+                top:-5px;
+				left:-5px;
+				width:100%;
+				margin:0%;
+				background-color: rgb(189, 187, 60);
+				color: seashell;
+				border:5px solid;
+				border-color: rgb(63, 63, 63);
+				border-radius: 5px;
+				padding: 5px;
+				padding-top: 5px;
+				padding-right: 25px;
+				padding-left: 25px;
+			}
+
+			#Main {
+				margin-top: 2%;
+				float: left;
+				position:relative;
+				top:200px;
+				width:60%;
+				background-color: rgb(146, 146, 146);
+				border:5px solid;
+				border-color: rgb(63, 63, 63);
+				border-radius: 5px;
+				padding: 5px;
 			}
 		</style>
 	</head>
 	<body>
-		<h1>Hallo</h1>
+		<div id="Header">
+			<h1 style="font-size: 50px; margin-top: 0%; margin-bottom: 2px;">Yoshemany</h1>
+			<p><a href="https://falling10fruit.github.io/">Home</a> > Random | Welcome to the place where it's more popular than home for some unusual reason.</p>
+		</div>
+
+		<div id="Main">
+		<h1 id="Greetings">Hallo</h1>
 		<p>I am a watermelon, eat choogies. The Dex gang will never forget. Fear us, you will be scared</p>
+		</div>
+
 		<script type="text/javascript">
 			//Random, I'm just lookin' around the place.
 			alert("Disclaimer, I am not a decent programmer.");
+			var Name = prompt("What is your name?");
+			var Greetings = document.getElementById("Greetings");
+			Greetings.innerHTML = "Hallo " + Name;
 		</script>
 	</body>
 </html>
