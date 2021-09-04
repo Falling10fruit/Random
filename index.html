@@ -22,7 +22,19 @@
 				line-height: 1.5;
 			}
 
+			.Charles {
+				text-align: left;
+			}
+
+			a {
+				text-decoration: none;
+				color: rgb(0, 247, 255);
+				font-weight: bold;
+
+			}
+
 			#Header {
+				z-index: 999;
 				position:fixed;
                 top:-5px;
 				left:-5px;
@@ -61,15 +73,49 @@
 
 		<div id="Main">
 		<h1 id="Greetings">Hallo</h1>
-		<p>I am a watermelon, eat choogies. The Dex gang will never forget. Fear us, you will be scared</p>
+		<p style="margin-bottom: 0%;">I am a watermelon, eat choogies. The Dex gang will never forget. Fear us, you will be scared. Also, do you know? That copper is anti corrision? That's boring 
+			<br>
+			<br>Some links that I put here because this place is kinda like a library:</p>
+			<ul style="margin-top: 0%;">
+				<li><a href="https://sites.google.com/view/falling10fruit/home">My Google website containing my accounts!</a></li>
+
+				<li>Below is a ordered list, 'cause I'm bored:
+					<ol>
+					<li>Oh wow, this is the first time I put a list in a list</li>
+					<li>I better avoid looking like a fool, that's funny, because I am already doing that.</li>
+					<li>Also, what are those themes in the GitHub pages? I don't want to use them anyway.</li>
+				</ol></li>
+
+			</ul>
+			<p id="Reasurrance">I'm calling this Random because I can then put random things I want to test in here, which is a good thing. Also, I don't have a server so your name that you entered is safe, </p>
+
+			<p class="Charles"></p>
+
+			<p>No, why?</p>
+
+			<p class="Charles"></p>
+
+			<p>Charles, first of all, we just met this guy. Secondly, you don't have a nose, Charles.</p>
+
+			<p class="Charles">Wait what?</p>
+
+			<p style="text-align: center; color: rgb(99, 99, 99);">[Anti-Charles Defender ACTIVATED]</p>
 		</div>
 
 		<script type="text/javascript">
 			//Random, I'm just lookin' around the place.
 			alert("Disclaimer, I am not a decent programmer.");
 			var Name = prompt("What is your name?");
+			
 			var Greetings = document.getElementById("Greetings");
-			Greetings.innerHTML = "Hallo " + Name;
+			Greetings.innerHTML = "Hallo " + Name + "!";
+
+			var Greetings = document.getElementById("Reasurrance");
+			Greetings.innerHTML = "I'm calling this Random because I can then put random things I want to test in here, which is a good thing. Also, I don't have a server so your name that you entered is not kept in any database, " + Name + ". Also, I might get a database anyway to make silly accounts for these websites for no reasons. Like at all, no reason. But you might help me do cool stuff like that, " + Name + ".";
+
+			var Greetings = document.getElementsByClassName("Charles");
+			Greetings[0].innerHTML = "Psst, didn't you know that " + Name + " pooped my his pants?"
+			Greetings[1].innerHTML = "Because you shouldn't be friends with " + Name + ". Smelly"
 		</script>
 	</body>
 </html>
