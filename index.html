@@ -40,7 +40,7 @@
 				left:-5px;
 				width:100%;
 				margin:0%;
-				background-color: rgb(189, 187, 60);
+				background-color: rgb(214, 88, 16);
 				color: seashell;
 				border:5px solid;
 				border-color: rgb(63, 63, 63);
@@ -78,12 +78,14 @@
 			<br>Some links that I put here because this place is kinda like a library:</p>
 			<ul style="margin-top: 0%;">
 				<li><a href="https://sites.google.com/view/falling10fruit/home">My Google website containing my accounts!</a></li>
+				<li id="Secret"> Nothing to see here, not suspicious at all</li>
 
 				<li>Below is a ordered list, 'cause I'm bored:
 					<ol>
 					<li>Oh wow, this is the first time I put a list in a list</li>
 					<li>I better avoid looking like a fool, that's funny, because I am already doing that.</li>
 					<li>Also, what are those themes in the GitHub pages? I don't want to use them anyway.</li>
+					<li><a href="Assets/Charles.md">Click here to download a pointless Mark Down file</a></li>
 				</ol></li>
 
 			</ul>
@@ -102,6 +104,8 @@
 			<p style="text-align: center; color: rgb(99, 99, 99);">[Anti-Charles Defender ACTIVATED]</p>
 		</div>
 
+		<button type="button" onclick="">This button doesn't do anything</button>
+
 		<script type="text/javascript">
 			//Random, I'm just lookin' around the place.
 			alert("Disclaimer, I am not a decent programmer.");
@@ -116,6 +120,12 @@
 			var Greetings = document.getElementsByClassName("Charles");
 			Greetings[0].innerHTML = "Psst, didn't you know that " + Name + " pooped my his pants?"
 			Greetings[1].innerHTML = "Because you shouldn't be friends with " + Name + ". Smelly"
+
+			//Cool! Button
+			var cliked = function () {
+				var Secret = "Secret"
+				Secret.innerHTML = "<a href='about:blank'>Oh well, you got me</a>";
+			}
 		</script>
 	</body>
 </html>
