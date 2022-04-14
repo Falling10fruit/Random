@@ -58,10 +58,10 @@
 			}
 
 			#Main {
-				margin-top: 2%;
 				float: left;
 				position:relative;
-				top:200px;
+				margin-top: 15%;
+				margin-bottom: 4%;
 				width:60%;
 				background-color: rgb(146, 146, 146);
 				border:5px solid;
@@ -73,13 +73,25 @@
 	</head>
 	<body>
 		<div id="Header">
-			<h1 style="font-size: 50px; margin-top: 0%; margin-bottom: 2px;">Yoshemany</h1>
-			<p><a href="https://falling10fruit.github.io/">Home</a> > Random | Welcome to the place where it's more popular than home for some unusual reason.</p>
+			<table style="width: 100%; border-bottom: 2px solid; padding-bottom: 2px;">
+                <tr>
+                    <td style="padding-right: 15px; width: 60px;">
+                        <img src="Assets/Random.png">
+                    </td>
+
+                    <td>
+                        <h1 style="font-size: 50px; margin-top: 0%; margin-bottom: 2px; border-bottom: black 0px;">Random</h1>
+                    </td>
+                </tr>
+            </table>
+			<p>Random | Welcome to the place where it's more popular than home for some unusual reason.</p>
 		</div>
 
 		<div id="Main">
 		<h1 id="Greetings">Hallo</h1>
-		<p style="margin-bottom: 0%;">I am a watermelon, eat choogies. The Dex gang will never forget. Fear us, you will be scared. Also, do you know? That copper is anti corrision? That's boring 
+		<p style="margin-bottom: 0%;">I am an undersized-human sized human, <abbr title="Why did I write this, what was I thinking"><strike>eat choogies. The Dex gang will never forget. Fear us, you will be scared.</strike></abbr> Also, do you know? That copper is anti corrision? That's boring 
+			<br>
+			<br> What I am working on right now: <em>Updating the header at the COVID 19 article and officially choosing Random instead of Yoshemany (<strong>Updated at 10 of January, 2021 | 3:05 PM</strong>)</em>
 			<br>
 			<br>Some links that I put here because this place is kinda like a library:</p>
 			<ul style="margin-top: 0%;">
@@ -93,6 +105,7 @@
 					<li>Also, what are those themes in the GitHub pages? I don't want to use them anyway.</li>
 					<li><a href="Assets/Charles.md">Click here to download a pointless Mark Down file</a></li>
 					<li><a href="Assets/TEST.html">Click here for a disturbing thing</a></li>
+					<li><a href="Assets/COVID19.html"></a></li>
 				</ol></li>
 
 			</ul>
@@ -114,9 +127,16 @@
 
 			<p><br>Also, I put everything in the Assets folder except the ReadMe file and this webpage, so the Assets folder is more of the "Almost everything" folder.</p>
 
-		</div>
+			<script>
+				//Cool! Button
+				var cliked = function () {
+					var Secret = document.getElementById("Secret");
+					Secret.document.innerHTML = "<a href='about:blank'>Oh well, you got me</a>";
+				}
+			</script>
 
-		<button type="button" onclick="">This button doesn't do anything</button>
+			<button style="border: black 3px solid; padding: 5px; background-color: rgb(170, 170, 170);" onclick="cliked">This button doesn't do anything</button>
+		</div>
 
 		<script type="text/javascript">
 			//Random, I'm just lookin' around the place.
@@ -132,12 +152,6 @@
 			var Greetings = document.getElementsByClassName("Charles");
 			Greetings[0].innerHTML = "Psst, didn't you know that " + Name + " pooped my his pants?"
 			Greetings[1].innerHTML = "Because you shouldn't be friends with " + Name + ". Smelly"
-
-			//Cool! Button
-			var cliked = function () {
-				var Secret = "Secret"
-				Secret.innerHTML = "<a href='about:blank'>Oh well, you got me</a>";
-			}
 		</script>
 	</body>
 </html>
