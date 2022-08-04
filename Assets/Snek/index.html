@@ -77,17 +77,31 @@
             Scene[7][7] = 2; // Set the head to center
 
             var TailLength = 0;
-            var Tails = [{
+            var Tails = [/*{
                 Row: 8,
                 Column: 7
-            }];
+            }*/];
             var Direction = "w";
 
             console.log(Scene);
 
+            for (var i = 0; i < 15; i++) { // Coloring
+                for (var x = 0; x < 15; x++) {
+                    if (Scene[i][x] == 0) {
+                        Boxes[i * 15 + x].style.backgroundColor = "white";
+                    } else if (Scene[i][x] == 1) {
+                        Boxes[i * 15 + x].style.backgroundColor = "yellow";
+                    } else if (Scene[i][x] == 2) {
+                        Boxes[i * 15 + x].style.backgroundColor = "green";
+                    } else if (Sceme[i][x] == 3) {
+                        Boxes[i * 15 + x].style.backgroundColor = "red";
+                    }
+                };
+            };
+
             // Main part - Infinite loop
             var Game = function () {
-                const Play = setTimeout(function(){
+                var Play = setInterval(function () {
                     window.addEventListener("keypress", function (e) { // Change direction
                         if (e.key == "w") {
                             Direction = "w";
@@ -98,7 +112,6 @@
                         } else if (e.key == "d") {
                             Direction = "d";
                         }
-                        console.log(Direction);
                     });
 
                     for (var i = 0; i < Scene.length; i++) {
@@ -110,17 +123,32 @@
                                     } else {
                                         Scene[Scene.length - 1][x] = 2;
                                     }
-                                    Scene[i][x] = 1
                                 } else if (Direction == "a") {
-                                    Scene[i - 1][x] = 2;
-                                    Scene[i][x] = 1
+                                    if (!(x == 0)) { 
+                                        Scene[i][x - 1] = 2;
+                                    } else {
+                                        Scene[i][Scene[i].length - 1] = 2;
+                                    }
                                 } else if (Direction == "s") {
-                                    Scene[i - 1][x] = 2;
-                                    Scene[i][x] = 1
+                                    if (!(i == Scene.length - 1)) { 
+                                        Scene[i + 1][x] = 2;
+                                    } else {
+                                        Scene[0][x] = 2;
+                                    }
                                 } else if (Direction == "d") {
-                                    Scene[i - 1][x] = 2;
-                                    Scene[i][x] = 1
+                                    if (!(x == Scene.length - 1)) { 
+                                        Scene[i][x + 1] = 2;
+                                    } else {
+                                        Scene[i][0] = 2;
+                                    }
                                 }
+
+                                Scene[i][x] = 0;
+
+                                Tails.push({
+                                    Row: i,
+                                    Column: x
+                                });
 
                                 x = Scene[i].length;
                                 i = Scene.length - 1;
@@ -151,7 +179,7 @@
                             }
                         };
                     };
-                }, 1000);
+                }, 500);
             }
 
             document.getElementById("Start").addEventListener("click", Game);
