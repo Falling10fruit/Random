@@ -130,13 +130,24 @@
 
 			<p><br>Also, I put everything in the Assets folder except the ReadMe file and this webpage, so the Assets folder is more of the "Almost everything" folder.</p>
 
-			<script>
-				//Cool! Button
-				var cliked = function () {
-					var Secret = document.getElementById("Secret");
-					Secret.document.innerHTML = "<a href='about:blank'>Oh well, you got me</a>";
-				}
-			</script>
+		<button id = "ButtOn" type="button">This button doesn't do anything</button>
+		
+		<script>
+			/*Cool! Button
+			var cliked = function () {
+				var Secret = document.getElementById("Secret");
+				Secret.document.innerHTML = "<a href='about:blank'>Oh well, you got me</a>";
+			} First attempt, total castrophic failure*/
+
+			var Button = document.getElementById("ButtOn");
+			var Train = function () {
+				var Secret = document.getElementById("Secret");
+				Secret.innerHTML = "<a href='about:blank'>Oh well, you got me</a>";
+				console.log("Clicked");
+			};
+
+			Button.addEventListener("click", Train);
+		</script>
 
 		
 		<script type="text/javascript">
@@ -155,7 +166,6 @@
 			Greetings[1].innerHTML = "Because you shouldn't be friends with " + Name + ". Smelly"
 		</script>
 		
-		<button type="button" onclick="cliked">This button doesn't do anything</button>
 
 	</body>
 </html>
