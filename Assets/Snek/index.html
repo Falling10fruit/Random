@@ -94,19 +94,6 @@
                 Scene[i][x] = 3;
             };
             CreateFood();
-            var Middle = Boxes[Math.floor(Scene.length/2) * 15 + Math.floor(Scene[Math.floor(Scene.length/2)].length/2)];
-            var LeftEye = document.createElement("div");
-            LeftEye.id = "LeftEye";
-            LeftEye.style.left = Middle.getBoundingClientRect.left;
-            var RightEye = document.createElement("div");
-            RightEye.id = "LeftEye";
-            RightEye.style.left = Middle.getBoundingClientRect.left + Middle.width - RightEye.width;
-            LeftEye.top = RightEye.top = Middle.getBoundingClientRect.top;
-            LeftEye.width = RightEye.width = Middle.width/8; // What a mess
-            LeftEye.height = RightEye.height = Middle.height/8;
-            LeftEye.style.backgroundColor = RightEye.style.backgroundColor = "rgb(0, 0, 0)";
-            LeftEye.position = RightEye.position = "relative";
-
 
             console.log(Scene);
 
@@ -136,10 +123,21 @@
                     clearInterval(Play);
                     ScoreText.remove();
                     var Restart = document.createElement("button");
+                    Restart.setAttribute("id", "Start"); // So that "document.getElementById("Start").remove();" (line 130) doesn't panic
                     Restart.setAttribute("type", "button");
                     Restart.innerText = "Restart";
+                    Restart.style.marginTop = "2%";
                     Restart.addEventListener("click", Game);
                     document.body.appendChild(Restart);
+                    for (var i = 0; i < Scene.length; i++) {
+                        for (var x = 0; x < Scene[i].length; x++) {
+                            Scene[i][x] = 0;
+                        }
+                    }
+                    TailLength = 0;
+                    Tails.splice(0, Tails.length);
+                    Scene[Math.floor(Scene.length/2)][Math.floor(Scene[Math.floor(Scene.length/2)].length/2)] = 2;
+                    CreateFood();
                 };
                 
                 var Play = setInterval(function () {
@@ -277,7 +275,7 @@
                             }
                         };
                     };
-                }, 500);
+                }, 250);
             }
 
             document.getElementById("Start").addEventListener("click", Game);
