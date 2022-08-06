@@ -94,6 +94,18 @@
                 Scene[i][x] = 3;
             };
             CreateFood();
+            var Middle = Boxes[Math.floor(Scene.length/2) * 15 + Math.floor(Scene[Math.floor(Scene.length/2)].length/2)];
+            var LeftEye = document.createElement("div");
+            LeftEye.id = "LeftEye";
+            LeftEye.style.left = Middle.getBoundingClientRect.left;
+            var RightEye = document.createElement("div");
+            RightEye.id = "LeftEye";
+            RightEye.style.left = Middle.getBoundingClientRect.left + Middle.width - RightEye.width;
+            LeftEye.top = RightEye.top = Middle.getBoundingClientRect.top;
+            LeftEye.width = RightEye.width = Middle.width/8; // What a mess
+            LeftEye.height = RightEye.height = Middle.height/8;
+            LeftEye.style.backgroundColor = RightEye.style.backgroundColor = "rgb(0, 0, 0)";
+            LeftEye.position = RightEye.position = "relative";
 
 
             console.log(Scene);
@@ -114,6 +126,22 @@
 
             // Main part - Infinite loop
             var Game = function () {
+                // Replace button with score
+                document.getElementById("Start").remove();
+                var ScoreText = document.createElement("p");
+                ScoreText.innerText = "Score: " + TailLength;
+                document.body.appendChild(ScoreText);
+
+                var Die = function () {
+                    clearInterval(Play);
+                    ScoreText.remove();
+                    var Restart = document.createElement("button");
+                    Restart.setAttribute("type", "button");
+                    Restart.innerText = "Restart";
+                    Restart.addEventListener("click", Game);
+                    document.body.appendChild(Restart);
+                };
+                
                 var Play = setInterval(function () {
                     window.addEventListener("keypress", function (e) { // Change direction
                         if (e.key == "w") {
@@ -130,11 +158,13 @@
                     for (var i = 0; i < Scene.length; i++) { // Move head and grow tail
                         for (var x = 0; x < Scene[i].length; x++) {
                             if (Scene[i][x] == 2) {
-                                if (Direction == "w") { // Move in that direction
+                                if (Direction == "w") { // Collisions in the direction
                                     if (!(i == 0)) {
                                         if (Scene[i - 1][x] == 3) {
                                             TailLength++;
                                             CreateFood();
+                                        } else if (Scene[i - 1][x] == 1) {
+                                            Die();
                                         }
                                     } else {
                                         if (Scene[Scene.length - 1][x] == 3) {
@@ -231,6 +261,8 @@
                         console.log("Tail");
                     };
 
+                    ScoreText.innerText = "Score: " + TailLength;
+
                     for (var i = 0; i < 15; i++) { // Coloring
                         for (var x = 0; x < 15; x++) {
                             if (Scene[i][x] == 0) {
@@ -239,6 +271,7 @@
                                 Boxes[i * 15 + x].style.backgroundColor = "yellow";
                             } else if (Scene[i][x] == 2) {
                                 Boxes[i * 15 + x].style.backgroundColor = "green";
+                                Boxes[i * 15 + x].getBoundingClientRect("");
                             } else if (Scene[i][x] == 3) {
                                 Boxes[i * 15 + x].style.backgroundColor = "red";
                             }
