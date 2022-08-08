@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+		<link rel="shortcut icon" type="image/x-icon" href="Head.png">
         <title>Snek</title>
         <style>
-            body {
+            #Content {
                 margin: 4%;
                 font-family: sans-serif;
                 display: flex;
@@ -18,17 +19,20 @@
 
             .Box {
                 border: 3px solid black;
+                padding: 0px;
             }
         </style>
     </head>
     <body>
-        <h1 style="font-size: 2cm; margin-top: 5px; margin-bottom: 5px"><strong>Snek</strong></h1>
-        <table>
-            <tbody id="Grid">
-            </tbody>
-        </table>
+        <div id="Content">
+            <h1 style="font-size: 2cm; margin-top: 5px; margin-bottom: 5px"><strong>Snek</strong></h1>
+            <table>
+                <tbody id="Grid">
+                </tbody>
+            </table>
 
-        <button id="Start" type="button" style="margin-top: 2%; ">Start</button>
+            <button id="Start" type="button" style="margin-top: 2%; ">Start</button>
+        </div>
 
         <script>
             // Setting up boxes
@@ -94,6 +98,11 @@
                 Scene[i][x] = 3;
             };
             CreateFood();
+            var HeadPic = document.createElement("img");
+            HeadPic.setAttribute("src", "Head.png");
+            HeadPic.style.position = "fixed";
+            HeadPic.style.imageRendering = "pixelated";
+            document.body.appendChild(HeadPic);
 
             console.log(Scene);
 
@@ -102,9 +111,23 @@
                     if (Scene[i][x] == 0) {
                         Boxes[i * 15 + x].style.backgroundColor = "white";
                     } else if (Scene[i][x] == 1) {
-                        Boxes[i * 15 + x].style.backgroundColor = "yellow";
+                        Boxes[i * 15 + x].style.backgroundColor = "rgb(91, 191, 76)";
                     } else if (Scene[i][x] == 2) {
                         Boxes[i * 15 + x].style.backgroundColor = "green";
+
+                        // Head Picture
+                        //console.log(Boxes[i * 15 + x].getBoundingClientRect());
+                        HeadPic.style.top = Boxes[i * 15  + x].getBoundingClientRect().top + 3 + "px";
+                        HeadPic.style.left = Boxes[i * 15 + x].getBoundingClientRect().left + 3 + "px";
+                        HeadPic.style.width = HeadPic.style.height = Boxes[i * 15 + x].clientWidth + "px";
+                        if (Direction == "a") {
+                            HeadPic.style.transform = "rotate(-90deg)";
+                        } else if (Direction == "s") {
+                            HeadPic.style.transform = "rotate(-180deg)";
+                        } else if (Direction == "d") {
+                            HeadPic.style.transform = "rotate(90deg)";
+                        }
+                        //console.log(HeadPic.getBoundingClientRect());
                     } else if (Scene[i][x] == 3) {
                         Boxes[i * 15 + x].style.backgroundColor = "red";
                     }
@@ -117,21 +140,37 @@
                 document.getElementById("Start").remove();
                 var ScoreText = document.createElement("p");
                 ScoreText.innerText = "Score: " + TailLength;
-                document.body.appendChild(ScoreText);
+                document.getElementById("Content").appendChild(ScoreText);
 
                 var Die = function () {
                     clearInterval(Play);
+
+                    // Replacing the text with restart button and score text
                     ScoreText.remove();
+                    var RestartDiv = document.createElement("div");
+                    RestartDiv.style.display = "flex";
+                    RestartDiv.style.flexDirection = "row";
+                    RestartDiv.style.justifyContent = "space-around";
+                    RestartDiv.setAttribute("id", "Start"); // So that "document.getElementById("Start").remove();" (line 117) doesn't panic
+                    RestartDiv.style.width = document.getElementById("Grid").getBoundingClientRect().width;
+
                     var Restart = document.createElement("button");
-                    Restart.setAttribute("id", "Start"); // So that "document.getElementById("Start").remove();" (line 130) doesn't panic
                     Restart.setAttribute("type", "button");
                     Restart.innerText = "Restart";
                     Restart.style.marginTop = "2%";
                     Restart.addEventListener("click", Game);
-                    document.body.appendChild(Restart);
+
+                    ScoreText.innerText = "Your score: " + TailLength;
+
+                    document.getElementById("Content").appendChild(RestartDiv);
+                    RestartDiv.appendChild(Restart);
+                    RestartDiv.appendChild(ScoreText);
+
+                    // Resetting the grid
                     for (var i = 0; i < Scene.length; i++) {
                         for (var x = 0; x < Scene[i].length; x++) {
                             Scene[i][x] = 0;
+                            console.log("Box at Row " + i + ", Column " + x + " cleared");
                         }
                     }
                     TailLength = 0;
@@ -168,6 +207,8 @@
                                         if (Scene[Scene.length - 1][x] == 3) {
                                             TailLength++;
                                             CreateFood();
+                                        } else if (Scene[Scene.length - 1][x] == 1) {
+                                            Die();
                                         }
                                     }
                                 } else if (Direction == "a") {
@@ -175,11 +216,15 @@
                                         if (Scene[i][x - 1] == 3) {
                                             TailLength++;
                                             CreateFood();
+                                        } else if (Scene[i][x - 1] == 1) {
+                                            Die();
                                         }
                                     } else {
                                         if (Scene[i][Scene[i].length - 1] == 3) {
                                             TailLength++;
                                             CreateFood();
+                                        } else if (Scene[i][Scene[i].length - 1] == 1) {
+                                            Die();
                                         }
                                     }
                                 } else if (Direction == "s") {
@@ -187,11 +232,15 @@
                                         if (Scene[i + 1][x] == 3) {
                                             TailLength++;
                                             CreateFood();
+                                        } else if (Scene[i + 1][x] == 1) {
+                                            Die();
                                         }
                                     } else {
                                         if (Scene[0][x] == 3) {
                                             TailLength++;
                                             CreateFood();
+                                        } else if (Scene[0][x] == 1) {
+                                            Die();
                                         }
                                     }
                                 } else if (Direction == "d") {
@@ -199,11 +248,15 @@
                                         if (Scene[i][x + 1] == 3) {
                                             TailLength++;
                                             CreateFood();
+                                        } else if (Scene[i][x + 1] == 1) {
+                                            Die();
                                         }
                                     } else {
                                         if (Scene[i][0] == 3) {
                                             TailLength++;
                                             CreateFood();
+                                        } else if (Scene[i][0] == 1) {
+                                            Die();
                                         }
                                     }
                                 }
@@ -249,14 +302,14 @@
                     }
 
                     if (Tails.length > TailLength) { // Destroy end of tail if too long
-                        console.log("Too long " + Tails[0].Row + " " + Tails[0].Column);
+                        //console.log("Too long " + Tails[0].Row + " " + Tails[0].Column);
                         Scene[Tails[0].Row][Tails[0].Column] = 0; // Replace with white
                         Tails.splice(0, 1);
                     };
 
                     for (var i = 0; i < Tails.length; i++) { // Draw tails
                         Scene[Tails[i].Row][Tails[i].Column] = 1; // Paint square by Tail'sz coordinate
-                        console.log("Tail");
+                        //console.log("Tail");
                     };
 
                     ScoreText.innerText = "Score: " + TailLength;
@@ -266,10 +319,25 @@
                             if (Scene[i][x] == 0) {
                                 Boxes[i * 15 + x].style.backgroundColor = "white";
                             } else if (Scene[i][x] == 1) {
-                                Boxes[i * 15 + x].style.backgroundColor = "yellow";
+                                Boxes[i * 15 + x].style.backgroundColor = "rgb(91, 191, 76)";
                             } else if (Scene[i][x] == 2) {
                                 Boxes[i * 15 + x].style.backgroundColor = "green";
-                                Boxes[i * 15 + x].getBoundingClientRect("");
+
+                                // Head Picture
+                                //console.log(Boxes[i * 15 + x].getBoundingClientRect());
+                                HeadPic.style.top = Boxes[i * 15  + x].getBoundingClientRect().top + 3 + "px";
+                                HeadPic.style.left = Boxes[i * 15 + x].getBoundingClientRect().left + 3 + "px";
+                                HeadPic.style.width = HeadPic.style.height = Boxes[i * 15 + x].clientWidth + "px";
+                                if (Direction == "w") {
+                                    HeadPic.style.transform = "rotate(0deg)";
+                                } else if(Direction == "a") {
+                                    HeadPic.style.transform = "rotate(-90deg)";
+                                } else if (Direction == "s") {
+                                    HeadPic.style.transform = "rotate(-180deg)";
+                                } else if (Direction == "d") {
+                                    HeadPic.style.transform = "rotate(90deg)";
+                                }
+                                //console.log(HeadPic.getBoundingClientRect());
                             } else if (Scene[i][x] == 3) {
                                 Boxes[i * 15 + x].style.backgroundColor = "red";
                             }
