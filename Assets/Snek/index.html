@@ -117,8 +117,8 @@
 
                         // Head Picture
                         //console.log(Boxes[i * 15 + x].getBoundingClientRect());
-                        HeadPic.style.top = Boxes[i * 15  + x].getBoundingClientRect().top + 3 + "px";
-                        HeadPic.style.left = Boxes[i * 15 + x].getBoundingClientRect().left + 3 + "px";
+                        HeadPic.style.top = Boxes[i * 15  + x].getBoundingClientRect().top + (Boxes[i * 15 + x].offsetWidth - Boxes[i * 15 + x].clientWidth)/2 + "px";
+                        HeadPic.style.left = Boxes[i * 15 + x].getBoundingClientRect().left + (Boxes[i * 15 + x].offsetWidth - Boxes[i * 15 + x].clientWidth)/2 + "px";
                         HeadPic.style.width = HeadPic.style.height = Boxes[i * 15 + x].clientWidth + "px";
                         if (Direction == "a") {
                             HeadPic.style.transform = "rotate(-90deg)";
@@ -325,8 +325,8 @@
 
                                 // Head Picture
                                 //console.log(Boxes[i * 15 + x].getBoundingClientRect());
-                                HeadPic.style.top = Boxes[i * 15  + x].getBoundingClientRect().top + 3 + "px";
-                                HeadPic.style.left = Boxes[i * 15 + x].getBoundingClientRect().left + 3 + "px";
+                                HeadPic.style.top = Boxes[i * 15  + x].getBoundingClientRect().top + (Boxes[i * 15 + x].offsetWidth - Boxes[i * 15 + x].clientWidth)/2 + "px";
+                                HeadPic.style.left = Boxes[i * 15 + x].getBoundingClientRect().left + (Boxes[i * 15 + x].offsetWidth - Boxes[i * 15 + x].clientWidth)/2 + "px";
                                 HeadPic.style.width = HeadPic.style.height = Boxes[i * 15 + x].clientWidth + "px";
                                 if (Direction == "w") {
                                     HeadPic.style.transform = "rotate(0deg)";
