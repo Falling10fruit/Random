@@ -280,38 +280,40 @@
                                     }
                                 }
 
-                                if (Direction == "w") { // Move in that direction
-                                    if (!(i == 0)) { 
-                                        Scene[i - 1][x] = 2;
-                                    } else {
-                                        Scene[Scene.length - 1][x] = 2;
+                                if (document.getElementById("Start") == null) {
+                                    if (Direction == "w") { // Move in that direction
+                                        if (!(i == 0)) { 
+                                            Scene[i - 1][x] = 2;
+                                        } else {
+                                            Scene[Scene.length - 1][x] = 2;
+                                        }
+                                    } else if (Direction == "a") {
+                                        if (!(x == 0)) { 
+                                            Scene[i][x - 1] = 2;
+                                        } else {
+                                            Scene[i][Scene[i].length - 1] = 2;
+                                        }
+                                    } else if (Direction == "s") {
+                                        if (!(i == Scene.length - 1)) { 
+                                            Scene[i + 1][x] = 2;
+                                        } else {
+                                            Scene[0][x] = 2;
+                                        }
+                                    } else if (Direction == "d") {
+                                        if (!(x == Scene.length - 1)) { 
+                                            Scene[i][x + 1] = 2;
+                                        } else {
+                                            Scene[i][0] = 2;
+                                        }
                                     }
-                                } else if (Direction == "a") {
-                                    if (!(x == 0)) { 
-                                        Scene[i][x - 1] = 2;
-                                    } else {
-                                        Scene[i][Scene[i].length - 1] = 2;
-                                    }
-                                } else if (Direction == "s") {
-                                    if (!(i == Scene.length - 1)) { 
-                                        Scene[i + 1][x] = 2;
-                                    } else {
-                                        Scene[0][x] = 2;
-                                    }
-                                } else if (Direction == "d") {
-                                    if (!(x == Scene.length - 1)) { 
-                                        Scene[i][x + 1] = 2;
-                                    } else {
-                                        Scene[i][0] = 2;
-                                    }
+
+                                    Scene[i][x] = 0; // Remove previous head
+
+                                    Tails.push({ // Create Tail
+                                        Row: i,
+                                        Column: x
+                                    });
                                 }
-
-                                Scene[i][x] = 0; // Remove previous head
-
-                                Tails.push({ // Create Tail
-                                    Row: i,
-                                    Column: x
-                                });
 
                                 // End loop
                                 x = Scene[i].length;
@@ -320,48 +322,50 @@
                         }
                     }
 
-                    if (Tails.length > TailLength) { // Destroy end of tail if too long
-                        //console.log("Too long " + Tails[0].Row + " " + Tails[0].Column);
-                        Scene[Tails[0].Row][Tails[0].Column] = 0; // Replace with white
-                        Tails.splice(0, 1);
-                    };
-
-                    for (var i = 0; i < Tails.length; i++) { // Draw tails
-                        Scene[Tails[i].Row][Tails[i].Column] = 1; // Paint square by Tail'sz coordinate
-                        //console.log("Tail");
-                    };
-
-                    ScoreText.innerText = "Score: " + TailLength;
-
-                    for (var i = 0; i < 15; i++) { // Coloring
-                        for (var x = 0; x < 15; x++) {
-                            if (Scene[i][x] == 0) {
-                                Boxes[i * 15 + x].style.backgroundColor = "white";
-                            } else if (Scene[i][x] == 1) {
-                                Boxes[i * 15 + x].style.backgroundColor = "rgb(91, 191, 76)";
-                            } else if (Scene[i][x] == 2) {
-                                Boxes[i * 15 + x].style.backgroundColor = "green";
-
-                                // Head Picture
-                                //console.log(Boxes[i * 15 + x].getBoundingClientRect());
-                                HeadPic.style.top = Boxes[i * 15  + x].getBoundingClientRect().top + (Boxes[i * 15 + x].offsetWidth - Boxes[i * 15 + x].clientWidth)/2 + "px";
-                                HeadPic.style.left = Boxes[i * 15 + x].getBoundingClientRect().left + (Boxes[i * 15 + x].offsetWidth - Boxes[i * 15 + x].clientWidth)/2 + "px";
-                                HeadPic.style.width = HeadPic.style.height = Boxes[i * 15 + x].clientWidth + "px";
-                                if (Direction == "w") {
-                                    HeadPic.style.transform = "rotate(0deg)";
-                                } else if(Direction == "a") {
-                                    HeadPic.style.transform = "rotate(-90deg)";
-                                } else if (Direction == "s") {
-                                    HeadPic.style.transform = "rotate(-180deg)";
-                                } else if (Direction == "d") {
-                                    HeadPic.style.transform = "rotate(90deg)";
-                                }
-                                //console.log(HeadPic.getBoundingClientRect());
-                            } else if (Scene[i][x] == 3) {
-                                Boxes[i * 15 + x].style.backgroundColor = "red";
-                            }
+                    if (document.getElementById("Start") == null) {
+                        if (Tails.length > TailLength) { // Destroy end of tail if too long
+                            //console.log("Too long " + Tails[0].Row + " " + Tails[0].Column);
+                            Scene[Tails[0].Row][Tails[0].Column] = 0; // Replace with white
+                            Tails.splice(0, 1);
                         };
-                    };
+
+                        for (var i = 0; i < Tails.length; i++) { // Draw tails
+                            Scene[Tails[i].Row][Tails[i].Column] = 1; // Paint square by Tail'sz coordinate
+                            //console.log("Tail");
+                        };
+
+                        ScoreText.innerText = "Score: " + TailLength;
+
+                        for (var i = 0; i < 15; i++) { // Coloring
+                            for (var x = 0; x < 15; x++) {
+                                if (Scene[i][x] == 0) {
+                                    Boxes[i * 15 + x].style.backgroundColor = "white";
+                                } else if (Scene[i][x] == 1) {
+                                    Boxes[i * 15 + x].style.backgroundColor = "rgb(91, 191, 76)";
+                                } else if (Scene[i][x] == 2) {
+                                    Boxes[i * 15 + x].style.backgroundColor = "green";
+
+                                    // Head Picture
+                                    //console.log(Boxes[i * 15 + x].getBoundingClientRect());
+                                    HeadPic.style.top = Boxes[i * 15  + x].getBoundingClientRect().top + (Boxes[i * 15 + x].offsetWidth - Boxes[i * 15 + x].clientWidth)/2 + "px";
+                                    HeadPic.style.left = Boxes[i * 15 + x].getBoundingClientRect().left + (Boxes[i * 15 + x].offsetWidth - Boxes[i * 15 + x].clientWidth)/2 + "px";
+                                    HeadPic.style.width = HeadPic.style.height = Boxes[i * 15 + x].clientWidth + "px";
+                                    if (Direction == "w") {
+                                        HeadPic.style.transform = "rotate(0deg)";
+                                    } else if(Direction == "a") {
+                                        HeadPic.style.transform = "rotate(-90deg)";
+                                    } else if (Direction == "s") {
+                                        HeadPic.style.transform = "rotate(-180deg)";
+                                    } else if (Direction == "d") {
+                                        HeadPic.style.transform = "rotate(90deg)";
+                                    }
+                                    //console.log(HeadPic.getBoundingClientRect());
+                                } else if (Scene[i][x] == 3) {
+                                    Boxes[i * 15 + x].style.backgroundColor = "red";
+                                }
+                            };
+                        };
+                    }
                 }, 250);
             }
 
