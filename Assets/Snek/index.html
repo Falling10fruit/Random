@@ -35,6 +35,12 @@
         </div>
 
         <script>
+            // Get or set HighScore
+            if (window.localStorage.getItem("HighScore") === null) {
+                window.localStorage.setItem("HighScore", 0);
+            }
+            var HighScore = window.localStorage.getItem("HighScore");
+
             // Setting up boxes
             for (var i = 0; i < 15; i++) {
                 var tr = document.createElement("tr");
@@ -144,6 +150,13 @@
 
                 var Die = function () {
                     clearInterval(Play);
+                    console.log(TailLength + " " + HighScore);
+                    
+                    // Set Highscore
+                    if (HighScore < TailLength) {
+                        window.localStorage.setItem("HighScore", TailLength);
+                        HighScore = TailLength;
+                    }
 
                     // Replacing the text with restart button and score text
                     ScoreText.remove();
@@ -151,8 +164,11 @@
                     RestartDiv.style.display = "flex";
                     RestartDiv.style.flexDirection = "row";
                     RestartDiv.style.justifyContent = "space-around";
-                    RestartDiv.setAttribute("id", "Start"); // So that "document.getElementById("Start").remove();" (line 117) doesn't panic
-                    RestartDiv.style.width = document.getElementById("Grid").getBoundingClientRect().width;
+                    RestartDiv.setAttribute("id", "Start"); // So that "document.getElementById("Start").remove();" (line 146) doesn't panic
+                    RestartDiv.style.width = document.getElementById("Grid").getBoundingClientRect().width + "px";
+                    
+                    var HiScoretxt = document.createElement("p");
+                    HiScoretxt.innerText = "Highscore: " + HighScore;
 
                     var Restart = document.createElement("button");
                     Restart.setAttribute("type", "button");
@@ -160,9 +176,12 @@
                     Restart.style.marginTop = "2%";
                     Restart.addEventListener("click", Game);
 
-                    ScoreText.innerText = "Your score: " + TailLength;
+                    console.log(TailLength);
+                    
+                    ScoreText.innerText = "Your Score: " + TailLength;
 
                     document.getElementById("Content").appendChild(RestartDiv);
+                    RestartDiv.appendChild(HiScoretxt);
                     RestartDiv.appendChild(Restart);
                     RestartDiv.appendChild(ScoreText);
 
