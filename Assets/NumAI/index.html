@@ -127,20 +127,12 @@
                 }
             }
 
-            /*for (var i = 0; i < 10; i++) {
-                Boxes[i].addEventListener("click", function (e) {
+            for (let i = 0; i < Boxes.length; i++) {
+                Boxes[i].setAttribute("draggable", "false");
+                Boxes[i].addEventListener("mousedown", function (e) {
                     Draw(i);
                 });
-            }*/
-
-            
-            Boxes[0].addEventListener("click", function (e) {
-                Draw(0);
-            });
-            
-            Boxes[1].addEventListener("click", function (e) {
-                Draw(1);
-            });
+            }
 
             document.getElementById("Reset").addEventListener("click", Clear)
         </script>
