@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="character_set">
+
+        <title>Number AI detector</title>
+
+        <style>
+            body {
+                font-family: sans-serif;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            table {
+                border-collapse: collapse;
+            }
+
+            .Box {
+                border: 2px solid black;
+            }
+
+            #Div {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>I make AI</h1>
+
+        <p style="text-align: center;">Go draw numbers from 0 to 9</p>
+
+        <p id="AIGuess"></p>
+
+        <table>
+            <tbody id="Drawing">
+            </tbody>
+        </table>
+
+        <div id="Control">
+            <button type="button" id="Correct">AI correct</button>
+            <button type="button" id="Wrong">AI stupid</button>
+            <button type="button" id="Reset">Begone ugly drawing</button>
+        </div>
+
+        <script>
+            // Setting up body width and margin
+            document.body.style.margin = window.innerHeight*0.05 + "px";
+            document.body.style.height = window.innerHeight*0.90 + "px";
+
+            // Create Boxes
+            for (var i = 0; i < 20; i++) {
+                var tr = document.createElement("tr");
+                document.getElementById("Drawing").appendChild(tr);
+                for (var x = 0; x < 20; x++) {
+                    var td = document.createElement("td");
+                    td.className = "Box";
+                    tr.appendChild(td);
+                }
+            }
+
+            // Setting Boxes width
+            var Boxes = document.getElementsByClassName("Box");
+
+            if (window.innerHeight < window.innerWidth) {
+                for (var i = 0; i < Boxes.length; i++) {
+                    Boxes[i].style.width = Boxes[i].style.height = window.innerWidth/100 + "px";
+                }
+            } else {
+                for (var i = 0; i < Boxes.length; i++) {
+                    Boxes[i].style.width = Boxes[i].style.height = window.innerWidth/100 + "px";
+                }
+            }
+
+            // Seting up Scene data
+            var Scene = [];
+
+            for (var i = 0; i < 20; i++) {
+                Scene.push([]);
+                for (var x = 0; x < 20; x++) {
+                    Scene[i].push(0);
+                }
+            }
+
+            // Create AI brain
+            var Brain = [];
+
+            for (var i = 0; i < 10; i++) { // 10 Layers
+                Brain.push([]);
+
+                for (var x = 0; x < 10; x++) { // 10 Neurons per layer
+                    Brain[i].push([]);
+                    
+                    if (i == 0) {
+                        for (var y = 0; y < Boxes.length; y++) { // First layer connections
+                            Brain[i][x].push(Math.random() * (Math.floor(Math.random() * 3) - 1));
+                        }
+                    } else {
+                        for (var y = 0; y < 10; y++) { // Other layer's connection
+                            Brain[i][x].push(Math.random() * (Math.floor(Math.random() * 3) - 1));
+                        }
+                    }
+                }
+            }
+
+            // Run AI Brain
+            var Draw = function (Box) {
+                Scene[Math.floor(Box/20)][Box%20] = 1;
+                Boxes[Box].style.backgroundColor = "rgb(0, 0, 0)";
+            }
+
+            //Clear drawing
+            var Clear = function () {
+                for (var i = 0; i < Boxes.length; i++) {
+                    Boxes[i].style.backgroundColor = "rgb(255, 255, 255)";
+                }
+
+                for (var i = 0; i < Scene.length; i++) {
+                    for (var x = 0; x < Scene[i].length; x++) {
+                        Scene[i][x] = 0;
+                    }
+                }
+            }
+
+            /*for (var i = 0; i < 10; i++) {
+                Boxes[i].addEventListener("click", function (e) {
+                    Draw(i);
+                });
+            }*/
+
+            
+            Boxes[0].addEventListener("click", function (e) {
+                Draw(0);
+            });
+            
+            Boxes[1].addEventListener("click", function (e) {
+                Draw(1);
+            });
+
+            document.getElementById("Reset").addEventListener("click", Clear)
+        </script>
+    </body>
+</html>
