@@ -107,6 +107,7 @@
                             }
                         } else {
                             for (var x = 0; x < Brain[i - 1].length; x++) { // Connections
+                                console.log(i + " " + x);
                                 Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
                             }
                         }
