@@ -93,14 +93,23 @@
             if (window.localStorage.getItem("SAVEBrain") == null) {
                 var Brain = [];
 
-                for (var i = 0; i < 10; i++) { // 10 Neurons
-                    Brain.push({
-                        Weighs: [],
-                        Storage: 0
-                    });
+                for (var i = 0; i < 2; i++) { // One hidden layer and one output
+                    Brain.push([]);
+                    for (var x = 0; x < 10; x++) { // 10 Neurons
+                        Brain[i].push({
+                            Weighs: [],
+                            Storage: 0
+                        });
 
-                    for (var x = 0; x < Boxes.length; x++) { // Connections
-                        Brain[i].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
+                        if (i < 1) {
+                            for (var y = 0; y < Boxes.length; y++) { // Connections
+                                Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
+                            }
+                        } else {
+                            for (var x = 0; x < Brain[i - 1].length; x++) { // Connections
+                                Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
+                            }
+                        }
                     }
                 }
             } else {var Brain = window.localStorage.getItem("SAVEBrain");}
@@ -111,15 +120,23 @@
                 Boxes[Box].style.backgroundColor = "rgb(0, 0, 0)";
 
                 // Resseting the brain
-                for (let i = 0; i < Brain.length; i++) { // Neurons
-                    for (let x = 0; x < Boxes.length; x++) { // Weighs
-                        Brain[i].Storage = 0;
+                for (let i = 0; i < Brain.length; i++) { // Layers
+                    for (let x = 0; x < Boxes.length; x++) { // Neurons
+                        Brain[i][x].Storage = 0;
                     }
                 }
 
-                for (let i = 0; i < Brain.length; i++) { // Neurons
-                    for (let x = 0; x < Boxes.length; x++) { // Weighs
-                        Brain[i].Storage += Brain[i].Weighs[x] * Scene[Math.floor(x/20)][x%20];
+                for (let i = 0; i < Brain.length; i++) { // Layers
+                    for (let x = 0; x < Brain[i].length; x++) { // Neurons
+                        if (i < 1) {
+                            for (let y = 0; y < Boxes.length; y++) {
+                                Brain[i][x].Storage += Brain[i][x].Weighs[y] * Scene[Math.floor(y/20)][y%20];
+                            }
+                        } else {
+                            for (let y = 0; y < Brain[i - 1].length; y++) {
+                                Brain[i][x].Storage += Brain[i][x].Weighs[y] * Brain[i - 1][y].Storage;
+                            }
+                        }
                     }
                 }
 
