@@ -106,8 +106,7 @@
                                 Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
                             }
                         } else {
-                            for (var x = 0; x < Brain[i - 1].length; x++) { // Connections
-                                console.log(i + " " + x);
+                            for (var y = 0; y < Brain[i - 1].length; y++) { // Connections
                                 Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
                             }
                         }
@@ -122,8 +121,15 @@
 
                 // Resseting the brain
                 for (let i = 0; i < Brain.length; i++) { // Layers
-                    for (let x = 0; x < Boxes.length; x++) { // Neurons
-                        Brain[i][x].Storage = 0;
+                    if (i < 1) {
+                        for (let x = 0; x < Boxes.length; x++) { // Neurons
+                            console.log(i + " " + x);
+                            Brain[i][x].Storage = 0;
+                        }
+                    } else {
+                        for (let x = 0; x < Brain[i].length; x++) { // Neurons
+                            Brain[i][x].Storage = 0;
+                        }
                     }
                 }
 
