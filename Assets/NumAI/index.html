@@ -121,15 +121,8 @@
 
                 // Resseting the brain
                 for (let i = 0; i < Brain.length; i++) { // Layers
-                    if (i < 1) {
-                        for (let x = 0; x < Boxes.length; x++) { // Neurons
-                            console.log(i + " " + x);
-                            Brain[i][x].Storage = 0;
-                        }
-                    } else {
-                        for (let x = 0; x < Brain[i].length; x++) { // Neurons
-                            Brain[i][x].Storage = 0;
-                        }
+                    for (let x = 0; x < Brain[i].length; x++) { // Neurons
+                        Brain[i][x].Storage = 0;
                     }
                 }
 
