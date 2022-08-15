@@ -35,7 +35,7 @@
 
         <p style="text-align: center; margin: 0px">Go draw numbers from 0 to 9</p>
 
-        <p id="AIGuess"></p>
+        <p id="AIGuess" style="margin: 0px">Waiting for input...</p>
 
         <table>
             <tbody id="Drawing">
@@ -142,16 +142,18 @@
                 }
 
                 // Reading Brain output
-                var AIGuessTxt = document.getElementById("AIGuess");
-                AIGuessTxt.innerText = "";
+                var AIGuess = [0][0];
 
                 for (var i = 0; i < Brain[Brain.length - 1].length; i++) {
-                    AIGuessTxt.innerText += i + ": " + Math.round(Brain[Brain.length - 1][i].Storage);
-
-                    if (i < Brain[Brain.length - 1].length - 1) {
-                        AIGuessTxt.innerText += ", "
+                    if (Math.round(Brain[Brain.length - 1][i].Storage) > AIGuess[0]) {
+                        AIGuess[1] = i;
                     }
+
+                    console.log(i +": " + Math.round(Brain[Brain.length - 1][i].Storage));
                 }
+
+                var AIGuessTxt = document.getElementById("AIGuess");
+                AIGuessTxt.innerText = "The AI guesses: " + AIGuess[1];
             }
 
             //Clear drawing
