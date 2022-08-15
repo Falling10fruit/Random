@@ -114,7 +114,7 @@
                 }
             } else {var Brain = window.localStorage.getItem("SAVEBrain");}
 
-            // Run AI Brain
+            // AI Brain in action
             var Draw = function (Box) {
                 Scene[Math.floor(Box/20)][Box%20] = 1;
                 Boxes[Box].style.backgroundColor = "rgb(0, 0, 0)";
@@ -126,6 +126,7 @@
                     }
                 }
 
+                // Running the brain
                 for (let i = 0; i < Brain.length; i++) { // Layers
                     for (let x = 0; x < Brain[i].length; x++) { // Neurons
                         if (i < 1) {
@@ -140,13 +141,14 @@
                     }
                 }
 
+                // Reading Brain output
                 var AIGuessTxt = document.getElementById("AIGuess");
                 AIGuessTxt.innerText = "";
 
-                for (var i = 0; i < Brain.length; i++) {
-                    AIGuessTxt.innerText += i + ": " + Math.round(Brain[i].Storage);
+                for (var i = 0; i < Brain[Brain.length - 1].length; i++) {
+                    AIGuessTxt.innerText += i + ": " + Math.round(Brain[Brain.length - 1][i].Storage);
 
-                    if (i < Brain.length - 1) {
+                    if (i < Brain[Brain.length - 1].length - 1) {
                         AIGuessTxt.innerText += ", "
                     }
                 }
