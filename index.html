@@ -132,6 +132,8 @@
 			<p><br>Also, I put everything in the Assets folder except the ReadMe file and this webpage, so the Assets folder is more of the "Almost everything" folder.</p>
 
 		<button id = "ButtOn" type="button">This button doesn't do anything</button>
+
+		<button type="button" id="NameReset">Would you like to change your name?</button>
 		
 		<script>
 			/*Cool! Button
@@ -153,8 +155,14 @@
 		
 		<script type="text/javascript">
 			//Random, I'm just lookin' around the place.
-			alert("Disclaimer, I am not a decent programmer.");
-			var Name = prompt("What is your name?");
+			// 15 of August, 2022: Improved Name system
+			if (window.localStorage.getItem("Name") == null) {
+				alert("Disclaimer, I am not a decent programmer.");
+				var Name = prompt("What is your name?");
+				window.localStorage.setItem("Name", Name);
+			} else {
+				var Name = window.localStorage.getItem("Name");
+			}
 			
 			var Greetings = document.getElementById("Greetings");
 			Greetings.innerHTML = "Hallo " + Name + "!";
@@ -165,6 +173,11 @@
 			var Greetings = document.getElementsByClassName("Charles");
 			Greetings[0].innerHTML = "Psst, didn't you know that " + Name + " pooped my his pants?"
 			Greetings[1].innerHTML = "Because you shouldn't be friends with " + Name + ". Smelly"
+
+			document.getElementById("NameReset").addEventListener("click", function (e) {
+				window.localStorage.setItem("Name", prompt("What do you want to change your name into?"));
+				alert("Reload the site to expirience changes");
+			});
 		</script>
 		
 

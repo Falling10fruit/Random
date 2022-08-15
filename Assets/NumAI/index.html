@@ -149,7 +149,7 @@
                         AIGuess[1] = i;
                     }
 
-                    console.log(i +": " + Math.round(Brain[Brain.length - 1][i].Storage));
+                    console.log(i + ": " + Math.round(Brain[Brain.length - 1][i].Storage));
                 }
 
                 var AIGuessTxt = document.getElementById("AIGuess");
@@ -167,6 +167,8 @@
                         Scene[i][x] = 0;
                     }
                 }
+
+                document.getElementById("AIGuess").innerText = "Waiting for input...";
             }
 
             for (let i = 0; i < Boxes.length; i++) {
