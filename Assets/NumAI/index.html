@@ -142,18 +142,22 @@
                 }
 
                 // Reading Brain output
-                var AIGuess = [0][0];
+                var AIGuess = [0, 0];
 
                 for (var i = 0; i < Brain[Brain.length - 1].length; i++) {
                     if (Math.round(Brain[Brain.length - 1][i].Storage) > AIGuess[0]) {
+                        AIGuess[0] = Math.round(Brain[Brain.length - 1][i].Storage)
                         AIGuess[1] = i;
                     }
 
                     console.log(i + ": " + Math.round(Brain[Brain.length - 1][i].Storage));
                 }
 
+                console.log(AIGuess[1]);
                 var AIGuessTxt = document.getElementById("AIGuess");
+                console.log(AIGuessTxt);
                 AIGuessTxt.innerText = "The AI guesses: " + AIGuess[1];
+                console.log(AIGuess[1]);
             }
 
             //Clear drawing
@@ -183,7 +187,6 @@
             // SAVE AI brain
             document.getElementById("Save").addEventListener("click", function (e) {
                 window.localStorage.setItem("SAVEBrain", Brain);
-                AnimProgress = 100;
             });
         </script>
     </body>
