@@ -93,19 +93,32 @@
             if (window.localStorage.getItem("SAVEBrain") == null) {
                 var Brain = [];
 
-                for (var i = 0; i < 2; i++) { // One hidden layer and one output
+                for (var i = 0; i < 6; i++) { // Two hidden layer and one output
                     Brain.push([]);
-                    for (var x = 0; x < 10; x++) { // 10 Neurons
-                        Brain[i].push({
-                            Weighs: [],
-                            Storage: 0
-                        });
+                    if (i < 5) {
+                        for (var x = 0; x < 100; x++) { // 100 Neurons
+                            Brain[i].push({
+                                Weighs: [],
+                                Storage: 0
+                            });
 
-                        if (i < 1) {
-                            for (var y = 0; y < Boxes.length; y++) { // Connections
-                                Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
+                            if (i < 1) {
+                                for (var y = 0; y < Boxes.length; y++) { // Connections for first layer
+                                    Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
+                                }
+                            } else {
+                                for (var y = 0; y < Brain[i - 1].length; y++) { // Connections
+                                    Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
+                                }
                             }
-                        } else {
+                        }
+                    } else {
+                        for (var x = 0; x < 10; x++) { // 10 output Neurons
+                            Brain[i].push({
+                                Weighs: [],
+                                Storage: 0
+                            });
+                            
                             for (var y = 0; y < Brain[i - 1].length; y++) { // Connections
                                 Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
                             }
