@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+		<link rel="shortcut icon" type="image/x-icon" href="Assets/Random.png">
+        <title>Unkown webpage</title>
+
+        <style>
+            body {
+                margin: 0px;
+                font-family: sans-serif;
+                background-color: rgb(200, 200, 200);
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #Home {
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 style="font-size: 100px; margin: 0px"><strong>What</strong></h1>
+
+        <p>I don't know what happened, the url doesn't exist...</p>
+
+        <button type="button" id="Home">Click me to go home</button>
+
+        <script>
+            document.body.style.height = window.innerHeight + "px";
+
+            var Button = document.getElementById("Home");
+
+            Button.style.borderRadius = Button.getBoundingClientRect().height + "px";
+
+            Button.addEventListener("mouseenter", function (e) {
+                Button.style.backgroundColor = "rgb(200, 200, 200)";
+            });
+
+            Button.addEventListener("mouseleave", function (e) {
+                Button.style.backgroundColor = "rgb(255, 255, 255)";
+            });
+
+            Button.addEventListener("click", function (e) {
+                window.location = "https://falling10fruit.github.io/Random";
+            });
+        </script>
+    </body>
+</html>
