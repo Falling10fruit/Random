@@ -118,7 +118,7 @@
                                 Weighs: [],
                                 Storage: 0
                             });
-                            
+
                             for (var y = 0; y < Brain[i - 1].length; y++) { // Connections
                                 Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
                             }
@@ -126,6 +126,22 @@
                     }
                 }
             } else {var Brain = window.localStorage.getItem("SAVEBrain");}
+
+            // Training
+            var Brains = [];
+            for (var i = 0; i < 20; i++) { // Generate 20 brains
+                Brains.push(Brain);
+
+                for (var x = 0; x < Brains[i].length; x++) { // Layers
+                    for (var y = 0; y < Brains[i][x].length; y++) { // Neurons
+                        for (var z = 0; z < Brains[i][x][y].Weighs.length; z++) { // Weighs
+                            if (Math.floor(Math.random * 100) == 0) {
+                                Brains[i][x][y].Weighs[z] += Math.random * 3;
+                            }
+                        }
+                    }
+                }
+            }
 
             // AI Brain in action
             var Draw = function (Box) {
