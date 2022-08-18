@@ -93,7 +93,7 @@
             if (window.localStorage.getItem("SAVEBrain") == null) {
                 var Brain = [];
 
-                for (var i = 0; i < 6; i++) { // FIve hidden layers and one output layer
+                for (var i = 0; i < 3; i++) { // Two hidden layers and one output layer
                     Brain.push([]);
                     if (i < 5) {
                         for (var x = 0; x < 100; x++) { // 100 Neurons
@@ -163,12 +163,11 @@
                         for (let y = 0; y < Brains[i][x].length; y++) { // Neurons
                             if (x < 1) {
                                 for (let z = 0; z < Boxes.length; z++) { // Weighs for first layer
-                                    Brains[i][x][y].Storage += Brains[i][x][y].Weighs[z] * Scene[Math.floor(y/20)][y%20];
-                                    console.log(Brains[i][x][y].Storage); 
+                                    Brains[i][x][y].Storage += Brains[i][x][y].Weighs[z] * Scene[Math.floor(z/20)][z%20];
                                 }
                             } else {
                                 for (let z = 0; z < Brains[i][x - 1].length; z++) { // Weighs
-                                    Brains[i][x][y].Storage += Brains[i][x][y].Weighs[z] * Brains[x - 1][x][y].Storage;
+                                    Brains[i][x][y].Storage += Brains[i][x][y].Weighs[z] * Brains[i][x - 1][y].Storage;
                                 }
                             }
                         }
