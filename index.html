@@ -89,7 +89,7 @@
 
 		<div id="Main">
 		<h1 id="Greetings">Hallo</h1>
-		<p style="margin-bottom: 0%;">I am an undersized-human sized human, <abbr title="Why did I write this, what was I thinking"><strike>eat choogies. The Dex gang will never forget. Fear us, you will be scared.</strike></abbr> Also, do you know? That copper is anti corrision? That's boring 
+		<p style="margin-bottom: 0%;">I am an undersized-human sized human, <abbr title="Why did I write this, what was I thinking"><del>eat choogies. The Dex gang will never forget. Fear us, you will be scared.</del></abbr> Also, do you know? That copper is anti corrision? That's boring 
 			<br>
 			<br> What I am working on right now: <em>Updating the header at the COVID 19 article and officially choosing Random instead of Yoshemany (<strong>Updated at 10 of January, 2021 | 3:05 PM</strong>)</em>
 			<br>
@@ -139,6 +139,21 @@
 
 		<button type="button" id="NameReset">Would you like to change your name?</button>
 		
+		<p>I don't know why the buttons above are horizontally beside each other, pretty cool though. I'm going to test something. Also YouTube!</p>
+
+		<iframe src="youtube.com" id="YouTube"></iframe>
+
+		<p>That somehow didn't work, hmmm. Anyways another test: </p>
+
+		<details>
+			<summary>The video test is a large element</summary>
+			<br>
+			<video id="TestVideo" controls>
+				<source src="Assets/Test.mp4" type="video/mp4">
+				Your browser does not support mp4 files, that's very weird, I thought every browser supports this globally known and used file
+			</video>
+		</details>
+		
 		<script>
 			/*Cool! Button
 			var cliked = function () {
@@ -182,6 +197,12 @@
 				window.localStorage.setItem("Name", prompt("What do you want to change your name into?"));
 				alert("Reload the site to expirience changes");
 			});
+
+			getElementById("YouTube").setAttribute("width", window.innerWidth/2 + "px");
+
+			getElementById("YouTube").setAttribute("height", window.innerWidth/2 + "px");
+
+			getElementById("YouTube").setAttribute("width", window.innerWidth/3 + "px");
 		</script>
 		
 
