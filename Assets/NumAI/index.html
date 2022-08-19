@@ -192,6 +192,14 @@
                 AIGuessTxt.innerText = "The AI guesses: " + AIGuess[1];
             }
 
+            var AICorrcect = function () {
+
+            }
+
+            var AIWrong = function () {
+                
+            }
+
             //Clear drawing
             var Clear = function () {
                 for (var i = 0; i < Boxes.length; i++) {
@@ -213,6 +221,10 @@
                     Draw(i);
                 });
             }
+
+            document.getElementById("Correct").addEventListener("click", AICorrect);
+
+            document.getElementById("Wrong").addEventListener("click", AIWrong);
 
             document.getElementById("Reset").addEventListener("click", Clear);
 

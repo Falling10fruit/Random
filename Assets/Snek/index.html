@@ -200,14 +200,16 @@
                 
                 var Play = setInterval(function () {
                     window.addEventListener("keypress", function (e) { // Change direction
-                        if (e.key == "w") {
-                            Direction = "w";
-                        } else if (e.key == "a") {
-                            Direction = "a";
-                        } else if (e.key == "s") {
-                            Direction = "s";
-                        } else if (e.key == "d") {
-                            Direction = "d";
+                        if (!(e.key == "w" && Direction == "s" || e.key == "a" && Direction == "d" || e.key == "s" && Direction == "w" || e.key == "d" && Direction == "a")) {
+                            if (e.key == "w") {
+                                Direction = "w";
+                            } else if (e.key == "a") {
+                                Direction = "a";
+                            } else if (e.key == "s") {
+                                Direction = "s";
+                            } else if (e.key == "d") {
+                                Direction = "d";
+                            }
                         }
                     });
 
