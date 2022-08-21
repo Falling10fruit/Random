@@ -192,12 +192,88 @@
                 AIGuessTxt.innerText = "The AI guesses: " + AIGuess[1];
             }
 
-            var AICorrcect = function () {
+            var AICorrect = function () {
+                // Find AI's Answer
+                var AIGuess = [0, 0];
+                
+                for (var i = 0; i < Brains[0][Brains[0].length - 1].length; i++) { // First brain's output layer's neurons
+                    if (Math.round(Brains[0][Brains[0].length - 1][i].Storage) > AIGuess[0]) {
+                        AIGuess[0] = Math.round(Brains[0][Brains[0].length - 1][i].Storage);
+                        AIGuess[1] = i;
+                    }
+                }
 
+                //Find all other Brain's answers
+                var BrainGuess = [0, 0];
+
+                for (var i = 0; i < Brains.length; i++) { // Check every Brain
+                    for (var x = 0; x < Brain[i][Brain[i].length - 1].length; x++) { // Check Brain's output layer's neurons 
+                        if (Math.round(Brains[i][Brains[i].length - 1][x].Storage) > AIGuess[0]) {
+                            BrainGuess[0] = Math.round(Brains[i][Brains[i].length - 1].Storage);
+                            BrainGuess[1] = x;
+                        }
+                    }
+
+                    if (BrainGuess[1] != AIGuess) { // Kill brain if brain wrong
+                        Brains.splice(i, 1);
+                    }
+                }
+
+                //Regenerate Brains
+                for (var i = 0; Brains.length < 20; i++) {
+                    Brains.push(Brains[20 - 20%i]);
+
+                    for (var x = 0; x < Brains[Brains.length - 1].length; x++) { // Layers of newly created brain
+                        for (var y = 0; y < Brains[Brains.length - 1][x].length; y++) { // Neurons
+                            for (var z = 0; z < Brains[Brains.length - 1][x][y].length; z++) { // Weighs
+                                Brains[Brains.length - 1][x][y].Weighs[z] += Math.random * (Math.floor(Math.random*3 - 1));
+                            }
+                        }
+                    }
+                }
             }
 
             var AIWrong = function () {
+                // Find first Brain's 
+                var AIGuess = [0, 0];
                 
+                for (var i = 0; i < Brains[0][Brains[0].length - 1].length; i++) { // First brain's output layer's neurons
+                    if (Math.round(Brains[0][Brains[0].length - 1][i].Storage) > AIGuess[0]) {
+                        AIGuess[0] = Math.round(Brains[0][Brains[0].length - 1][i].Storage);
+                        AIGuess[1] = i;
+                    }
+                }
+
+                Brains.splice(0, 1); // Kill first Brain 'cause wrong
+
+                // Find other Brain's anwers
+                var BrainGuess = [0, 0];
+
+                for (var i = 0; i < Brains.length; i++) { // Brains
+                    for  (var x = 0; x < Brains[i][Brains[i].length - 1].length; x++) { // Neurons at output layer
+                        if (Math.round(Brains[i][Brains[i].length - 1][x].Storage) > BrainGuess[0]) {
+                            BrainGuess[0] = Math.round(Brains[i][Brains[i].length - 1][x].Storage);
+                            BrainGuess[1] = x;
+                        }         
+                    }
+
+                    if (AIGuess[1] == BrainGuess[1]) { // Kill if wrong
+                        Brains.splice(i, 1);
+                    }
+                }
+
+                //Regenerate Brains
+                for (var i = 0; Brains.length < 20; i++) {
+                    Brains.push(Brains[20 - 20%i]);
+
+                    for (var x = 0; x < Brains[Brains.length - 1]; x++) {
+                        for (var y = 0; y < Brains[Brains.length - 1][x]; y++) {
+                            for (var z = 0; z < Brains[Brains.length - 1][x][y].Weighs.length; z++) {
+                                Brains[Brains.length.length - 1][x][y].Weighs[z] += Math.random * (Math.floor(Math.random*3 - 1));
+                            }
+                        }
+                    }
+                }
             }
 
             //Clear drawing
