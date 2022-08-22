@@ -59,6 +59,7 @@
             document.body.style.margin = window.innerHeight*0.05 + "px";
             document.body.style.height = window.innerHeight*0.90 + "px";
 
+
             // Create Boxes
             for (var i = 0; i < 20; i++) {
                 var tr = document.createElement("tr");
@@ -92,6 +93,22 @@
                     Scene[i].push(0);
                 }
             }
+
+            // Setting auto train data for me to later edit
+            if (window.localStorage.getItem("TrainedData") == null) {
+                window.localStorage.setItem("TrainedData", []);
+                var TrainedData = window.localStorage.getItem("TrainedData");
+            } else {
+                var TrainedData = window.localStorage.getItem("TrainedData");
+            }
+
+
+            window.addEvenetListener("keypress", function (e) {
+                if (e.key == "s") {
+                    TrainedData.push(Scene);
+                    window.localStorage.setItem("TrainedData")
+                }
+            });
 
             // Create AI brain
             if (window.localStorage.getItem("SAVEBrain") == null) {
@@ -147,7 +164,7 @@
                 }
             }
 
-            // AI Brain in action
+            // AI Brains in action
             var Draw = function (Box) {
                 Scene[Math.floor(Box/20)][Box%20] = 1;
                 Boxes[Box].style.backgroundColor = "rgb(0, 0, 0)";
@@ -308,10 +325,19 @@
 
             document.getElementById("Reset").addEventListener("click", Clear);
 
-            // SAVE AI brain
             document.getElementById("Save").addEventListener("click", function (e) {
                 window.localStorage.setItem("SAVEBrain", Brain);
             });
+
+            document.getElementById("Restart").addEventListener("click", function (e) {
+                window.localStorage.removeItem("SAVEBrain");
+            });
+
+            /*document.getElementById("Train").addEventListener("click", function (e) {
+                for (var i = 0; i < TrainedData.length; i++) {
+                    Scene = TrainedData[i];
+                }
+            }); I forgot that there is no answer key to this*/
         </script>
     </body>
 </html>
