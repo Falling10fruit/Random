@@ -22,11 +22,11 @@
                 border: 2px solid black;
             }
 
-            #Div {
+            .Control {
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
                 align-items: center;
+                justify-content: space-between;
             }
         </style>
     </head>
@@ -42,13 +42,17 @@
             </tbody>
         </table>
 
-        <div id="Control">
+        <div class="Control">
             <button type="button" id="Correct">AI correct</button>
             <button type="button" id="Wrong">AI stupid</button>
             <button type="button" id="Reset">Begone ugly drawing</button>
         </div>
 
-        <button type="button" id="Save">SAVE AI brain</button>
+        <div class="Control">
+            <button type="button" id="Save">SAVE AI brain</button>
+            <button type="button" id="Restart">Restart SAVE</button>
+            <button type="button" id="Train">Auto train</button>
+        </div>
 
         <script>
             // Setting up body width and margin
