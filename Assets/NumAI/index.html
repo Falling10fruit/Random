@@ -26,6 +26,17 @@
                 display: flex;
                 justify-content: space-around;
             }
+
+            #Expand {
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                cursor: pointer;
+            }
+
+            p {
+                line-height: 1.5;
+            }
         </style>
     </head>
     <body>
@@ -55,7 +66,7 @@
         <div id="Explain">
             <h1 id="Expand">How does it train?</h1>
 
-            <div id="Explaination">
+            <div id="Explanation">
                 <p>So basically, I copy the main AI brain and made 20 of them that are slightly different. And then when you tell whether the AI is right or wrong, you are actually judging the first of the 20 brain's work.
                 <br>
                 <br>If correct, it will <del>kill</del> delete those that are not the same with the first Brain's answer because they are all retarded <del>like me</del>.
@@ -64,7 +75,11 @@
                 <br>
                 <br>After <i>le brains</i> are <del>murdered</del> <strong>peacefully</strong> dispatched, the first surviving brain will be saved as the main AI and the brains will be regenerated from the surviving brains to fill up the 20 brains as before.
                 <br>
-                <br>This means that the <strong>SAVED</strong> AI Brain <i>ironically</i> does nothing, instead, it's job is to exist as the foundation of the first generation and become the model of the next generations when the AI Brain gets <strong>SAVED</strong>. I <i>could</i> and probably <u>should</u> optimize this because each brain has like 210 neurons and over dozens of thousands of connections and deleting this <i>useless idling</i> brain <strong>would</strong> index fingers but it also means that I can't have a fitness level, there is no <i>"You ran faster than average"</i> or <i>"My cat can program a better algorithm"</i>. There is only <span style="color: greenyellow">YES</span> or <span style="color: red">NO</span>, plus you can't automatically know Brain is doing well. There used to be other problems like having a limited imagination but it seems a little off after knowing the bad solution.</p>
+                <br>This means that the <strong>SAVED</strong> AI Brain <i>ironically</i> does nothing, instead, it's job is to exist as the foundation of the first generation and become the model of the next generations when the AI Brain gets <strong>SAVED</strong>. I <i>could</i> and probably <u>should</u> optimize this because each brain has like 210 neurons and over dozens of thousands of connections and deleting this <i>useless idling</i> brain <strong>would</strong> help a lot with memory space</p>
+
+                <h3>Why talk about training rather than the inner workings of the AI?</h3>
+                
+                <p>If you really want to but it also means that I can't have a fitness level, there is no <i>"You ran faster than average"</i> or <i>"My cat can program a better algorithm"</i>. There is only <span style="color: greenyellow">YES</span> or <span style="color: red">NO</span>, plus you can't automatically know Brain is doing well. There used to be other problems like having a limited imagination but it seems a little off after knowing the bad solution.</p>
             </div>
         </div>
 
@@ -355,27 +370,54 @@
 
             // Esplanation stuff
             var Explain = document.getElementById("Explain");
-            Explain.style.overflow = "auto";
             Explain.style.position = "fixed";
             Explain.style.width = window.innerWidth/4 + "px";
-            Explain.style.height = window.innerHeight/4*3 + "px";
             Explain.style.left = (document.getElementById("Drawing").getBoundingClientRect().left - Explain.getBoundingClientRect().width)/2 + "px";
 
+            var Explanation = document.getElementById("Explanation");
+            Explanation.style.height = "0px";
+            Explanation.style.overflow = "auto";
+
             var Expanding = function () {
-                if (parseFloat(Explain.style.height) < window.innerWidth/4) {
+                Explanation.style.height = parseFloat(Explanation.style.height) + (window.innerHeight/4*3 - parseFloat(Explanation.style.height))/10 + 25 + "px";
+
+                if (parseFloat(Explanation.style.height) < window.innerHeight/4*3) {
                     window.requestAnimationFrame(Expanding);
-                } else {Explain.style.height = window.innerWidth/4*3 + "px";}
+                } else {
+                    Explanation.style.height = window.innerHeight/4*3 + "px";
+                }
             }
 
             var Collapsing = function () {
+                Explanation.style.height = parseFloat(Explanation.style.height) + (0 - parseFloat(Explanation.style.height))/10 + "px";
 
+                if (parseFloat(Explanation.style.height) > 1) {
+                    window.requestAnimationFrame(Collapsing);
+                } else {
+                    Explanation.style.height = "0px";
+                }
             }
 
             var Expand = document.getElementById("Expand");
             Expand.addEventListener("click", function (e) {
-                if (Explain.style.height == window.innerWidth/4 + "px") {
-                    Collapsing
-                } else {Expanding();}
+                if (Explanation.style.height == window.innerHeight/4*3 + "px") {
+                    Collapsing();
+                } else {
+                    Expanding();
+                }
+            });
+
+            Expand.addEventListener("mouseenter", function (e) {
+                Expand.style.color = "rgb(125, 125, 125)";
+            });
+
+            
+            Expand.addEventListener("mouseleave", function (e) {
+                Expand.style.color = "rgb(0, 0, 0)";
+            });
+
+            Expand.addEventListener("mousedown", function (e) {
+                Expand.style.color = "rgb(75, 75, 75)";
             });
         </script>
     </body>
