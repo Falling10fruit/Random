@@ -24,14 +24,12 @@
 
             .Control {
                 display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
+                justify-content: space-around;
             }
         </style>
     </head>
     <body>
-        <h1 style="margin: 0px">I make AI</h1>
+        <h1 style="margin: 0px; font-size: 50px;">I make AI</h1>
 
         <p style="text-align: center; margin: 0px">Go draw numbers from 0 to 9</p>
 
@@ -52,6 +50,22 @@
             <button type="button" id="Save">SAVE AI brain</button>
             <button type="button" id="Restart">Restart SAVE</button>
             <button type="button" id="Train">Auto train</button>
+        </div>
+
+        <div id="Explain">
+            <h1 id="Expand">How does it train?</h1>
+
+            <div id="Explaination">
+                <p>So basically, I copy the main AI brain and made 20 of them that are slightly different. And then when you tell whether the AI is right or wrong, you are actually judging the first of the 20 brain's work.
+                <br>
+                <br>If correct, it will <del>kill</del> delete those that are not the same with the first Brain's answer because they are all retarded <del>like me</del>.
+                <br>
+                <br>If wrong, then any Brain with the same answer will <del>die</del> be deleted. Obviously, there is a flaw in this bit beause other brains might also get it wrong, but I on't have enough UI space to put in the <i>"So what's the answer"</i> question, plus, I'd be really lazy as the user to always press <strong>one</strong> key.
+                <br>
+                <br>After <i>le brains</i> are <del>murdered</del> <strong>peacefully</strong> dispatched, the first surviving brain will be saved as the main AI and the brains will be regenerated from the surviving brains to fill up the 20 brains as before.
+                <br>
+                <br>This means that the <strong>SAVED</strong> AI Brain <i>ironically</i> does nothing, instead, it's job is to exist as the foundation of the first generation and become the model of the next generations when the AI Brain gets <strong>SAVED</strong>. I <i>could</i> and probably <u>should</u> optimize this because each brain has like 210 neurons and over dozens of thousands of connections and deleting this <i>useless idling</i> brain <strong>would</strong> index fingers but it also means that I can't have a fitness level, there is no <i>"You ran faster than average"</i> or <i>"My cat can program a better algorithm"</i>. There is only <span style="color: greenyellow">YES</span> or <span style="color: red">NO</span>, plus you can't automatically know Brain is doing well. There used to be other problems like having a limited imagination but it seems a little off after knowing the bad solution.</p>
+            </div>
         </div>
 
         <script>
@@ -103,7 +117,7 @@
             }
 
 
-            window.addEvenetListener("keypress", function (e) {
+            window.addEventListener("keypress", function (e) {
                 if (e.key == "s") {
                     TrainedData.push(Scene);
                     window.localStorage.setItem("TrainedData")
@@ -338,6 +352,31 @@
                     Scene = TrainedData[i];
                 }
             }); I forgot that there is no answer key to this*/
+
+            // Esplanation stuff
+            var Explain = document.getElementById("Explain");
+            Explain.style.overflow = "auto";
+            Explain.style.position = "fixed";
+            Explain.style.width = window.innerWidth/4 + "px";
+            Explain.style.height = window.innerHeight/4*3 + "px";
+            Explain.style.left = (document.getElementById("Drawing").getBoundingClientRect().left - Explain.getBoundingClientRect().width)/2 + "px";
+
+            var Expanding = function () {
+                if (parseFloat(Explain.style.height) < window.innerWidth/4) {
+                    window.requestAnimationFrame(Expanding);
+                } else {Explain.style.height = window.innerWidth/4*3 + "px";}
+            }
+
+            var Collapsing = function () {
+
+            }
+
+            var Expand = document.getElementById("Expand");
+            Expand.addEventListener("click", function (e) {
+                if (Explain.style.height == window.innerWidth/4 + "px") {
+                    Collapsing
+                } else {Expanding();}
+            });
         </script>
     </body>
 </html>
