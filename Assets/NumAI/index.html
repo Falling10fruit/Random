@@ -402,7 +402,7 @@
             Expand.addEventListener("click", function (e) {
                 if (Explanation.style.height == window.innerHeight/4*3 + "px") {
                     Collapsing();
-                } else {
+                } else if (Explanation.style.height == "0px") {
                     Expanding();
                 }
             });
