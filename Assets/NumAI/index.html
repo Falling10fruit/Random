@@ -229,18 +229,13 @@
 
                 // Reading First brain output
                 var AIGuess = [0, 0];
-
                 
                 for (var i = 0; i < Brains[0][Brains[0].length - 1].length; i++) { // First brain's output layer's neurons
                     if (Math.round(Brains[0][Brains[0].length - 1][i].Storage) > AIGuess[0]) {
                         AIGuess[0] = Math.round(Brains[0][Brains[0].length - 1][i].Storage);
-                        AIGuess[1] = x;
+                        AIGuess[1] = i;
                     }
-
-                    console.log(i + ": " + Math.round(Brain[Brain.length - 1][i].Storage));
-                    console.log(AIGuess);
                 }
-
 
                 var AIGuessTxt = document.getElementById("AIGuess");
                 AIGuessTxt.innerText = "The AI guesses: " + AIGuess[1];
@@ -261,7 +256,7 @@
                 var BrainGuess = [0, 0];
 
                 for (var i = 0; i < Brains.length; i++) { // Check every Brain
-                    for (var x = 0; x < Brain[i][Brain[i].length - 1].length; x++) { // Check Brain's output layer's neurons 
+                    for (var x = 0; x < Brains[i][Brains[i].length - 1].length; x++) { // Check Brain's output layer's neurons 
                         if (Math.round(Brains[i][Brains[i].length - 1][x].Storage) > AIGuess[0]) {
                             BrainGuess[0] = Math.round(Brains[i][Brains[i].length - 1].Storage);
                             BrainGuess[1] = x;
