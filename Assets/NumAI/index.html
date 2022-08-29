@@ -156,11 +156,11 @@
 
                             if (i < 1) {
                                 for (var y = 0; y < Boxes.length; y++) { // Connections for first layer
-                                    Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
+                                    Brain[i][x].Weighs.push(3 * Math.random() * (Math.floor(Math.random() * 3) - 1));
                                 }
                             } else {
                                 for (var y = 0; y < Brain[i - 1].length; y++) { // Connections
-                                    Brain[i][x].Weighs.push(Math.random() * (Math.floor(Math.random() * 3) - 1) + Math.random() * (Math.floor(Math.random() * 3) - 1));
+                                    Brain[i][x].Weighs.push(3 * Math.random() * (Math.floor(Math.random() * 3) - 1));
                                 }
                             }
                         }
@@ -297,6 +297,7 @@
 
                 // Find other Brain's anwers
                 var BrainGuess = [0, 0];
+                var WrongBrains = [];
 
                 for (var i = 0; i < Brains.length; i++) { // Brains
                     for  (var x = 0; x < Brains[i][Brains[i].length - 1].length; x++) { // Neurons at output layer
@@ -306,9 +307,16 @@
                         }         
                     }
 
-                    if (AIGuess[1] == BrainGuess[1]) { // Kill if wrong
-                        Brains.splice(i, 1);
+                    if (AIGuess[1] == BrainGuess[1]) { // List targets
+                        WrongBrains.push(i);
+
+                        console.log("Brain no. " + i + " is wrong. It's answer: " + BrainGuess[1]);
                     }
+                }
+
+                for (var i = WrongBrains.length; i > -1; i--) { // Eliminate targets
+                    console.log(i);
+                    Brains.splice(i, 1);
                 }
 
                 //Regenerate Brains
