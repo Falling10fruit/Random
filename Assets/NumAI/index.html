@@ -25,6 +25,7 @@
             .Control {
                 display: flex;
                 justify-content: space-around;
+                align-items: initial;
             }
 
             #Expand {
@@ -254,6 +255,7 @@
 
                 //Find all other Brain's answers
                 var BrainGuess = [0, 0];
+                var WrongBrains = [];
 
                 for (var i = 0; i < Brains.length; i++) { // Check every Brain
                     for (var x = 0; x < Brains[i][Brains[i].length - 1].length; x++) { // Check Brain's output layer's neurons 
@@ -263,9 +265,16 @@
                         }
                     }
 
-                    if (BrainGuess[1] != AIGuess) { // Kill brain if brain wrong
-                        Brains.splice(i, 1);
+                    if (BrainGuess[1] != AIGuess) { // Blacklist brain if brain's answer is not same
+                        WrongBrains.push(i);
+
+                        console.log("Brain no. " + i + " is wrong. It's answer: " + BrainGuess[1]);
                     }
+                }
+
+                for (var i = WrongBrains.length; i > -1; i--) { // Kill idiots
+                    console.log(i);
+                    Brains.splice(i, 1);
                 }
 
                 //Regenerate Brains
