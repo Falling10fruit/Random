@@ -333,13 +333,17 @@
                 }
 
                 //Regenerate Brains
-                for (var i = 0; Brains.length < 20; i++) {
-                    Brains.push(Brains[20 - 20%i]);
+                if (Brains.length > 0) {
+                    Brain = Brains[1];
+                }
 
-                    for (var x = 0; x < Brains[Brains.length - 1]; x++) {
-                        for (var y = 0; y < Brains[Brains.length - 1][x]; y++) {
-                            for (var z = 0; z < Brains[Brains.length - 1][x][y].Weighs.length; z++) {
-                                Brains[Brains.length.length - 1][x][y].Weighs[z] += Math.random * (Math.floor(Math.random*3 - 1));
+                while (Brains.length < 20) {
+                    Brains.push(Brain);
+
+                    for (let i = 0; i < Brains[Brains.length - 1].length; i++) { // Layers of newly created brain
+                        for (let x = 0; x < Brains[Brains.length - 1][i].length; ) { // Neurons
+                            for (let y = 0; y < Brains[Brains.length - 1][i][x].Weighs.length; y++) { // Weighs
+                                Brains[Brains.length - 1][i][x].Weighs[y] += (Math.floor(Math.random() * 4) - 2) * Math.random() * 3
                             }
                         }
                     }
