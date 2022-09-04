@@ -201,6 +201,13 @@
                 Scene[Math.floor(Box/20)][Box%20] = 1;
                 Boxes[Box].style.backgroundColor = "rgb(0, 0, 0)";
 
+                var AIGuess = AIRun();
+                
+                var AIGuessTxt = document.getElementById("AIGuess");
+                AIGuessTxt.innerText = "The AI guesses: " + AIGuess;
+            }
+
+            var AIRun = function () {
                 // Resseting the brains
                 for (let i = 0; i < Brains.length; i++) { // Brains
                     for (let x = 0; x < Brains[i].length; x++) { // Layers
@@ -237,21 +244,12 @@
                         AIGuess[1] = i;
                     }
                 }
-
-                var AIGuessTxt = document.getElementById("AIGuess");
-                AIGuessTxt.innerText = "The AI guesses: " + AIGuess[1];
+                
+                return AIGuess[1];
             }
 
             var AICorrect = function () {
-                // Find AI's Answer
-                var AIGuess = [0, 0];
-                
-                for (var i = 0; i < Brains[0][Brains[0].length - 1].length; i++) { // First brain's output layer's neurons
-                    if (Math.round(Brains[0][Brains[0].length - 1][i].Storage) > AIGuess[0]) {
-                        AIGuess[0] = Math.round(Brains[0][Brains[0].length - 1][i].Storage);
-                        AIGuess[1] = i;
-                    }
-                }
+                var AIGuess = AIRun();
 
                 //Find all other Brain's answers
                 var BrainGuess = [0, 0];
@@ -296,15 +294,7 @@
             }
 
             var AIWrong = function () {
-                // Find first Brain's 
-                var AIGuess = [0, 0];
-                
-                for (var i = 0; i < Brains[0][Brains[0].length - 1].length; i++) { // First brain's output layer's neurons
-                    if (Math.round(Brains[0][Brains[0].length - 1][i].Storage) > AIGuess[0]) {
-                        AIGuess[0] = Math.round(Brains[0][Brains[0].length - 1][i].Storage);
-                        AIGuess[1] = i;
-                    }
-                }
+                var AIGuess = AIRun();
 
                 Brains.splice(0, 1); // Kill first Brain 'cause wrong
 
@@ -391,6 +381,14 @@
                     Scene = TrainedData[i];
                 }
             }); I forgot that there is no answer key to this*/
+
+            document.getElementById("Train").addEventListener("click", function (e) {
+                 for (var i = 0; i < TrainedData.length; i++) {
+                    Scene = TrainedData[i][0];
+
+
+                 } 
+            })
 
             // Esplanation stuff
             var Explain = document.getElementById("Explain");
