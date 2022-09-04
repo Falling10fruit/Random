@@ -386,7 +386,13 @@
                  for (var i = 0; i < TrainedData.length; i++) {
                     Scene = TrainedData[i][0];
 
+                    AIGuess = AIRun();
 
+                    if (AIGuess == TrainedData[i][1]) {
+                        AICorrect();
+                    } else {
+                        AIWrong();
+                    }
                  } 
             })
 
