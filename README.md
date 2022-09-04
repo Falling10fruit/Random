@@ -45,3 +45,5 @@ I'm a human-sized elephant.
  - "Oh okay, tell us if you're interest-" *Call has been closed*.
 
 Well that was unhelpful.
+
+Hi, I am officially a few years older than I was when I wrote all this cringe-worthy material, so just to make sure in case you don't want to talk to me anymore. I don't find any of this stuff funny anymore.
