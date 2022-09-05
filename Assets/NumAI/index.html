@@ -137,8 +137,8 @@
 
             window.addEventListener("keypress", function (e) {
                 if (e.key == "s") {
-                    TrainedData.push(Scene);
-                    window.localStorage.setItem("TrainedData")
+                    TrainedData.push([Scene, prompt("What's the answer?")]);
+                    window.localStorage.setItem("TrainedData", TrainedData);
                 }
             });
 
@@ -392,6 +392,8 @@
                         AICorrect();
                     } else {
                         AIWrong();
+
+                        Clear();
                     }
                  } 
             })
