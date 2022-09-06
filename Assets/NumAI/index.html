@@ -128,7 +128,7 @@
 
             // Setting auto train data for me to later edit
             if (window.localStorage.getItem("TrainedData") == null) {
-                window.localStorage.setItem("TrainedData", []);
+                window.localStorage.setItem("TrainedData", [[[Scene], 0]]);
                 var TrainedData = window.localStorage.getItem("TrainedData");
             } else {
                 var TrainedData = window.localStorage.getItem("TrainedData");
