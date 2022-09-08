@@ -87,7 +87,7 @@
         </div>
 
         <div id="Disclaimer">
-            <h1 id="Bringer"></h1>
+            <h1 id="Bringer">Disclaimer</h1>
 
             <div id="Context">
                 <h2>Sadly this project is closed</h2>
@@ -109,6 +109,8 @@
                                 <li>Playing around the canvas tag and the JavaScript functions</li>
 
                                 <li>Learn react.js because yes</li>
+
+                                <li>Try to remake the match game (Although I am trying to be more independent from p5.js)</li>
                             </ul>
                         </li>
                     </ul>
@@ -428,6 +430,27 @@
                  } 
             })
 
+            // Functions for sidebars
+            var Expanding = function (Element) {
+                Element.style.height = parseFloat(Element.style.height) + (window.innerHeight/4*3 - parseFloat(Element.style.height))/10 + 25 + "px";
+
+                if (parseFloat(Element.style.height) < window.innerHeight/4*3) {
+                    window.requestAnimationFrame(Expanding(Element));
+                } else {
+                    Element.style.height = window.innerHeight/4*3 + "px";
+                }
+            }
+
+            var Collapsing = function (Element) {
+                Element.style.height = parseFloat(Element.style.height) + (0 - parseFloat(Element.style.height))/10 + "px";
+
+                if (parseFloat(Element.style.height) > 1) {
+                    window.requestAnimationFrame(Collapsing(Element));
+                } else {
+                    Element.style.height = "0px";
+                }
+            }
+
             // Esplanation stuff
             var Explain = document.getElementById("Explain");
             Explain.style.position = "fixed";
@@ -438,32 +461,12 @@
             Explanation.style.height = "0px";
             Explanation.style.overflow = "auto";
 
-            var Expanding = function () {
-                Explanation.style.height = parseFloat(Explanation.style.height) + (window.innerHeight/4*3 - parseFloat(Explanation.style.height))/10 + 25 + "px";
-
-                if (parseFloat(Explanation.style.height) < window.innerHeight/4*3) {
-                    window.requestAnimationFrame(Expanding);
-                } else {
-                    Explanation.style.height = window.innerHeight/4*3 + "px";
-                }
-            }
-
-            var Collapsing = function () {
-                Explanation.style.height = parseFloat(Explanation.style.height) + (0 - parseFloat(Explanation.style.height))/10 + "px";
-
-                if (parseFloat(Explanation.style.height) > 1) {
-                    window.requestAnimationFrame(Collapsing);
-                } else {
-                    Explanation.style.height = "0px";
-                }
-            }
-
             var Expand = document.getElementById("Expand");
             Expand.addEventListener("click", function (e) {
                 if (Explanation.style.height == window.innerHeight/4*3 + "px") {
-                    Collapsing();
+                    Collapsing(Explanation);
                 } else if (Explanation.style.height == "0px") {
-                    Expanding();
+                    Expanding(Explanation);
                 }
             });
 
@@ -477,6 +480,38 @@
             });
 
             Expand.addEventListener("mousedown", function (e) {
+                Expand.style.color = "rgb(75, 75, 75)";
+            });
+
+            // Disclaimer stuff
+            var Discailmer = document.getElementId("Disclaimer");
+            Explain.style.position = "fixed";
+            Explain.style.width = window.innerWidth/4 + "px";
+            Explain.style.left = (window.innerWidth - (window.innerWidth - document.   getElementById("Drawing").getBoundingClientRect.width - Disclaimer.getBoundingClientRect.width)/2) + "px";
+
+            var Context = document.getElementById("Context");
+            Contex.style.height = "0px";
+            Context.style.overflow = "auto";
+            
+            var Bringer = document.getElementById("Bringer");
+            Bringer.addEventListener("click", function (e) {
+                if (Bringer.style.height == window.innerHeight/4*3 + "px") {
+                    Collapsing(Explanation(Bringer));
+                } else if (Explanation.style.height == "0px") {
+                    Expanding(Explanation(Bringer));
+                }
+            });
+
+            Bringer.addEventListener("mouseenter", function (e) {
+                Expand.style.color = "rgb(125, 125, 125)";
+            });
+
+            
+            Bringer.addEventListener("mouseleave", function (e) {
+                Expand.style.color = "rgb(0, 0, 0)";
+            });
+
+            Bringer.addEventListener("mousedown", function (e) {
                 Expand.style.color = "rgb(75, 75, 75)";
             });
         </script>
