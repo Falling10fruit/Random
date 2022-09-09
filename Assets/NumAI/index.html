@@ -35,6 +35,13 @@
                 cursor: pointer;
             }
 
+            #Bringer {
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                cursor: pointer;
+            }
+
             p {
                 line-height: 1.5;
             }
@@ -431,28 +438,56 @@
             })
 
             // Functions for sidebars
-            var Expanding = function (Element) {
-                Element.style.height = parseFloat(Element.style.height) + (window.innerHeight/4*3 - parseFloat(Element.style.height))/10 + 25 + "px";
+            var Explain = document.getElementById("Explain");
+            var Discailmer = document.getElementById("Disclaimer");
 
-                if (parseFloat(Element.style.height) < window.innerHeight/4*3) {
-                    window.requestAnimationFrame(Expanding(Element));
-                } else {
-                    Element.style.height = window.innerHeight/4*3 + "px";
-                }
-            }
+            var Expanding = {
+                Explain: 
+                    function () {
+                        Explanation.style.height = parseFloat(Explanation.style.height) + (window.innerHeight/4*3 - parseFloat(Explanation.style.height))/10 + 25 + "px";
 
-            var Collapsing = function (Element) {
-                Element.style.height = parseFloat(Element.style.height) + (0 - parseFloat(Element.style.height))/10 + "px";
+                        if (parseFloat(Explanation.style.height) < window.innerHeight/4*3) {
+                            window.requestAnimationFrame(Expanding.Explain);
+                        } else {
+                            Explanation.style.height = window.innerHeight/4*3 + "px";
+                        }
+                    },
+                Disclaim: 
+                    function () {
+                        Disclaimer.style.height = parseFloat(Disclaimer.style.height) + (window.innerHeight/4*3 - parseFloat(Disclaimer.style.height))/10 + 25 + "px";
 
-                if (parseFloat(Element.style.height) > 1) {
-                    window.requestAnimationFrame(Collapsing(Element));
-                } else {
-                    Element.style.height = "0px";
-                }
+                        if (parseFloat(Disclaimer.style.height) < window.innerHeight/4*3) {
+                            window.requestAnimationFrame(Expanding.Disclaim);
+                        } else {
+                            Disclaimer.style.height = window.innerHeight/4*3 + "px";
+                        }
+                    }
+            };
+
+            var Collapsing = {
+                Explain: 
+                    function () {
+                        Explanation.style.height = parseFloat(Explanation.style.height) + (0 - parseFloat(Explanation.style.height))/10 + "px";
+
+                        if (parseFloat(Explanation.style.height) > 1) {
+                            window.requestAnimationFrame(Collapsing(Explanation));
+                        } else {
+                            Explanation.style.height = "0px";
+                        }
+                    },
+                Disclaim:
+                    function () {
+                        Disclaimer.style.height = parseFloat(Disclaimer.style.height) + (0 - parseFloat(Disclaimer.style.height))/10 + "px";
+
+                        if (parseFloat(Disclaimer.style.height) > 1) {
+                            window.requestAnimationFrame(Collapsing.Disclaim);
+                        } else {
+                            Disclaimer.style.height = "0px";
+                        }
+                    }
             }
 
             // Esplanation stuff
-            var Explain = document.getElementById("Explain");
             Explain.style.position = "fixed";
             Explain.style.width = window.innerWidth/4 + "px";
             Explain.style.left = (document.getElementById("Drawing").getBoundingClientRect().left - Explain.getBoundingClientRect().width)/2 + "px";
@@ -484,35 +519,34 @@
             });
 
             // Disclaimer stuff
-            var Discailmer = document.getElementId("Disclaimer");
-            Explain.style.position = "fixed";
-            Explain.style.width = window.innerWidth/4 + "px";
-            Explain.style.left = (window.innerWidth - (window.innerWidth - document.   getElementById("Drawing").getBoundingClientRect.width - Disclaimer.getBoundingClientRect.width)/2) + "px";
+            Disclaimer.style.position = "fixed";
+            Disclaimer.style.width = window.innerWidth/4 + "px";
+            Disclaimer.style.left = window.innerWidth - document.getElementById("Drawing").getBoundingClientRect().right + "px";
 
             var Context = document.getElementById("Context");
-            Contex.style.height = "0px";
+            Context.style.height = "0px";
             Context.style.overflow = "auto";
             
             var Bringer = document.getElementById("Bringer");
             Bringer.addEventListener("click", function (e) {
                 if (Bringer.style.height == window.innerHeight/4*3 + "px") {
-                    Collapsing(Explanation(Bringer));
+                    Collapsing(Explanation.Disclaim);
                 } else if (Explanation.style.height == "0px") {
-                    Expanding(Explanation(Bringer));
+                    Expanding(Explanation.Disclaim);
                 }
             });
 
             Bringer.addEventListener("mouseenter", function (e) {
-                Expand.style.color = "rgb(125, 125, 125)";
+                Bringer.style.color = "rgb(125, 125, 125)";
             });
 
             
             Bringer.addEventListener("mouseleave", function (e) {
-                Expand.style.color = "rgb(0, 0, 0)";
+                Bringer.style.color = "rgb(0, 0, 0)";
             });
 
             Bringer.addEventListener("mousedown", function (e) {
-                Expand.style.color = "rgb(75, 75, 75)";
+                Bringer.style.color = "rgb(75, 75, 75)";
             });
         </script>
     </body>
