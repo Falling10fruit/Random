@@ -442,9 +442,10 @@
             var Discailmer = document.getElementById("Disclaimer");
 
             var Expanding = {
-                Explain: 
-                    function () {
+                Explain: function () {
                         Explanation.style.height = parseFloat(Explanation.style.height) + (window.innerHeight/4*3 - parseFloat(Explanation.style.height))/10 + 25 + "px";
+                        
+                        Explanation.style.height = parseFloat(Explanation.style.height) + 25 + "px";
 
                         if (parseFloat(Explanation.style.height) < window.innerHeight/4*3) {
                             window.requestAnimationFrame(Expanding.Explain);
@@ -452,42 +453,39 @@
                             Explanation.style.height = window.innerHeight/4*3 + "px";
                         }
                     },
-                Disclaim: 
-                    function () {
-                        Disclaimer.style.height = parseFloat(Disclaimer.style.height) + (window.innerHeight/4*3 - parseFloat(Disclaimer.style.height))/10 + 25 + "px";
+                Disclaim: function () {
+                        Context.style.height = parseFloat(Context.style.height) + (window.innerHeight/4*3 - parseFloat(Context.style.height))/10 + 25 + "px";
 
-                        if (parseFloat(Disclaimer.style.height) < window.innerHeight/4*3) {
+                        if (parseFloat(Context.style.height) < window.innerHeight/4*3) {
                             window.requestAnimationFrame(Expanding.Disclaim);
                         } else {
-                            Disclaimer.style.height = window.innerHeight/4*3 + "px";
+                            Context.style.height = window.innerHeight/4*3 + "px";
                         }
                     }
             };
 
             var Collapsing = {
-                Explain: 
-                    function () {
+                Explain: function () {
                         Explanation.style.height = parseFloat(Explanation.style.height) + (0 - parseFloat(Explanation.style.height))/10 + "px";
 
                         if (parseFloat(Explanation.style.height) > 1) {
-                            window.requestAnimationFrame(Collapsing(Explanation));
+                            window.requestAnimationFrame(Collapsing.Explain);
                         } else {
                             Explanation.style.height = "0px";
                         }
                     },
-                Disclaim:
-                    function () {
-                        Disclaimer.style.height = parseFloat(Disclaimer.style.height) + (0 - parseFloat(Disclaimer.style.height))/10 + "px";
+                Disclaim: function () {
+                        Context.style.height = parseFloat(Context.style.height) + (0 - parseFloat(Context.style.height))/10 + "px";
 
-                        if (parseFloat(Disclaimer.style.height) > 1) {
+                        if (parseFloat(Context.style.height) > 1) {
                             window.requestAnimationFrame(Collapsing.Disclaim);
                         } else {
-                            Disclaimer.style.height = "0px";
+                            Context.style.height = "0px";
                         }
                     }
-            }
+            };
 
-            // Esplanation stuff
+            // Explanation stuff
             Explain.style.position = "fixed";
             Explain.style.width = window.innerWidth/4 + "px";
             Explain.style.left = (document.getElementById("Drawing").getBoundingClientRect().left - Explain.getBoundingClientRect().width)/2 + "px";
@@ -499,9 +497,9 @@
             var Expand = document.getElementById("Expand");
             Expand.addEventListener("click", function (e) {
                 if (Explanation.style.height == window.innerHeight/4*3 + "px") {
-                    Collapsing(Explanation);
+                    Collapsing.Explain();
                 } else if (Explanation.style.height == "0px") {
-                    Expanding(Explanation);
+                    Expanding.Explain();
                 }
             });
 
@@ -521,7 +519,7 @@
             // Disclaimer stuff
             Disclaimer.style.position = "fixed";
             Disclaimer.style.width = window.innerWidth/4 + "px";
-            Disclaimer.style.left = window.innerWidth - document.getElementById("Drawing").getBoundingClientRect().right + "px";
+            Disclaimer.style.right = ((window.innerWidth - document.getElementById("Drawing").getBoundingClientRect().right) - Disclaimer.getBoundingClientRect().width)/2 + "px";
 
             var Context = document.getElementById("Context");
             Context.style.height = "0px";
@@ -530,9 +528,9 @@
             var Bringer = document.getElementById("Bringer");
             Bringer.addEventListener("click", function (e) {
                 if (Bringer.style.height == window.innerHeight/4*3 + "px") {
-                    Collapsing(Explanation.Disclaim);
+                    Collapsing.Disclaim();
                 } else if (Explanation.style.height == "0px") {
-                    Expanding(Explanation.Disclaim);
+                    Expanding.Disclaim();
                 }
             });
 
