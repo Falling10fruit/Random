@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<link rel="shortcut icon" type="image/x-icon" href="../Assets/Random.png">
+        <title>Boids</title>
+    </head>
+    <body>
+        <canvas id="Canvas"></canvas>
+
+        <button type="button" id="Pause" style="color: rgb(0, 255, 100)">Running!</button>
+
+        <script>
+            const Group = 10;
+            const Avoid = -10;
+            const Speed = 10;
+            const Range = 50; // Higher probably cause lag
+
+            var Canvas = document.getElementById("Canvas");
+            Canvas.width = window.innerWidth;
+            Canvas.height = window.innerHeight;
+            Canvas.style.position = "fixed";
+            Canvas.style.top = "0px";
+            Canvas.style.left = "0px";
+
+            var Boids = [/*{
+                X: 200, X position
+                Y: 200, Y position
+                XVel: 100, X Velocity
+                YVel: 0 Y Velocity
+            }*/];
+
+            for (var i = 0; i < 500; i++) {
+                Boids.push({
+                    X: Math.random()*Canvas.width,
+                    Y: Math.random()*Canvas.height,
+                    XVel: Math.random()*Speed + Speed/2,
+                    YVel: Math.random()*Speed + Speed/2,
+                    R: Math.random()*255,
+                    G: Math.random()*255,
+                    B: Math.random()*255
+                });
+            }
+
+            var Pause = false;
+            var PauseButton = document.getElementById("Pause");
+            PauseButton.addEventListener("click", function () {
+                if (Pause) {
+                    Pause = false;
+                    Simulate();
+                } else {Pause = true;}
+            });
+
+            function Simulate () {
+                for (var i = 0; i < Boids.length; i++) {
+                    for (var x = 0; x < Boids.Length; x++) {
+                        if (x != i) {
+                            let Distance = Math.sqrt((Boids[x].X - Boids[i].X)*(Boids[x].X - Boids[i].X) + (Boids[x].Y - Boids[i].Y)*(Boids[x].Y - Boids[i].Y));
+
+                            if (Distcance < Range) {
+                                Boids[i].XVel += Avoid * Direction/(Boids[x].X - Boids[i].X);
+                                Boids[i].YVel += Avoid * Direction/(Boids[x].Y - Boids[i].Y);
+                            }
+                        }
+                    }
+
+                    var Dot = Canvas.getContext("2d");
+                    Dot.styleFill = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B + ")";
+                    Dot.fill();
+                    Dot.beginPath();
+                    Dot.arc(Boids[i].X, Boids[i].Y, 25, 0, 2*Math.PI);
+                    Dot.end
+                }
+
+                if (!Pause) {
+                    requestAnimationFrame(Simulate);
+                }
+            }
+        </script>
+    </body>
+</html>
