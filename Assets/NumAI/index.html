@@ -121,6 +121,10 @@
                             </ul>
                         </li>
                     </ul>
+
+                    But I might come back to this project, probably in a form of a new file, but it was sorta fun while I was working on this, similarly how I had two attempts on the same idea for a square game and crushed my problems in the second attempt. Same thing again for an old textbox project I had in <a href="https://scratch.mit.edu">Scratch</a>.
+                    <br>
+                    <br>(12 of Sept, 2022) Also my StackOverflow account is being warned for bad questions, I'm sad and confused.
                 </p>
             </div>
         </div>
@@ -526,8 +530,9 @@
             Context.style.overflow = "auto";
             
             var Bringer = document.getElementById("Bringer");
+            Bringer.style.textAlign = "center";
             Bringer.addEventListener("click", function (e) {
-                if (Bringer.style.height == window.innerHeight/4*3 + "px") {
+                if (Context.style.height == window.innerHeight/4*3 + "px") {
                     Collapsing.Disclaim();
                 } else if (Explanation.style.height == "0px") {
                     Expanding.Disclaim();
