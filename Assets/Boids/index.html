@@ -50,8 +50,12 @@
                 } else {Pause = true;}
             });
 
+            Simulate();
+
             function Simulate () {
                 for (var i = 0; i < Boids.length; i++) {
+                    let LocalX, LocalY = null;
+
                     for (var x = 0; x < Boids.Length; x++) {
                         if (x != i) {
                             let Distance = Math.sqrt((Boids[x].X - Boids[i].X)*(Boids[x].X - Boids[i].X) + (Boids[x].Y - Boids[i].Y)*(Boids[x].Y - Boids[i].Y));
@@ -59,20 +63,34 @@
                             if (Distcance < Range) {
                                 Boids[i].XVel += Avoid * Direction/(Boids[x].X - Boids[i].X);
                                 Boids[i].YVel += Avoid * Direction/(Boids[x].Y - Boids[i].Y);
+
+                                if (LocalX = null) {
+                                    LocalX = Boids[x].X;
+                                    LocalX = Boids[x].Y;
+                                } else {
+                                    LocalX += Boids[x].X;
+                                    LocalY += Boids[x].Y;
+                                    LocalX = LocalX/2;
+                                    LocalY = LocalY/2;
+                                }
                             }
                         }
                     }
+
+                    Boids[i].XVel += Group * LocalX;
+                    Boids[i].YVel += Group * LocalY;
 
                     var Dot = Canvas.getContext("2d");
                     Dot.styleFill = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B + ")";
                     Dot.fill();
                     Dot.beginPath();
-                    Dot.arc(Boids[i].X, Boids[i].Y, 25, 0, 2*Math.PI);
-                    Dot.end
+                    Dot.arc(Boids[i].X, Boids[i].Y, 5, 0, 2*Math.PI);
+                    Dot.closePath();
+                    console.log("Boid drawn");
                 }
 
                 if (!Pause) {
-                    requestAnimationFrame(Simulate);
+                    document.requestAnimationFrame(Simulate);
                 }
             }
         </script>
