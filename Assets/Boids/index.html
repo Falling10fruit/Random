@@ -10,10 +10,11 @@
         <button type="button" id="Pause" style="color: rgb(0, 255, 100)">Running!</button>
 
         <script>
-            const Group = 10;
-            const Avoid = -10;
-            const Speed = 10;
-            const Range = 50; // Higher probably cause lag
+            const Group = 0.05;
+            const Avoid = -0.2;
+            const Speed = 5;
+            const Range = 50; // Higher probably cause more lag
+            const Align = 0.05;
 
             var Canvas = document.getElementById("Canvas");
             Canvas.width = window.innerWidth;
@@ -40,6 +41,7 @@
                     B: Math.random()*255
                 });
             }
+            console.log(Boids);
 
             var Pause = false;
             var PauseButton = document.getElementById("Pause");
@@ -80,17 +82,19 @@
                     Boids[i].XVel += Group * LocalX;
                     Boids[i].YVel += Group * LocalY;
 
+                    Boids[i].X += Boids.XVel;
+                    Boids[i].Y += Boids.YVel;
+
                     var Dot = Canvas.getContext("2d");
                     Dot.styleFill = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B + ")";
                     Dot.fill();
                     Dot.beginPath();
                     Dot.arc(Boids[i].X, Boids[i].Y, 5, 0, 2*Math.PI);
                     Dot.closePath();
-                    console.log("Boid drawn");
                 }
 
                 if (!Pause) {
-                    document.requestAnimationFrame(Simulate);
+                    requestAnimationFrame(Simulate);
                 }
             }
         </script>
