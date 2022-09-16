@@ -24,10 +24,13 @@
             Canvas.style.left = "0px";
 
             var Boids = [/*{
-                X: 200, X position
-                Y: 200, Y position
-                XVel: 100, X Velocity
-                YVel: 0 Y Velocity
+                X: 200, - X position
+                Y: 200, - Y position
+                XVel: 100, - X Velocity
+                YVel: 0, - Y Velocity
+                R: 255, - Red
+                G: 100, - Green
+                B: 0 - Blue
             }*/];
 
             for (var i = 0; i < 500; i++) {
@@ -41,8 +44,6 @@
                     B: Math.random()*255
                 });
             }
-            console.log(Boids);
-
             var Pause = false;
             var PauseButton = document.getElementById("Pause");
             PauseButton.addEventListener("click", function () {
