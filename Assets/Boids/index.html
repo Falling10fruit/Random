@@ -23,17 +23,17 @@
             Canvas.style.top = "0px";
             Canvas.style.left = "0px";
 
-            var Boids = [/*{
-                X: 200, - X position
-                Y: 200, - Y position
-                XVel: 100, - X Velocity
-                YVel: 0, - Y Velocity
-                R: 255, - Red
-                G: 100, - Green
-                B: 0 - Blue
-            }*/];
+            var Boids = [{
+                X: 1000, // X position
+                Y: 1000, // Y position
+                XVel: 100, // X Velocity
+                YVel: 0, // Y Velocity
+                R: 255, // Red
+                G: 100, // Green
+                B: 0 // Blue
+            }];
 
-            for (var i = 0; i < 500; i++) {
+            /*for (var i = 0; i < 500; i++) {
                 Boids.push({
                     X: Math.random()*Canvas.width,
                     Y: Math.random()*Canvas.height,
@@ -43,7 +43,7 @@
                     G: Math.random()*255,
                     B: Math.random()*255
                 });
-            }
+            }*/
             var Pause = false;
             var PauseButton = document.getElementById("Pause");
             PauseButton.addEventListener("click", function () {
@@ -59,7 +59,7 @@
                 for (var i = 0; i < Boids.length; i++) {
                     let LocalX, LocalY = null;
 
-                    for (var x = 0; x < Boids.Length; x++) {
+                    /*for (var x = 0; x < Boids.Length; x++) {
                         if (x != i) {
                             let Distance = Math.sqrt((Boids[x].X - Boids[i].X)*(Boids[x].X - Boids[i].X) + (Boids[x].Y - Boids[i].Y)*(Boids[x].Y - Boids[i].Y));
 
@@ -78,7 +78,7 @@
                                 }
                             }
                         }
-                    }
+                    }*/
 
                     Boids[i].XVel += Group * LocalX;
                     Boids[i].YVel += Group * LocalY;
