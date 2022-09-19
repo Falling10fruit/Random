@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<link rel="shortcut icon" type="image/x-icon" href="../Assets/Random.png">
+		<link rel="shortcut icon" type="image/x-icon" href="../Random.png">
         <title>Boids</title>
     </head>
     <body>
@@ -44,9 +44,11 @@
                     B: Math.random()*255
                 });
             }*/
+
             var Pause = false;
             var PauseButton = document.getElementById("Pause");
-            PauseButton.addEventListener("click", function () {
+            PauseButton.addEventListener("click", function (e) {
+                console.log("Working?");
                 if (Pause) {
                     Pause = false;
                     Simulate();
