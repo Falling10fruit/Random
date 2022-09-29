@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang = "en">
     <head>
 		<link rel="shortcut icon" type="image/x-icon" href="../Random.png">
+        <meta charset="character_set">
         <title>Boids</title>
     </head>
     <body>
-        <canvas id="Canvas"></canvas>
-
         <button type="button" id="Pause" style="color: rgb(0, 255, 100)"><strong>Running!</strong></button>
+
+        <canvas id="Canvas"></canvas>
 
         <script>
             const Group = 0.05;
@@ -25,12 +26,9 @@
 
             var Boids = [{
                 X: 1000, // X position
-                Y: 1000, // Y position
-                XVel: -10, // X Velocity
+                Y: 500, // Y position
+                XVel: -1, // X Velocity
                 YVel: 0, // Y Velocity
-                R: 255, // Red
-                G: 100, // Green
-                B: 0 // Blue
             }];
 
             /*for (var i = 0; i < 500; i++) {
@@ -66,6 +64,10 @@
             Simulate();
 
             function Simulate () {
+                var Background = Canvas.getContext("2d");
+                Background.fillStyle = "rgb(255, 100, 0)";
+                Background.fillRect(0, 0, Canvas.width, Canvas.width);
+
                 for (var i = 0; i < Boids.length; i++) {
                     /*let LocalX, LocalY = null;
 
@@ -97,11 +99,11 @@
                     Boids[i].Y += Boids[i].YVel;
 
                     var Dot = Canvas.getContext("2d");
-                    Dot.styleFill = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B + ")";
-                    Dot.fill();
+                    //Dot.styleFill = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B+  ")";
                     Dot.beginPath();
                     Dot.arc(Boids[i].X, Boids[i].Y, 5, 0, 2*Math.PI);
-                    Dot.closePath();
+                    Dot.styleFill = "rgb(0, 0, 0)";
+                    Dot.fill();
                 }
 
                 if (!Pause) {
