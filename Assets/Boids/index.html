@@ -4,112 +4,12 @@
 		<link rel="shortcut icon" type="image/x-icon" href="../Random.png">
         <meta charset="character_set">
         <title>Boids</title>
+
+        <script src="canvas.js"></script>
     </head>
     <body>
         <button type="button" id="Pause" style="color: rgb(0, 255, 100)"><strong>Running!</strong></button>
 
         <canvas id="Canvas"></canvas>
-
-        <script>
-            const Group = 0.05;
-            const Avoid = -0.2;
-            const Speed = 5;
-            const Range = 50; // Higher probably cause more lag
-            const Align = 0.05;
-
-            var Canvas = document.getElementById("Canvas");
-            Canvas.width = window.innerWidth;
-            Canvas.height = window.innerHeight;
-            Canvas.style.position = "fixed";
-            Canvas.style.top = "0px";
-            Canvas.style.left = "0px";
-
-            var Boids = [{
-                X: 1000, // X position
-                Y: 500, // Y position
-                XVel: -1, // X Velocity
-                YVel: 0, // Y Velocity
-            }];
-
-            /*for (var i = 0; i < 500; i++) {
-                Boids.push({
-                    X: Math.random()*Canvas.width,
-                    Y: Math.random()*Canvas.height,
-                    XVel: Math.random()*Speed + Speed/2,
-                    YVel: Math.random()*Speed + Speed/2,
-                    R: Math.random()*255,
-                    G: Math.random()*255,
-                    B: Math.random()*255
-                });
-            }*/
-
-            var Pause = false;
-            var PauseButton = document.getElementById("Pause");
-            PauseButton.addEventListener("click", function (e) {
-                console.log("Working?");
-                if (Pause) {
-                    Pause = false;
-                    Simulate();
-                    PauseButton.innerHTML = "<strong>Running!</strong>";
-                    PauseButton.style.color = "Green";
-                    console.log("Running!");
-                } else {
-                    Pause = true;
-                    PauseButton.innerHTML = "<strong>Paused</strong>";
-                    PauseButton.style.color = "Red";
-                    console.log("Paused!");
-                }
-            });
-
-            Simulate();
-
-            function Simulate () {
-                var Background = Canvas.getContext("2d");
-                Background.fillStyle = "rgb(255, 100, 0)";
-                Background.fillRect(0, 0, Canvas.width, Canvas.width);
-
-                for (var i = 0; i < Boids.length; i++) {
-                    /*let LocalX, LocalY = null;
-
-                    for (var x = 0; x < Boids.Length; x++) {
-                        if (x != i) {
-                            let Distance = Math.sqrt((Boids[x].X - Boids[i].X)*(Boids[x].X - Boids[i].X) + (Boids[x].Y - Boids[i].Y)*(Boids[x].Y - Boids[i].Y));
-
-                            if (Distcance < Range) {
-                                Boids[i].XVel += Avoid * Direction/(Boids[x].X - Boids[i].X);
-                                Boids[i].YVel += Avoid * Direction/(Boids[x].Y - Boids[i].Y);
-
-                                if (LocalX = null) {
-                                    LocalX = Boids[x].X;
-                                    LocalX = Boids[x].Y;
-                                } else {
-                                    LocalX += Boids[x].X;
-                                    LocalY += Boids[x].Y;
-                                    LocalX = LocalX/2;
-                                    LocalY = LocalY/2;
-                                }
-                            }
-                        }
-                    }*/
-
-                    //Boids[i].XVel += Group * LocalX;
-                    //Boids[i].YVel += Group * LocalY;
-
-                    Boids[i].X += Boids[i].XVel;
-                    Boids[i].Y += Boids[i].YVel;
-
-                    var Dot = Canvas.getContext("2d");
-                    //Dot.styleFill = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B+  ")";
-                    Dot.beginPath();
-                    Dot.arc(Boids[i].X, Boids[i].Y, 5, 0, 2*Math.PI);
-                    Dot.styleFill = "rgb(0, 0, 0)";
-                    Dot.fill();
-                }
-
-                if (!Pause) {
-                    requestAnimationFrame(Simulate);
-                }
-            }
-        </script>
     </body>
 </html>
