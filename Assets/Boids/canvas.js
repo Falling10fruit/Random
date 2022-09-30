@@ -57,31 +57,19 @@ function Simulate () {
     Background.fillRect(0, 0, Canvas.width, Canvas.width);
 
     for (var i = 0; i < Boids.length; i++) {
-        /*let LocalX, LocalY = null;
+        let LocalX, LocalY = null;
 
         for (var x = 0; x < Boids.Length; x++) {
             if (x != i) {
                 let Distance = Math.sqrt((Boids[x].X - Boids[i].X)*(Boids[x].X - Boids[i].X) + (Boids[x].Y - Boids[i].Y)*(Boids[x].Y - Boids[i].Y));
 
-                if (Distcance < Range) {
-                    Boids[i].XVel += Avoid * Direction/(Boids[x].X - Boids[i].X);
-                    Boids[i].YVel += Avoid * Direction/(Boids[x].Y - Boids[i].Y);
-
-                    if (LocalX = null) {
-                        LocalX = Boids[x].X;
-                        LocalX = Boids[x].Y;
-                    } else {
-                        LocalX += Boids[x].X;
-                        LocalY += Boids[x].Y;
-                        LocalX = LocalX/2;
-                        LocalY = LocalY/2;
-                    }
+                if (Distance < Range) {
                 }
             }
-        }*/
+        }
 
-        //Boids[i].XVel += Group * LocalX;
-        //Boids[i].YVel += Group * LocalY;
+        Boids[i].XVel += Group * LocalX;
+        Boids[i].YVel += Group * LocalY;
 
         Boids[i].X += Boids[i].XVel;
         Boids[i].Y += Boids[i].YVel;
