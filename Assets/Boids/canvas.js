@@ -57,7 +57,10 @@ function Simulate () {
     Background.fillRect(0, 0, Canvas.width, Canvas.width);
 
     for (var i = 0; i < Boids.length; i++) {
+        console.log("i");
+
         for (var x = 0; x < Boids.Length; x++) {
+            console.log("x");
 
             if (x != i) {
                 let XDistance = Boids[x].X - Boids[i].X;
@@ -86,12 +89,9 @@ function Simulate () {
         }
 
         var Dot = Canvas.getContext("2d");
-        //Dot.styleFill = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B+  ")";
         Dot.beginPath();
-        Dot.fillStyle = "rgb(0, 0, 0)";
+        Dot.fillStyle = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B + ")";
         Dot.arc(Boids[i].X, Boids[i].Y, 5, 0, 2*Math.PI);
-        Dot.fillStyle = "rgb(255, 255, 255)";
-        Dot.fillText(i, Boids[i].X, Boids[i].Y);
         Dot.fill();
     }
 
