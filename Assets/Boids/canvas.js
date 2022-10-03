@@ -4,6 +4,7 @@ const Speed = 5;
 const Range = 50; // Higher probably cause more lag
 const Align = 0.05;
 
+// Sizing and positioning Canvas
 var Canvas = document.getElementById("Canvas");
 Canvas.zIndex = -1;
 Canvas.width = window.innerWidth;
@@ -12,6 +13,7 @@ Canvas.style.position = "fixed";
 Canvas.style.top = "0px";
 Canvas.style.left = "0px";
 
+// Generate boids
 var Boids = [/*{
     X: 1000, // X position
     Y: 500, // Y position
@@ -19,7 +21,7 @@ var Boids = [/*{
     YVel: 0, // Y Velocity
 }*/];
 
-for (var i = 0; i < 500; i++) {
+for (var i = 0; i < 100; i++) {
     Boids.push({
         X: Math.random()*Canvas.width,
         Y: Math.random()*Canvas.height,
@@ -31,42 +33,41 @@ for (var i = 0; i < 500; i++) {
     });
 }
 
+// Pause Button
 var Pause = false;
 var PauseButton = document.getElementById("Pause");
+PauseButton.style.width = PauseButton.getBoundingClientRect().width + "px";
 PauseButton.addEventListener("click", function (e) {
-    console.log("Working?");
     if (Pause) {
         Pause = false;
         Simulate();
         PauseButton.innerHTML = "<strong>Running!</strong>";
         PauseButton.style.color = "Green";
-        console.log("Running!");
     } else {
         Pause = true;
         PauseButton.innerHTML = "<strong>Paused</strong>";
         PauseButton.style.color = "Red";
-        console.log("Paused!");
     }
 });
 
+// Simulation
 Simulate();
 
 function Simulate () {
+    // Background
     var Background = Canvas.getContext("2d");
     Background.fillStyle = "rgb(255, 100, 0)";
     Background.fillRect(0, 0, Canvas.width, Canvas.width);
 
-    for (var i = 0; i < Boids.length; i++) {
-        console.log("i");
-
-        for (var x = 0; x < Boids.Length; x++) {
+    for (var i = 0; i < Boids.length; i++) { //This runs
+        for (var x = 0; x < Boids.Length; x++) { // This doesn't
             console.log("x");
 
             if (x != i) {
-                let XDistance = Boids[x].X - Boids[i].X;
-                let YDistance = Boids[x].Y - Boids[i].Y;
+                var XDistance = Boids[x].X - Boids[i].X;
+                var YDistance = Boids[x].Y - Boids[i].Y;
 
-                let Distance = Math.sqrt((XDistance)*(XDistance) + (YDistance)*(YDistance));
+                var Distance = Math.sqrt((XDistance)*(XDistance) + (YDistance)*(YDistance));
 
                 if (Distance < Range) {
                     Boids[i].XVel += Avoid * (Distance/XDistance);
@@ -78,6 +79,7 @@ function Simulate () {
         Boids[i].X += Boids[i].XVel;
         Boids[i].Y += Boids[i].YVel;
 
+        // Putting the boids on the other side of the screen
         if (Boids[i].X > Canvas.width + 5) {
             Boids[i].X = -5;
         } else if (Boids[i].X < -5) {
@@ -88,6 +90,7 @@ function Simulate () {
             Boids[i].Y = Canvas.height + 5;
         }
 
+        // Drawing the Dot
         var Dot = Canvas.getContext("2d");
         Dot.beginPath();
         Dot.fillStyle = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B + ")";
@@ -95,7 +98,7 @@ function Simulate () {
         Dot.fill();
     }
 
-    if (!Pause) {
+    if (!Pause) { // If paused or not
         requestAnimationFrame(Simulate);
     }
 }
