@@ -1,8 +1,49 @@
-const Group = 0.05;
-const Avoid = -0.2;
-const Speed = 5;
-const Range = 50; // Higher probably cause more lag
-const Align = 0.05;
+var Group = 0.05;
+var Avoid = -0.1;
+var Speed = 2;
+var Range = 40;
+var Align = 0.05;
+
+// Controls
+var GroupInput = document.getElementById("GroupInput");
+var AvoidInput = document.getElementById("AvoidInput");
+var SpeedInput = document.getElementById("SpeedInput");
+var RangeInput = document.getElementById("RangeInput");
+var AlignInput = document.getElementById("AlignInput");
+
+var GroupDisplay = document.getElementById("GroupDisplay");
+var AvoidDisplay = document.getElementById("AvoidDisplay");
+var SpeedDisplay = document.getElementById("SpeedDisplay");
+var RangeDisplay = document.getElementById("RangeDisplay");
+var AlignDisplay = document.getElementById("AlignDisplay");
+
+GroupDisplay.innerHTML = "<strong>" + Group + "</strong>";
+AvoidDisplay.innerHTML = "<strong>" + Avoid + "</strong>";
+SpeedDisplay.innerHTML = "<strong>" + Speed + "</strong>";
+RangeDisplay.innerHTML = "<strong>" + Range + "</strong>";
+AlignDisplay.innerHTML = "<strong>" + Align + "</strong>";
+
+GroupInput.addEventListener("input", function (e) {
+    Group = this.valueAsNumber*5/100; // 1 to 16 => 0.05 to 0.8
+    GroupDisplay.innerHTML = "<strong>" + Group + "</strong";
+});
+AvoidInput.addEventListener("input", function (e) {
+    Avoid = this.valueAsNumber*-5/100; // 1 to 16 => -0.05 to -0.8 
+    AvoidDisplay.innerHTML = "<strong>" + Avoid + "</strong";
+});
+SpeedInput.addEventListener("input", function (e) {
+    Speed = this.valueAsNumber;
+    SpeedDisplay.innerHTML = "<strong>" + Speed + "</strong";
+});
+RangeInput.addEventListener("input", function (e) {
+    Range = this.valueAsNumber;
+    RangeDisplay.innerHTML = "<strong>" + Range + "</strong";
+    Render();
+});
+AlignInput.addEventListener("input", function (e) {
+    Align = this.valueAsNumber*5/100;  // 1 to 16 => 0.05 to 0.8
+    AlignDisplay.innerHTML = "<strong>" + Align + "</strong";
+});
 
 // Sizing and positioning Canvas
 var Canvas = document.getElementById("Canvas");
@@ -54,15 +95,11 @@ PauseButton.addEventListener("click", function (e) {
 Simulate();
 
 function Simulate () {
-    // Background
-    var Background = Canvas.getContext("2d");
-    Background.fillStyle = "rgb(255, 100, 0)";
-    Background.fillRect(0, 0, Canvas.width, Canvas.width);
+    for (var i = 0; i < Boids.length; i++) {
+        // Boid interactions
+        var Average = [];
 
-    for (var i = 0; i < Boids.length; i++) { //This runs
-        for (var x = 0; x < Boids.Length; x++) { // This doesn't
-            console.log("x");
-
+        for (var x = 0; x < Boids.length; x++) {
             if (x != i) {
                 var XDistance = Boids[x].X - Boids[i].X;
                 var YDistance = Boids[x].Y - Boids[i].Y;
@@ -72,9 +109,38 @@ function Simulate () {
                 if (Distance < Range) {
                     Boids[i].XVel += Avoid * (Distance/XDistance);
                     Boids[i].YVel += Avoid * (Distance/YDistance);
+                    Average.push({
+                        X: Boids[x].X,
+                        Y: Boids[x].Y,
+                        XVel: Boids[x].XVel,
+                        YVel: Boids[x].YVel
+                    });
                 }
             }
         }
+
+        // Seperation
+        Boids[i].XVel += 0.01*(Speed*Math.sign(Boids[i].XVel) - Boids[i].XVel);
+        Boids[i].YVel += 0.01*(Speed*Math.sign(Boids[i].YVel) - Boids[i].YVel);
+
+        // Swarming
+        var XAverage, YAverage, XVelAverage, YVelAverage = 0;
+        for (var i = 0; i < Average.length; i++) {
+            XAverage += Average[i].X;
+            YAverage += Average[i].Y;
+            XVelAverage += Average[i].XVel;
+            YVelAverage += Average[i].YVel;
+        }
+
+        XAverage = XAverage/Average.length;
+        YAverage = YAverage/Average.length;
+        XVelAverage = XVelAverage/Average.length;
+        YVelAverage = YVelAverage/Average.length;
+
+        XAverage = Group*(XAverage - Boids[i].X);
+        YAverage = Group*(YAverage - Boids[i].Y);
+        XVelAverage = Align*(XVelAverage - Boids[i].XVel);
+        YVelAverage = Align*(YVelAverage - Boids[i].YVel);
 
         Boids[i].X += Boids[i].XVel;
         Boids[i].Y += Boids[i].YVel;
@@ -89,16 +155,33 @@ function Simulate () {
         } else if (Boids[i].Y < -5) {
             Boids[i].Y = Canvas.height + 5;
         }
+    }
 
+    Render();
+
+    if (!Pause) { // If paused or not
+        requestAnimationFrame(Simulate);
+    }
+}
+
+function Render () {
+    // Background
+    var Background = Canvas.getContext("2d");
+    Background.fillStyle = "rgb(255, 100, 0)";
+    Background.fillRect(0, 0, Canvas.width, Canvas.width);
+
+    for (var i = 0; i < Boids.length; i++) {
         // Drawing the Dot
         var Dot = Canvas.getContext("2d");
         Dot.beginPath();
         Dot.fillStyle = "rgb(" + Boids[i].R + ", " + Boids[i].G + ", " + Boids[i].B + ")";
         Dot.arc(Boids[i].X, Boids[i].Y, 5, 0, 2*Math.PI);
         Dot.fill();
-    }
 
-    if (!Pause) { // If paused or not
-        requestAnimationFrame(Simulate);
+        // Drawing the boundary
+        var RangeCircle = Canvas.getContext("2d");
+        RangeCircle.beginPath();
+        RangeCircle.arc(Boids[i].X, Boids[i].Y, Range/2, 0, 2*Math.PI);
+        RangeCircle.stroke();
     }
 }

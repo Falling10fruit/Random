@@ -8,7 +8,29 @@
     <body>
         <canvas id="Canvas" style="z-index: -1"></canvas>
 
-        <button type="button" id="Pause" style="color: rgb(0, 255, 100); z-index: 2;"><strong>Running!</strong></button>
+        <div style="z-index: 2; font-family: sans-serif">
+            <button type="button" id="Pause" style="color: rgb(0, 255, 100);"><strong>Running!</strong></button>
+            <br>
+            <label><strong>Group:</strong></label>
+            <input type="range" id="GroupInput" min="1" max="16" value="0.05"> <!--0.05 to 0.8-->
+            <label id="GroupDisplay"></label>
+            <br>
+            <label><strong>Avoid:</strong></label>
+            <input type="range" id="AvoidInput" min="1" max="16" value="-0.1"> <!-- -0.05 to -0.8-->
+            <label id="AvoidDisplay"></label>
+            <br>
+            <label><strong>Speed:</strong></label>
+            <input type="range" id="SpeedInput" min="1" max="10" value="2">
+            <label id="SpeedDisplay"></label>
+            <br>
+            <label><strong>Range:</strong></label>
+            <input type="range" id="RangeInput" min="10" max="100" value="40">
+            <label id="RangeDisplay"></label>
+            <br>
+            <label><strong>Align:</strong></label>
+            <input type="range" id="AlignInput" min="1" max="16" value="0.05"> <!--0.05 to 0.08-->
+            <label id="AlignDisplay"></label>
+        </div>
 
         <script src="canvas.js"></script>
     </body>
