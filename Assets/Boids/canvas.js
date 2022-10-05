@@ -142,26 +142,28 @@ function Simulate () {
         Boids[i].YVel += 0.01*(Speed*Math.sign(Boids[i].YVel) - Boids[i].YVel);
 
         // Swarming
-        var XAverage = 0;
-        var YAverage = 0;
-        var XVelAverage = 0;
-        var YVelAverage = 0;
-        for (var x = 0; x < Average.length; x++) {
-            XAverage += Average[x].X;
-            YAverage += Average[x].Y;
-            XVelAverage += Average[x].XVel;
-            YVelAverage += Average[x].YVel;
+        if (Average.length > 0) {
+            var XAverage = 0;
+            var YAverage = 0;
+            var XVelAverage = 0;
+            var YVelAverage = 0;
+            for (var x = 0; x < Average.length; x++) {
+                XAverage += Average[x].X;
+                YAverage += Average[x].Y;
+                XVelAverage += Average[x].XVel;
+                YVelAverage += Average[x].YVel;
+            }
+
+            XAverage = XAverage/Average.length;
+            YAverage = YAverage/Average.length;
+            XVelAverage = XVelAverage/Average.length;
+            YVelAverage = YVelAverage/Average.length;
+
+            Boids[i].X += Group*(XAverage - Boids[i].X);
+            Boids[i].Y += Group*(YAverage - Boids[i].Y);
+            Boids[i].XVel += Align*(XVelAverage - Boids[i].XVel);
+            Boids[i].YVel += Align*(YVelAverage - Boids[i].YVel);
         }
-
-        XAverage = XAverage/Average.length;
-        YAverage = YAverage/Average.length;
-        XVelAverage = XVelAverage/Average.length;
-        YVelAverage = YVelAverage/Average.length;
-
-        Boids[i].X += Group*(XAverage - Boids[i].X);
-        Boids[i].Y += Group*(YAverage - Boids[i].Y);
-        Boids[i].XVel += Align*(XVelAverage - Boids[i].XVel);
-        Boids[i].YVel += Align*(YVelAverage - Boids[i].YVel);
 
         Boids[i].X += Boids[i].XVel;
         Boids[i].Y += Boids[i].YVel;
