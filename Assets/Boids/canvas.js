@@ -4,6 +4,7 @@ var Speed = 2;
 var Range = 40;
 var Align = 0.05;
 var BoidAmount = 500;
+var BorderMode = 1;
 
 // Controls
 var GroupInput = document.getElementById("GroupInput");
@@ -12,6 +13,7 @@ var SpeedInput = document.getElementById("SpeedInput");
 var RangeInput = document.getElementById("RangeInput");
 var AlignInput = document.getElementById("AlignInput");
 var BoidInput = document.getElementById("BoidInput");
+var BorderInput = document.getElementById("BorderInput");
 
 var GroupDisplay = document.getElementById("GroupDisplay");
 var AvoidDisplay = document.getElementById("AvoidDisplay");
@@ -19,6 +21,7 @@ var SpeedDisplay = document.getElementById("SpeedDisplay");
 var RangeDisplay = document.getElementById("RangeDisplay");
 var AlignDisplay = document.getElementById("AlignDisplay");
 var BoidDisplay = document.getElementById("BoidDisplay");
+var BorderDisplay = document.getElementById("BorderDisplay");
 
 GroupDisplay.innerHTML = "<strong>" + Group + "</strong>";
 AvoidDisplay.innerHTML = "<strong>" + Avoid + "</strong>";
@@ -26,6 +29,7 @@ SpeedDisplay.innerHTML = "<strong>" + Speed + "</strong>";
 RangeDisplay.innerHTML = "<strong>" + Range + "</strong>";
 AlignDisplay.innerHTML = "<strong>" + Align + "</strong>";
 BoidDisplay.innerHTML = "<strong>" + BoidAmount + "</strong>";
+BorderDisplay.innerHTML = "<strong>" + BorderMode + "</strong>";
 
 GroupInput.addEventListener("input", function (e) {
     Group = this.valueAsNumber*5/100; // 1 to 16 => 0.05 to 0.8
@@ -51,6 +55,11 @@ AlignInput.addEventListener("input", function (e) {
 BoidInput.addEventListener("input", function (e) {
     BoidAmount = this.valueAsNumber;
     BoidDisplay.innerHTML = "<strong>" + BoidAmount + "</strong>";
+});
+BorderInput.addEventListener("input", function (e) {
+    BorderMode = this.valueAsNumber;
+    BorderDisplay.innerHTML = "<strong>" + BorderMode + "</strong>";
+    Render();
 });
 
 // Sizing and positioning Canvas
@@ -131,7 +140,10 @@ function Simulate () {
                         X: Boids[x].X,
                         Y: Boids[x].Y,
                         XVel: Boids[x].XVel,
-                        YVel: Boids[x].YVel
+                        YVel: Boids[x].YVel,
+                        R: Boids[i].R,
+                        G: Boids[i].G,
+                        B: Boids[i].B
                     });
                 }
             }
@@ -147,22 +159,34 @@ function Simulate () {
             var YAverage = 0;
             var XVelAverage = 0;
             var YVelAverage = 0;
+            var RAverage = 0;
+            var GAverage = 0;
+            var BAverage = 0;
             for (var x = 0; x < Average.length; x++) {
                 XAverage += Average[x].X;
                 YAverage += Average[x].Y;
                 XVelAverage += Average[x].XVel;
                 YVelAverage += Average[x].YVel;
+                RAverage += Average[x].R;
+                GAverage += Average[x].G;
+                BAverage += Average[x].B;
             }
 
             XAverage = XAverage/Average.length;
             YAverage = YAverage/Average.length;
             XVelAverage = XVelAverage/Average.length;
             YVelAverage = YVelAverage/Average.length;
+            RAverage = RAverage/Average.length;
+            GAverage = GAverage/Average.length;
+            BAverage = BAverage/Average.length;
 
             Boids[i].X += Group*(XAverage - Boids[i].X);
             Boids[i].Y += Group*(YAverage - Boids[i].Y);
             Boids[i].XVel += Align*(XVelAverage - Boids[i].XVel);
             Boids[i].YVel += Align*(YVelAverage - Boids[i].YVel);
+            Boids[i].R += Group*(RAverage - Boids[i].R);
+            Boids[i].G += Group*(GAverage - Boids[i].G);
+            Boids[i].B += Group*(BAverage - Boids[i].B);
         }
 
         Boids[i].X += Boids[i].XVel;
@@ -202,9 +226,11 @@ function Render () {
         Dot.fill();
 
         // Drawing the boundary
-        var RangeCircle = Canvas.getContext("2d");
-        RangeCircle.beginPath();
-        RangeCircle.arc(Boids[i].X, Boids[i].Y, Range/2, 0, 2*Math.PI);
-        RangeCircle.stroke();
+        if (BorderMode > 1) {
+            var RangeCircle = Canvas.getContext("2d");
+            RangeCircle.beginPath();
+            RangeCircle.arc(Boids[i].X, Boids[i].Y, Range/(4 - BorderMode), 0, 2*Math.PI);
+            RangeCircle.stroke();
+        }
     }
 }
