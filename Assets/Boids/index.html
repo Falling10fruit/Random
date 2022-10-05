@@ -10,26 +10,43 @@
 
         <div style="z-index: 2; font-family: sans-serif">
             <button type="button" id="Pause" style="color: rgb(0, 255, 100);"><strong>Running!</strong></button>
-            <br>
-            <label><strong>Group:</strong></label>
-            <input type="range" id="GroupInput" min="1" max="16" value="0.05"> <!--0.05 to 0.8-->
-            <label id="GroupDisplay"></label>
-            <br>
-            <label><strong>Avoid:</strong></label>
-            <input type="range" id="AvoidInput" min="1" max="16" value="-0.1"> <!-- -0.05 to -0.8-->
-            <label id="AvoidDisplay"></label>
-            <br>
-            <label><strong>Speed:</strong></label>
-            <input type="range" id="SpeedInput" min="1" max="10" value="2">
-            <label id="SpeedDisplay"></label>
-            <br>
-            <label><strong>Range:</strong></label>
-            <input type="range" id="RangeInput" min="10" max="100" value="40">
-            <label id="RangeDisplay"></label>
-            <br>
-            <label><strong>Align:</strong></label>
-            <input type="range" id="AlignInput" min="1" max="16" value="0.05"> <!--0.05 to 0.08-->
-            <label id="AlignDisplay"></label>
+
+            <details>
+                <summary><strong>Controls</strong></summary>
+
+                <label><strong>Group:</strong></label>
+                <input type="range" id="GroupInput" min="1" max="16" value="2"> <!--0.05 to 0.8-->
+                <label id="GroupDisplay"></label>
+                <br>
+
+                <label><strong>Avoid:</strong></label>
+                <input type="range" id="AvoidInput" min="1" max="16" value="2"> <!-- -0.05 to -0.8-->
+                <label id="AvoidDisplay"></label>
+                <br>
+
+                <label><strong>Speed:</strong></label>
+                <input type="range" id="SpeedInput" min="1" max="10" value="2">
+                <label id="SpeedDisplay"></label>
+                <br>
+
+                <label><strong>Range:</strong></label>
+                <input type="range" id="RangeInput" min="10" max="100" value="40">
+                <label id="RangeDisplay"></label>
+                <br>
+
+                <label><strong>Align:</strong></label>
+                <input type="range" id="AlignInput" min="1" max="16" value="1"> <!--0.05 to 0.08-->
+                <label id="AlignDisplay"></label>
+                <br>
+                <br>
+
+                <button type="button" id="Reset">Reset</button>
+                <br>
+                
+                <label><strong>Boid Amount:</strong></label>
+                <input type="range" id="BoidInput" min="1" max="1000" value="500">
+                <label id="BoidDisplay"></label>
+            </details>
         </div>
 
         <script src="canvas.js"></script>

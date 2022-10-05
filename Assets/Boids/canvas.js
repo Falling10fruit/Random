@@ -1,8 +1,9 @@
-var Group = 0.05;
+var Group = 0.1;
 var Avoid = -0.1;
 var Speed = 2;
 var Range = 40;
 var Align = 0.05;
+var BoidAmount = 500;
 
 // Controls
 var GroupInput = document.getElementById("GroupInput");
@@ -10,39 +11,46 @@ var AvoidInput = document.getElementById("AvoidInput");
 var SpeedInput = document.getElementById("SpeedInput");
 var RangeInput = document.getElementById("RangeInput");
 var AlignInput = document.getElementById("AlignInput");
+var BoidInput = document.getElementById("BoidInput");
 
 var GroupDisplay = document.getElementById("GroupDisplay");
 var AvoidDisplay = document.getElementById("AvoidDisplay");
 var SpeedDisplay = document.getElementById("SpeedDisplay");
 var RangeDisplay = document.getElementById("RangeDisplay");
 var AlignDisplay = document.getElementById("AlignDisplay");
+var BoidDisplay = document.getElementById("BoidDisplay");
 
 GroupDisplay.innerHTML = "<strong>" + Group + "</strong>";
 AvoidDisplay.innerHTML = "<strong>" + Avoid + "</strong>";
 SpeedDisplay.innerHTML = "<strong>" + Speed + "</strong>";
 RangeDisplay.innerHTML = "<strong>" + Range + "</strong>";
 AlignDisplay.innerHTML = "<strong>" + Align + "</strong>";
+BoidDisplay.innerHTML = "<strong>" + BoidAmount + "</strong>";
 
 GroupInput.addEventListener("input", function (e) {
     Group = this.valueAsNumber*5/100; // 1 to 16 => 0.05 to 0.8
-    GroupDisplay.innerHTML = "<strong>" + Group + "</strong";
+    GroupDisplay.innerHTML = "<strong>" + Group + "</strong>";
 });
 AvoidInput.addEventListener("input", function (e) {
     Avoid = this.valueAsNumber*-5/100; // 1 to 16 => -0.05 to -0.8 
-    AvoidDisplay.innerHTML = "<strong>" + Avoid + "</strong";
+    AvoidDisplay.innerHTML = "<strong>" + Avoid + "</strong>";
 });
 SpeedInput.addEventListener("input", function (e) {
     Speed = this.valueAsNumber;
-    SpeedDisplay.innerHTML = "<strong>" + Speed + "</strong";
+    SpeedDisplay.innerHTML = "<strong>" + Speed + "</strong>";
 });
 RangeInput.addEventListener("input", function (e) {
     Range = this.valueAsNumber;
-    RangeDisplay.innerHTML = "<strong>" + Range + "</strong";
+    RangeDisplay.innerHTML = "<strong>" + Range + "</strong>";
     Render();
 });
 AlignInput.addEventListener("input", function (e) {
     Align = this.valueAsNumber*5/100;  // 1 to 16 => 0.05 to 0.8
-    AlignDisplay.innerHTML = "<strong>" + Align + "</strong";
+    AlignDisplay.innerHTML = "<strong>" + Align + "</strong>";
+});
+BoidInput.addEventListener("input", function (e) {
+    BoidAmount = this.valueAsNumber;
+    BoidDisplay.innerHTML = "<strong>" + BoidAmount + "</strong>";
 });
 
 // Sizing and positioning Canvas
@@ -62,17 +70,27 @@ var Boids = [/*{
     YVel: 0, // Y Velocity
 }*/];
 
-for (var i = 0; i < 100; i++) {
-    Boids.push({
-        X: Math.random()*Canvas.width,
-        Y: Math.random()*Canvas.height,
-        XVel: (Math.random()*2 - 1)*(Math.random()*Speed + Speed/2),
-        YVel: (Math.random()*2 - 1)*(Math.random()*Speed + Speed/2),
-        R: Math.random()*255,
-        G: Math.random()*255,
-        B: Math.random()*255
-    });
-}
+
+var ResetButton = document.getElementById("Reset");
+var Reset = function (Amount) {
+    Boids.splice(0, Boids.length)
+
+    for (var i = 0; i < Amount; i++) {
+        Boids.push({
+            X: Math.random()*Canvas.width,
+            Y: Math.random()*Canvas.height,
+            XVel: (Math.random()*2 - 1)*(Math.random()*Speed + Speed/2),
+            YVel: (Math.random()*2 - 1)*(Math.random()*Speed + Speed/2),
+            R: Math.random()*255,
+            G: Math.random()*255,
+            B: Math.random()*255
+        });
+    }
+};
+
+ResetButton.addEventListener("click", function (e) {Reset(BoidAmount); Render();});
+
+Reset(BoidAmount);
 
 // Pause Button
 var Pause = false;
@@ -124,12 +142,15 @@ function Simulate () {
         Boids[i].YVel += 0.01*(Speed*Math.sign(Boids[i].YVel) - Boids[i].YVel);
 
         // Swarming
-        var XAverage, YAverage, XVelAverage, YVelAverage = 0;
-        for (var i = 0; i < Average.length; i++) {
-            XAverage += Average[i].X;
-            YAverage += Average[i].Y;
-            XVelAverage += Average[i].XVel;
-            YVelAverage += Average[i].YVel;
+        var XAverage = 0;
+        var YAverage = 0;
+        var XVelAverage = 0;
+        var YVelAverage = 0;
+        for (var x = 0; x < Average.length; x++) {
+            XAverage += Average[x].X;
+            YAverage += Average[x].Y;
+            XVelAverage += Average[x].XVel;
+            YVelAverage += Average[x].YVel;
         }
 
         XAverage = XAverage/Average.length;
@@ -137,10 +158,10 @@ function Simulate () {
         XVelAverage = XVelAverage/Average.length;
         YVelAverage = YVelAverage/Average.length;
 
-        XAverage = Group*(XAverage - Boids[i].X);
-        YAverage = Group*(YAverage - Boids[i].Y);
-        XVelAverage = Align*(XVelAverage - Boids[i].XVel);
-        YVelAverage = Align*(YVelAverage - Boids[i].YVel);
+        Boids[i].X += Group*(XAverage - Boids[i].X);
+        Boids[i].Y += Group*(YAverage - Boids[i].Y);
+        Boids[i].XVel += Align*(XVelAverage - Boids[i].XVel);
+        Boids[i].YVel += Align*(YVelAverage - Boids[i].YVel);
 
         Boids[i].X += Boids[i].XVel;
         Boids[i].Y += Boids[i].YVel;
