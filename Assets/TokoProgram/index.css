@@ -1,0 +1,20 @@
+body {
+    font-family: sans-serif;
+    margin: 5%;
+}
+
+#Receipt {
+    margin: 10px;
+    border: solid 5px black;
+    padding: 10px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.Items {
+    margin: 10px;
+    border: solid 2px black;
+    padding: 5px
+}

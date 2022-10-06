@@ -2,6 +2,8 @@
 <html lang="en">
     <head>
         <title>Program untuk Toko</title>
+
+        <link rel="stylesheet" type="text/css" href="index.css">
     </head>
     <body>
         <details>
@@ -35,7 +37,18 @@
 
         <button type="button" id="Tambah">Tambah produkt</button>
 
-        <div id="Receipt"></div>
+        <div id="Receipt">
+            <div class="Items" style="visibility: hidden">
+                <label>Nama Produkt</label>
+                <input type="text" class="Name">
+                <br>
+                <br>
+                <label>Berapa</label>
+                <input type="text" class="Amount">
+            </div>
+        </div>
+
+        <button type="button" id="Menjual">Menjual</button>
 
         <script src="index.js"></script>
     </body>

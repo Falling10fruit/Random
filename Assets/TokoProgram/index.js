@@ -5,6 +5,7 @@ var HargaTokoBaru = document.getElementById("HargaTokoBaru");
 var HargaEcerBaru = document.getElementById("HargaEcerBaru");
 var Tambah = document.getElementById("Tambah");
 var Receipt = document.getElementById("Receipt");
+var Items = document.getElementsByClassName("Items");
 var Produkt = [{
     Nama: "Doll",
     Stok: 666,
@@ -43,12 +44,8 @@ Kumpulkan.addEventListener("click", function () {
 });
 
 Tambah.addEventListener("click", function () {
-    var ProductSection = document.createElement("div");
-    var ProductName = document.createElement("input");
-    ProductName.setAttribute("type", "text");
-    if (Produkt.length > 0) {
-        ProductName.value = Produkt[0].Nama;
-    }
-    ProductSection.appendChild(ProductName);
-    Receipt.appendChild(ProductSection);
+    var NewItem = Items[0].cloneNode(true);
+    Receipt.appendChild(NewItem);
+    Items[Items.length - 1].style.visibility = "visible";
+    Items[Items.length - 1].style.position = "relative";
 });
