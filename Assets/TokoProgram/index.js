@@ -45,7 +45,13 @@ Kumpulkan.addEventListener("click", function () {
 
 Tambah.addEventListener("click", function () {
     var NewItem = Items[0].cloneNode(true);
+    NewItem.style.visibility = "visible";
+    NewItem.style.position = "relative";
     Receipt.appendChild(NewItem);
-    Items[Items.length - 1].style.visibility = "visible";
-    Items[Items.length - 1].style.position = "relative";
+    var Names = document.getElementsByClassName("Names");
 });
+
+function NameUpdate (i) {
+    var Names = document.getElementsByClassName("Names");
+    Names[i]
+};

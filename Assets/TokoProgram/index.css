@@ -8,13 +8,12 @@ body {
     border: solid 5px black;
     padding: 10px;
     height: 350px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    overflow: auto;
 }
 
 .Items {
     margin: 10px;
     border: solid 2px black;
-    padding: 5px
+    padding: 5px;
+    left: 0px;
 }
