@@ -6,9 +6,9 @@
         <link rel="stylesheet" type="text/css" href="index.css">
     </head>
     <body>
-        <details>
-            <summary>Tambah Produkt:</summary>
-            <form>
+        <div style="display: flex; border-bottom: 3px solid black; padding: 20px">
+            <div style="display: flex; flex-direction: column;">
+                <h2>Tambah Produkt:</h2>
                 <label>Nama produkt</label>
                 <input type="text" id="NamaBaru">
                 <label id="NamaHilang" style="color: red"></label>
@@ -30,14 +30,24 @@
                 <br>
                 <br>
                 <button type="button" id="Kumpulkan">Tambah produkt</button>
-            </form>
-        </details>
+            </div>
+        </div>
 
         <h2>Menjual produkt</h2>
 
-        <button type="button" id="Tambah">Tambah produkt</button>
+        <form style="display: flex;">
+            <button type="button" id="Tambah">Tambah produkt</button>
 
-        <button type="button" id="Reset">Menjual</button>
+            <button type="button" id="Reset">Reset</button>
+
+            <label>Untuk: </label>
+            <input type="radio" name="Untuk" value="Ecer">
+            <label>Ecer</label>
+            <input type="radio" name="Untuk" value="Toko">
+            <label>Toko</label>
+
+            <p id="Cost"></p>
+        </form>
 
         <div id="Receipt">
             <div class="Items" style="visibility: hidden; position: fixed">

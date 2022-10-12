@@ -5,7 +5,10 @@ var HargaTokoBaru = document.getElementById("HargaTokoBaru");
 var HargaEcerBaru = document.getElementById("HargaEcerBaru");
 var Tambah = document.getElementById("Tambah");
 var Receipt = document.getElementById("Receipt");
+var CostText = document.getElementById("Cost");
 var Items = document.getElementsByClassName("Items");
+var Names = document.getElementsByClassName("Names");
+var Amounts = document.getElementsByClassName("Amounts");
 var Produkt = [{
     Nama: "Doll",
     Stok: 666,
@@ -48,10 +51,25 @@ Tambah.addEventListener("click", function () {
     NewItem.style.visibility = "visible";
     NewItem.style.position = "relative";
     Receipt.appendChild(NewItem);
-    var Names = document.getElementsByClassName("Names");
+    Names[Items.length - 1].addEventListener("input", function () {
+        CostUpdate();
+    });
+    Amounts[Items.length - 1].addEventListener("input", function () {
+        CostUpdate();
+    });
 });
 
-function NameUpdate (i) {
-    var Names = document.getElementsByClassName("Names");
-    Names[i]
+function CostUpdate () {
+    var Cost = 0;
+
+    for (var i = 1; i < Items.length; i++) {
+        for (var x = 0; x < Produkt.length; x++) {
+            if (Produkt[x].Nama == Names[i].value) {
+                Cost += Produkt[x].HargaEcer*parseInt(Amounts[i].value);
+                x = Produkt.length;
+            }
+        }
+    }
+
+    CostText.innerHTML = "<strong>Biaya: " + Cost + "</strong>";
 };
