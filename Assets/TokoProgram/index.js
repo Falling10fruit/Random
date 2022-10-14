@@ -6,6 +6,8 @@ var HargaEcerBaru = document.getElementById("HargaEcerBaru");
 var Tambah = document.getElementById("Tambah");
 var Receipt = document.getElementById("Receipt");
 var CostText = document.getElementById("Cost");
+var EcerCheck = document.getElementById("EcerCheck");
+var TokoCheck = document.getElementById("TokoCheck");
 var Items = document.getElementsByClassName("Items");
 var Names = document.getElementsByClassName("Names");
 var Amounts = document.getElementsByClassName("Amounts");
@@ -65,7 +67,12 @@ function CostUpdate () {
     for (var i = 1; i < Items.length; i++) {
         for (var x = 0; x < Produkt.length; x++) {
             if (Produkt[x].Nama == Names[i].value) {
-                Cost += Produkt[x].HargaEcer*parseInt(Amounts[i].value);
+                if (EcerCheck.checked == true) {
+                    Cost += Produkt[x].HargaEcer*parseInt(Amounts[i].value);
+                } else if (TokoCheck.checked == true) {
+                    Cost += Produkt[x].HargaToko*parseInt(Amounts[i].value);
+                }
+                
                 x = Produkt.length;
             }
         }

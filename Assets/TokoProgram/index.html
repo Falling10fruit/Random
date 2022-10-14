@@ -6,9 +6,9 @@
         <link rel="stylesheet" type="text/css" href="index.css">
     </head>
     <body>
-        <div style="display: flex; border-bottom: 3px solid black; padding: 20px">
-            <div style="display: flex; flex-direction: column;">
-                <h2>Tambah Produkt:</h2>
+        <div id="EditControl">
+            <div class="ProduktEdit">
+                <h2>Tambah Produkt</h2>
                 <label>Nama produkt</label>
                 <input type="text" id="NamaBaru">
                 <label id="NamaHilang" style="color: red"></label>
@@ -31,6 +31,41 @@
                 <br>
                 <button type="button" id="Kumpulkan">Tambah produkt</button>
             </div>
+
+            <div class="Divider"></div>
+
+            <div class="ProduktEdit">
+                <h2>Edit Produkt</h2>
+                <label>Nama produkt</label>
+                <input type="text" id="EditNama">
+                <label id="NamaSalah" style="color: red"></label>
+                <br>
+                <br>
+                <label>Stok</label>
+                <input type="text" id="EditStok">
+                <label id="StokSalah" style="color: red"></label>
+                <br>
+                <br>
+                <label>Harga Toko</label>
+                <input type="text" id="HargaTokoBaru">
+                <label id="HargaTokoHilang" style="color: red"></label>
+                <br>
+                <br>
+                <label>Harga Ecer</label>
+                <input type="text" id="HargaEcerBaru">
+                <label id="HargaEcerHilang" style="color: red"></label>
+                <br>
+                <br>
+                <button type="button" id="Kumpulkan">Edit produkt</button>
+            </div>
+
+            <div class="Divider"></div>
+
+            <div class="ProduktEdit">
+                <h2>Hapus Produkt</h2>
+                <label>Nama produkt</label>
+                <input type="text">
+            </div>
         </div>
 
         <h2>Menjual produkt</h2>
@@ -41,9 +76,9 @@
             <button type="button" id="Reset">Reset</button>
 
             <label>Untuk: </label>
-            <input type="radio" name="Untuk" value="Ecer">
+            <input type="radio" name="Untuk" id="EcerCheck">
             <label>Ecer</label>
-            <input type="radio" name="Untuk" value="Toko">
+            <input type="radio" name="Untuk" id="TokoCheck">
             <label>Toko</label>
 
             <p id="Cost"></p>

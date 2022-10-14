@@ -16,3 +16,23 @@ body {
     padding: 5px;
     left: 0px;
 }
+
+#EditControl {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 3px solid black;
+    padding: 20px;
+}
+
+.Divider {
+    border-left: solid 2px black;
+}
+
+.ProduktEdit {
+    Display: flex;
+    flex-direction: column;
+}
+
+.ProduktEdit h2 {
+    text-align: center;
+}
