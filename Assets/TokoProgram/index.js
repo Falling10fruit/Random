@@ -8,10 +8,12 @@ var Receipt = document.getElementById("Receipt");
 var CostText = document.getElementById("Cost");
 var EcerCheck = document.getElementById("EcerCheck");
 var TokoCheck = document.getElementById("TokoCheck");
+var Reciept = document.getElementById("Reciept")
+var Placeholder = document.getElementById("Placeholder");
 var Items = document.getElementsByClassName("Items");
 var Names = document.getElementsByClassName("Names");
 var Amounts = document.getElementsByClassName("Amounts");
-var Produkt = [{
+var Produk = [{
     Nama: "Doll",
     Stok: 666,
     HargaToko: 75000,
@@ -34,7 +36,7 @@ Kumpulkan.addEventListener("click", function () {
         document.getElementById("HargaEcerHilang").innerHTML = "<strong>Mohon tambahkan harga ecer</strong>";
     } else {
         document.getElementById("HargaEcerHilang").innerHTML = "";
-        Produkt.push({
+        Produk.push({
             Nama: NamaBaru.value,
             Stok: parseInt(StokBaru.value),
             HargaToko: parseInt(HargaTokoBaru.value),
@@ -49,9 +51,10 @@ Kumpulkan.addEventListener("click", function () {
 });
 
 Tambah.addEventListener("click", function () {
-    var NewItem = Items[0].cloneNode(true);
+    var NewItem = Placeholder.cloneNode(true);
     NewItem.style.visibility = "visible";
     NewItem.style.position = "relative";
+    NewItem.style.className = "Items";
     Receipt.appendChild(NewItem);
     Names[Items.length - 1].addEventListener("input", function () {
         CostUpdate();
@@ -65,15 +68,15 @@ function CostUpdate () {
     var Cost = 0;
 
     for (var i = 1; i < Items.length; i++) {
-        for (var x = 0; x < Produkt.length; x++) {
-            if (Produkt[x].Nama == Names[i].value) {
+        for (var x = 0; x < Produk.length; x++) {
+            if (Produk[x].Nama == Names[i].value) {
                 //if (EcerCheck.checked == true) {
-                    Cost += Produkt[x].HargaEcer*parseInt(Amounts[i].value);
+                    Cost += Produk[x].HargaEcer*parseInt(Amounts[i].value);
                 //} else if (TokoCheck.checked == true) {
-                //    Cost += Produkt[x].HargaToko*parseInt(Amounts[i].value);
+                //    Cost += Produk[x].HargaToko*parseInt(Amounts[i].value);
                 //}
                 
-                x = Produkt.length;
+                x = Produk.length;
             }
         }
     }

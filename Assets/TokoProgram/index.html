@@ -8,8 +8,8 @@
     <body>
         <div id="EditControl">
             <div class="ProduktEdit">
-                <h2>Tambah Produkt</h2>
-                <label>Nama produkt</label>
+                <h2>Tambah Produk</h2>
+                <label>Nama Produk</label>
                 <input type="text" id="NamaBaru">
                 <label id="NamaHilang" style="color: red"></label>
                 <br>
@@ -29,14 +29,14 @@
                 <label id="HargaEcerHilang" style="color: red"></label>
                 <br>
                 <br>
-                <button type="button" id="Kumpulkan">Tambah produkt</button>
+                <button type="button" id="Kumpulkan">Tambah Produk</button>
             </div>
 
             <div class="Divider"></div>
 
             <div class="ProduktEdit">
-                <h2>Edit Produkt</h2>
-                <label>Nama produkt</label>
+                <h2>Edit Produk</h2>
+                <label>Nama Produk</label>
                 <input type="text" id="EditNama">
                 <label id="NamaSalah" style="color: red"></label>
                 <br>
@@ -56,22 +56,23 @@
                 <label id="HargaEcerHilang" style="color: red"></label>
                 <br>
                 <br>
-                <button type="button" id="Kumpulkan">Edit produkt</button>
+                <button type="button" id="Kumpulkan">Edit produk</button>
             </div>
 
             <div class="Divider"></div>
 
             <div class="ProduktEdit">
-                <h2>Hapus Produkt</h2>
-                <label>Nama produkt</label>
+                <h2>Hapus Produk</h2>
+                <label>Nama produk</label>
                 <input type="text">
+                <button type="button">Hapus Produk</button>
             </div>
         </div>
 
-        <h2>Menjual produkt</h2>
+        <h2>Menjual Produk</h2>
 
         <form style="display: flex;">
-            <button type="button" id="Tambah">Tambah produkt</button>
+            <button type="button" id="Tambah">Tambah Produk</button>
 
             <button type="button" id="Reset">Reset</button>
 
@@ -83,17 +84,6 @@
 
             <p id="Cost"></p>
         </form>
-
-        <div id="Receipt">
-            <div class="Items" style="visibility: hidden; position: fixed">
-                <label>Nama Produkt</label>
-                <input type="text" class="Names">
-                <br>
-                <br>
-                <label>Berapa</label>
-                <input type="text" class="Amounts">
-            </div>
-        </div>
 
         <table>
             <tr>
@@ -107,11 +97,15 @@
                     </div>
                 </th>
             </tr>
-            <tr id="Example">
-                <td><input type="text" placeholder="i.e. Piring"></td>
-                <td><input type="text" placeholder="i.e. 20"></td>
-                <td><p>32,000</p></td>
-            </tr>
+
+            <div id="Receipt">
+                <tr id="Placeholder" style="visibility: hidden; position: fixed">
+                    <td><input type="text" class="Names" placeholder="i.e. Piring"></td>
+                    <td><input type="text" class="Amounts" placeholder="i.e. 20"></td>
+                    <td><p>32,000</p></td>
+                </tr>
+            </div>
+
             <tr>
                 <th><h2>Total: </h2></th>
                 <th><p>2,397,500</p></th>
