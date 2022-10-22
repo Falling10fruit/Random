@@ -38,11 +38,11 @@ table {
     border-left: solid 2px black;
 }
 
-.ProduktEdit {
+.ProdukEdit {
     Display: flex;
     flex-direction: column;
 }
 
-.ProduktEdit h2 {
+.ProdukEdit h2 {
     text-align: center;
 }

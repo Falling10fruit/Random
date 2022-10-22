@@ -50,6 +50,8 @@ Kumpulkan.addEventListener("click", function () {
     }
 });
 
+Edut
+
 Tambah.addEventListener("click", function () {
     var NewItem = Placeholder.cloneNode(true);
     NewItem.style.visibility = "visible";
