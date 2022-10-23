@@ -150,8 +150,8 @@ function Simulate () {
         }
 
         // Seperation
-        Boids[i].XVel += 0.01*(Speed*Math.sign(Boids[i].XVel) - Boids[i].XVel);
-        Boids[i].YVel += 0.01*(Speed*Math.sign(Boids[i].YVel) - Boids[i].YVel);
+        Boids[i].XVel += 0.01*((Speed/(Boids[i].XVel + Boids[i].YVel)*Boids[i].XVel) * Math.sign(Boids[i].XVel) - Boids[i].XVel);
+        Boids[i].YVel += 0.01*((Speed/(Boids[i].XVel + Boids[i].YVel)*Boids[i].YVel) * Math.sign(Boids[i].YVel) - Boids[i].YVel);
 
         // Swarming
         if (Average.length > 0) {
