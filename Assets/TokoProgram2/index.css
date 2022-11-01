@@ -21,12 +21,31 @@ body {
 }
 
 .Add {
-    background-color: rgb(100, 100, 100);
+    background-color: rgb(80, 80, 80);
     border-radius: 10px;
-    padding: 10px;
-    font-size: 10px;
+    padding: 5px;
+    font-size: 25px;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#Reciept {
+    border-collapse: collapse;
+}
+
+.Left {
+    float: left;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(120, 120, 120);
+}
+
+.Right {
+    float: right;
+    height: 100%;
 }

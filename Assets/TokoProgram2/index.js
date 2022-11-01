@@ -1,4 +1,7 @@
 var Tab = document.getElementsByClassName("Tab");
+var Add = document.getElementsByClassName("Add");
+var Left = document.getElementsByClassName("Left");
+var Right = document.getElementsByClassName("Right");
 var Reciept = document.getElementById("Reciept");
 var DataBase = document.getElementById("DataBase");
 var TabMode;
@@ -51,3 +54,11 @@ Tab[1].addEventListener("click", function (e) {
     Reciept.style.visibility = "hidden";
     Reciept.style.position = "fixed";
 });
+
+for (var i = 0; i < Add.length; i++) {
+    Add[i].style.width = Add[i].getBoundingClientRect().height + "px";
+    Add[i].style.height = Add[i].style.width;
+
+    Left[i].style.width = "100px";
+    Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().width + "px";
+}
