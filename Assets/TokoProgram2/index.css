@@ -20,21 +20,6 @@ body {
     transition: 0.3s;
 }
 
-.Add {
-    background-color: rgb(80, 80, 80);
-    border-radius: 10px;
-    padding: 5px;
-    font-size: 25px;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#Reciept {
-    border-collapse: collapse;
-}
-
 .Left {
     float: left;
     height: 100%;
@@ -48,4 +33,26 @@ body {
 .Right {
     float: right;
     height: 100%;
+}
+
+.Add {
+    background-color: rgb(80, 80, 80);
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 45px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+#Reciept {
+    border-collapse: collapse;
+}
+
+table {
+    overflow: auto;
+    border: none;
 }

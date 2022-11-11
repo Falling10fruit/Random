@@ -2,12 +2,20 @@ var Tab = document.getElementsByClassName("Tab");
 var Add = document.getElementsByClassName("Add");
 var Left = document.getElementsByClassName("Left");
 var Right = document.getElementsByClassName("Right");
+var TableRow = document.getElementsByClassName("TableRow");
 var Reciept = document.getElementById("Reciept");
 var DataBase = document.getElementById("DataBase");
+var Items = document.getElementById("Items");
+var Example = document.getElementById("Example");
 var TabMode;
 
 document.body.style.height = window.innerHeight + "px";
 Reciept.style.height = DataBase.style.height = window.innerHeight - Tab[0].getBoundingClientRect().height + "px";
+
+window.addEventListener("resize", function () {
+    document.body.style.height = window.innerHeight + "px";
+    Reciept.style.height = DataBase.style.height = window.innerHeight - Tab[0].getBoundingClientRect().height + "px";
+});
 
 Tab[0].addEventListener("mouseover", function (e) {
     if (TabMode != 0) {
@@ -58,7 +66,42 @@ Tab[1].addEventListener("click", function (e) {
 for (var i = 0; i < Add.length; i++) {
     Add[i].style.width = Add[i].getBoundingClientRect().height + "px";
     Add[i].style.height = Add[i].style.width;
+}
 
+for (var i = 0; i < Left.length; i++) {
     Left[i].style.width = "100px";
     Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().width + "px";
+}
+
+for (var i = 0; i < TableRow.length; i++) {
+    TableRow[i].style.height = "50px";
+
+    if (i == 0 || i == TableRow.length - 1) {
+        TableRow[i].style.backgroundColor = "rgb(125, 125, 125)";
+    } else {
+        TableRow[i].style.backgroundColor = "rgb(" + ((i%2)*50 + 150) + ", " + ((i%2)*50 + 150) + ", " + ((i%2)*50 + 150) + ")";
+        console.log("rgb(" + ((i%2)*50 + 150) + ", " + ((i%2)*50 + 150) + ", " + ((i%2)*50 + 150) + ")");
+    }
+}
+
+for (var i = 0; i < Add.length; i++) {
+    Add[i].addEventListener("mouseover", function () {
+        Add[i].style.backgroundColor = "rgb(100, 100, 100)";
+    });
+
+    Add[i].addEventListener("mouseout", function () {
+        Add[i].style.backgroundColor = "rgb(80, 80, 80)";
+    });
+
+    Add[i].addEventListener("mouseup", function () {
+        Add[i].style.backgroundColor = "rgb(100, 100, 100)";
+    })
+
+    Add[i].addEventListener("mousedown", function () {
+        Add[i].style.backgroundColor = "rgb(70, 70, 70)";
+
+        var NewItem = Example.cloneNode(true);
+        NewItem.removeAttribute("id");
+        Items.appendChild(NewItem);
+    });
 }
