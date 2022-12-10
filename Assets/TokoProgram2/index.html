@@ -15,34 +15,51 @@
                 <div class="Add">+</div>
             </div>
 
-            <table class="Right">
-                <tr class="TableRow">
-                    <th>Nama</th>
-                    <th>Berapa</th>
-                    <th>Harga</th>
-                </tr>
-                <tr class="TableRow" id="Example">
-                    <th>
-                        <input type="text" placeholder="Piring">
-                    </th>
-                    <th>
-                        <input type="text" placeholder="666">
-                    </th>
-                    <th>3000 Doge Coins</td>
-                </tr>
+            <div class="Right">
+                <div class="Row">
+                    <h1>Nama</h1>
+                    <h1>Berapa</h1>
+                    <h1>Harga</h1>
+                </div>
 
-                <div id="Items"></div>
+                <div id="Items" class="Row" style="flex-direction: column;">
+                    <div id="Example" style="display: flex; justify-content: space-around;">
+                        <div><select class="Names"></select></div>
+                        <div><input type="text" placeholder="666"></div>
+                        <div><p>R.p. 0</p></div>
+                    </div>
+                </div>
 
-                <tr class="TableRow">
-                    <th>
-                        <h3>Total: 3000 Doge Coins</h3>
-                    </th>
-                </tr>
-            </table>
+                <div class="Row">
+                    <h1>Total: R.p. 0</h1>
+                </div>
+            </div>
         </div>
 
         <div id="DataBase" style="visibility: hidden; position: fixed">
-            <div class="Add">+</div>
+            <div class="Left">
+                <div class="Add">+</div>
+            </div>
+
+            <div class="Right">
+                <div class="Row">
+                    <h1>Nama</h1>
+                    <h1>Berapa</h1>
+                    <h1>Harga</h1>
+                </div>
+
+                <div id="Assets" class="Row" style="flex-direction: column;">
+                    <div id="Example" style="display: flex; justify-content: space-around;">
+                        <div><select class="Names"></select></div>
+                        <div><input type="text" placeholder="666"></div>
+                        <div><p>R.p. 0</p></div>
+                    </div>
+                </div>
+
+                <div class="Row">
+                    <h1>Total: R.p. 0</h1>
+                </div>
+            </div>
         </div>
 
         <script src="index.js"></script>

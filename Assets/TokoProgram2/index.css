@@ -52,7 +52,13 @@ body {
     border-collapse: collapse;
 }
 
-table {
-    overflow: auto;
-    border: none;
+#Reciept .right {
+    display: flex;
+    flex-direction: column;
+}
+
+.Row {
+    display: flex;
+    justify-content: space-around;
+    height: 20%;
 }

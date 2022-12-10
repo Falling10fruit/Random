@@ -84,24 +84,22 @@ for (var i = 0; i < TableRow.length; i++) {
     }
 }
 
-for (var i = 0; i < Add.length; i++) {
-    Add[i].addEventListener("mouseover", function () {
-        Add[i].style.backgroundColor = "rgb(100, 100, 100)";
-    });
+Add[0].addEventListener("mouseover", function () {
+    Add[0].style.backgroundColor = "rgb(100, 100, 100)";
+});
 
-    Add[i].addEventListener("mouseout", function () {
-        Add[i].style.backgroundColor = "rgb(80, 80, 80)";
-    });
+Add[0].addEventListener("mouseout", function () {
+    Add[0].style.backgroundColor = "rgb(80, 80, 80)";
+});
 
-    Add[i].addEventListener("mouseup", function () {
-        Add[i].style.backgroundColor = "rgb(100, 100, 100)";
-    })
+Add[0].addEventListener("mouseup", function () {
+    Add[0].style.backgroundColor = "rgb(100, 100, 100)";
+})
 
-    Add[i].addEventListener("mousedown", function () {
-        Add[i].style.backgroundColor = "rgb(70, 70, 70)";
+Add[0].addEventListener("mousedown", function () {
+    Add[0].style.backgroundColor = "rgb(70, 70, 70)";
 
-        var NewItem = Example.cloneNode(true);
-        NewItem.removeAttribute("id");
-        Items.appendChild(NewItem);
-    });
-}
+    var NewItem = Example.cloneNode(true);
+    NewItem.removeAttribute("id");
+    Items.appendChild(NewItem);
+});
