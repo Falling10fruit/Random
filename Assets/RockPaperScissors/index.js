@@ -21,21 +21,46 @@ if (window.innerHeight < window.innerWidth) {
     Canvas.style.height = Canvas.style.width = window.innerWidth/2 + "px";
 }
 
+
+let Make = function () {
+    var X = Math.random() * window.innerWidth/2;
+    var Y = Math.random() * window.innerHeight/2; 
+    
+    for (var y = 0; y < Agents.length; y++) {
+        if (y != Agents.length) {
+            if (Math.abs(X - Agents[y].X) < 50 || Math.abs(Y - Agents[y].Y) < 50) {
+                Make();
+                break;
+            }
+        }
+    }
+    
+    Agents.push({
+        X: X,
+        Y: Y,
+        XVel: Math.floor(Math.random() * 10),
+        YVel: Math.floor(Math.random() * 10),
+        Type: i
+    });
+}
+
 for (var i = 0; i < 3; i++) {
     for (var x = 0; x < 5; x++) {
-        Agents.push({
-            X: Math.random() * window.innerWidth/2,
-            Y: Math.random() * window.innerHeight/2,
-            XVel: Math.floor(Math.random() * 10),
-            YVel: Math.floor(Math.random() * 10),
-            Type: i
-        });
+        Make();
     }
 }
 
 Simulate();
 
 function Simulate () {
+    for (var i = 0; i < Agents.length; i++) { // Collision
+        for (var x = 0; x < Agents.length; x++) {
+            if (i != x) {
+
+            }
+        }
+    }
+
     Render();
 
     requestAnimationFrame(Simulate);
@@ -43,7 +68,7 @@ function Simulate () {
 
 function Render () {
     for (var i = 0; i < Agents.length; i++) {
-        let Agent = Canvas.getContext("2D");
+        var Agent = Canvas.getContext("2d");
 
         if (Agents[i].Type = 0) {
             Paper.onload = function () {
