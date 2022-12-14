@@ -21,32 +21,15 @@ if (window.innerHeight < window.innerWidth) {
     Canvas.style.height = Canvas.style.width = window.innerWidth/2 + "px";
 }
 
-
-let Make = function () {
-    var X = Math.random() * window.innerWidth/2;
-    var Y = Math.random() * window.innerHeight/2; 
-    
-    for (var y = 0; y < Agents.length; y++) {
-        if (y != Agents.length) {
-            if (Math.abs(X - Agents[y].X) < 50 || Math.abs(Y - Agents[y].Y) < 50) {
-                Make();
-                break;
-            }
-        }
-    }
-    
-    Agents.push({
-        X: X,
-        Y: Y,
-        XVel: Math.floor(Math.random() * 10),
-        YVel: Math.floor(Math.random() * 10),
-        Type: i
-    });
-}
-
 for (var i = 0; i < 3; i++) {
     for (var x = 0; x < 5; x++) {
-        Make();
+        Agents.push({
+            X: window.innerWidth/8 * (i + 1),
+            Y: window.innerHeight/12 * (x + 1),
+            XVel: Math.floor(Math.random() * 10),
+            YVel: Math.floor(Math.random() * 10),
+            Type: i
+        });
     }
 }
 
@@ -70,7 +53,12 @@ function Render () {
     for (var i = 0; i < Agents.length; i++) {
         var Agent = Canvas.getContext("2d");
 
-        if (Agents[i].Type = 0) {
+        Agent.beginPath();
+        Agent.fillStyle = "rgb(0, 0, 0)";
+        Agent.arc(Agents[i].X, Agents[i].Y, 5, 0, Math.PI * 2);
+        Agent.fill();
+
+        /*if (Agents[i].Type = 0) {
             Paper.onload = function () {
                 Agent.drawImage(Paper, Agents[i].X, Agents[i].Y, 50, 50);
             }
@@ -82,6 +70,6 @@ function Render () {
             Rock.onload = function () {
                 Agent.drawImage(Rock, Agents[i].X, Agents[i].Y, 50, 50);
             }
-        }
+        }*/
     }
 }
