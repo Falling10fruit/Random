@@ -5,6 +5,7 @@ var Range = 50;
 var Align = 0.05;
 var BoidAmount = 500;
 var BorderMode = 1;
+var Vector = 0;
 
 // Controls
 var GroupInput = document.getElementById("GroupInput");
@@ -14,6 +15,7 @@ var RangeInput = document.getElementById("RangeInput");
 var AlignInput = document.getElementById("AlignInput");
 var BoidInput = document.getElementById("BoidInput");
 var BorderInput = document.getElementById("BorderInput");
+var VectorInput = document.getElementById("VectorInput");
 
 var GroupDisplay = document.getElementById("GroupDisplay");
 var AvoidDisplay = document.getElementById("AvoidDisplay");
@@ -22,6 +24,7 @@ var RangeDisplay = document.getElementById("RangeDisplay");
 var AlignDisplay = document.getElementById("AlignDisplay");
 var BoidDisplay = document.getElementById("BoidDisplay");
 var BorderDisplay = document.getElementById("BorderDisplay");
+var VectorDisplay = document.getElementById("VectorDisplay");
 
 GroupDisplay.innerHTML = "<strong>" + Group + "</strong>";
 AvoidDisplay.innerHTML = "<strong>" + Avoid + "</strong>";
@@ -30,6 +33,7 @@ RangeDisplay.innerHTML = "<strong>" + Range + "</strong>";
 AlignDisplay.innerHTML = "<strong>" + Align + "</strong>";
 BoidDisplay.innerHTML = "<strong>" + BoidAmount + "</strong>";
 BorderDisplay.innerHTML = "<strong>" + BorderMode + "</strong>";
+VectorDisplay.innerHTML = "<strong>" + Vector + "</strong>";
 
 GroupInput.addEventListener("input", function (e) {
     Group = this.valueAsNumber*5/100; // 1 to 16 => 0.05 to 0.8
@@ -123,6 +127,10 @@ Simulate();
 
 function Simulate () {
     for (var i = 0; i < Boids.length; i++) {
+        if (i == 0) {
+            var History = [Boids]
+        }
+
         // Boid interactions
         var Average = [];
 
@@ -133,9 +141,14 @@ function Simulate () {
 
                 var Distance = Math.sqrt((XDistance)*(XDistance) + (YDistance)*(YDistance));
 
+                if (Distance == 0) {
+                    console.log("WDwdw");
+                }
+
                 if (Distance < Range) {
                     Boids[i].XVel += Avoid * (Distance/XDistance);
                     Boids[i].YVel += Avoid * (Distance/YDistance);
+
                     Average.push({
                         X: Boids[x].X,
                         Y: Boids[x].Y,
@@ -148,10 +161,14 @@ function Simulate () {
                 }
             }
         }
+        
 
         // Seperation
-        Boids[i].XVel += 0.01*((Speed/(Boids[i].XVel + Boids[i].YVel)*Boids[i].XVel) * Math.sign(Boids[i].XVel) - Boids[i].XVel);
-        Boids[i].YVel += 0.01*((Speed/(Boids[i].XVel + Boids[i].YVel)*Boids[i].YVel) * Math.sign(Boids[i].YVel) - Boids[i].YVel);
+        let OldXVel = Boids[i].XVel;
+        let OldYVel = Boids[i].YVel;
+
+        Boids[i].XVel += 0.01*((Speed/(OldXVel + OldYVel)*OldXVel) * Math.sign(OldXVel) - OldXVel);
+        Boids[i].YVel += 0.01*((Speed/(OldXVel + OldYVel)*OldYVel) * Math.sign(OldYVel) - OldYVel);
 
         // Swarming
         if (Average.length > 0) {
@@ -187,6 +204,7 @@ function Simulate () {
             Boids[i].R += Group*(RAverage - Boids[i].R);
             Boids[i].G += Group*(GAverage - Boids[i].G);
             Boids[i].B += Group*(BAverage - Boids[i].B);
+
         }
 
         Boids[i].X += Boids[i].XVel;
@@ -232,5 +250,11 @@ function Render () {
             RangeCircle.arc(Boids[i].X, Boids[i].Y, Range/(4 - BorderMode), 0, 2*Math.PI);
             RangeCircle.stroke();
         }
+
+        var Vector = Canvas.getContext("2d");
+        Vector.beginPath();
+        Vector.moveTo(0, 0);
+        Vector.lineTo(Boids[i].X * Vector * 10, Boids[i].Y * Vector * 10);
+        Vector.stroke();
     }
 }
