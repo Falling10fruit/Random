@@ -6,10 +6,16 @@ var Agents = [/*{
         YVel: 0,
         Type: 0 /*(Paper: 0 | Scissors: 1 | Rock: 2)*
     }, {
+        X: 200,
+        Y: 300,
+        XVel: 4,
+        YVel: 0,
+        Type: 0
+    }, {
         X: 300,
-        Y: 100,
-        XVel: 0,
-        YVel: 8,
+        Y: 300,
+        XVel: -4,
+        YVel: 0,
         Type: 0
     }*/];
 var Paper = new Image();
@@ -30,8 +36,8 @@ for (var i = 0; i < 3; i++) {
         Agents.push({
             X: Math.round(Canvas.getBoundingClientRect().width/4 * (i + 1)),
             Y: Math.round(Canvas.getBoundingClientRect().height/6 * (x + 1)),
-            XVel: Math.floor(Math.random() * 5)*2 * (Math.floor(Math.random()*2)*2 - 1),
-            YVel: Math.floor(Math.random() * 5)*2 * (Math.floor(Math.random()*2)*2 - 1),
+            XVel: (Math.floor(Math.random() * 3)*2 + 2) * (Math.floor(Math.random()*2)*2 - 1),
+            YVel: (Math.floor(Math.random() * 4)*2 + 2) * (Math.floor(Math.random()*2)*2 - 1),
             Type: i
         });
     }
@@ -68,7 +74,7 @@ function Simulate () {
                 let YDist = Math.abs(Agents[x].Y - Agents[i].Y);
 
                 if (XDist < 10 && YDist < 10) {
-                    if (XDist < YDist) {
+                    if (XDist > YDist) {
                         DelayedForce[i].XVel += Agents[i].XVel/2 * -3;
                         DelayedForce[x].XVel += Agents[i].XVel/2;
                     } else {
@@ -77,15 +83,15 @@ function Simulate () {
                     }
 
                     if (Agents[i].Type == 0) {
-                        if (Agents[i].Type == 2) {
+                        if (Agents[x].Type == 2) {
                             DelayedForce[x].Type = 0;
                         }
                     } else if (Agents[i].Type == 1) {
-                        if (Agents[i].Type == 0) {
+                        if (Agents[x].Type == 0) {
                             DelayedForce[x].Type = 1;
                         }
                     } else if (Agents[i].Type == 2) {
-                        if (Agents[i].Type == 1) {
+                        if (Agents[x].Type == 1) {
                             DelayedForce[x].Type = 2;
                         }
                     }
@@ -97,6 +103,7 @@ function Simulate () {
     for (var i = 0; i < DelayedForce.length; i++) {
         Agents[i].XVel += DelayedForce[i].XVel;
         Agents[i].YVel += DelayedForce[i].YVel;
+        Agents[i].Type = DelayedForce[i].Type;
     }
 
     for (var i = 0; i < Agents.length; i++) {
@@ -106,7 +113,15 @@ function Simulate () {
 
     Render();
 
-    requestAnimationFrame(Simulate);
+    for (var i = 1; i < Agents.length; i++) {
+        if (Agents[i].Type != Agents[0].Type) {
+            requestAnimationFrame(Simulate);
+            break;
+        } else if (i == Agents.length - 1) {
+            End();
+        }
+    }
+
 }
 
 function Render () {
@@ -121,23 +136,31 @@ function Render () {
 
         Agent.beginPath();
         Agent.fillStyle = "rgb(0, 0, 0)";
+        Agent.textAlign = "center";
         Agent.fillText(Agents[i].Type, Agents[i].X + 5, Agents[i].Y - 5);
-        Agent.fillStyle = "rgba(0, 0, 0, 1)";
+        /*Agent.fillStyle = "rgba(0, 0, 0, 1)";
         Agent.fillRect(Agents[i].X - 5, Agents[i].Y - 5, 10, 10);
-        Agent.fill();
+        Agent.fill();*/
 
-        /*if (Agents[i].Type = 0) {
-            Paper.onload = function () {
-                Agent.drawImage(Paper, Agents[i].X, Agents[i].Y, 50, 50);
-            }
-        } else if (Agents[i].Type = 1) {
-            Scissors.onload = function () {
-                Agent.drawImage(Scissors, Agents[i].X, Agents[i].Y, 50, 50);
-            }
-        } else if (Agents[i].Type = 2) {
-            Rock.onload = function () {
-                Agent.drawImage(Rock, Agents[i].X, Agents[i].Y, 50, 50);
-            }
-        }*/
+        if (Agents[i].Type == 0) {
+            Agent.drawImage(Paper, Agents[i].X - 10, Agents[i].Y - 10, 20, 20);
+        } else if (Agents[i].Type == 1) {
+            Agent.drawImage(Scissors, Agents[i].X - 10, Agents[i].Y - 10, 20, 20);
+        } else if (Agents[i].Type == 2) {
+            Agent.drawImage(Rock, Agents[i].X - 10, Agents[i].Y - 10, 20, 20);
+        }
+    }
+}
+
+function End () {
+    var Text = Canvas.getContext("2d");
+    Text.textAlign = "center";
+    Text.font = Canvas.width/10 + "px sans-serif"
+    if (Agents[0].Type == 0) {
+        Text.fillText("Paper Won", Canvas.width/2, Canvas.height/2);
+    } else if (Agents[0].Type == 1) {
+        Text.fillText("Scissor Won", Canvas.width/2, Canvas.height/2);
+    } else if (Agents[0].Type == 2) {
+        Text.fillText("Rock Won", Canvas.width/2, Canvas.height/2);
     }
 }
