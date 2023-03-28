@@ -6,6 +6,7 @@ var Entities = [{
     Type: "Player",
     Width: 20,
     Height: 20,
+    Health: 10,
     X: 0,
     Y: 0,
     XVel: 0,
@@ -18,12 +19,13 @@ var Entities = [{
     Y0: 100,
     X1: 200,
     Y1: 300,
-    XVel: 100,
-    YVel: 200
+    XVel: 10,
+    YVel: 0
 }, {
     Type: "E0",
     Width: 20,
     Height: 20,
+    Health: 5,
     X: 200,
     Y: 200,
     XVel: 0,
@@ -59,7 +61,7 @@ for (var i = 0; i < 1000; i++) {
     if (i == 688) {
         document.getElementById("Coordinates").innerHTML += "<span id='Rickroll'>Wacky </span>";
         document.getElementById("Rickroll").addEventListener("click", function (e) {
-            console.log("Clicked");
+            e.preventDefault();
             location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         });
     } else {
@@ -129,12 +131,10 @@ function Loading () {
 
 function Refresh () {
     Counter++;
-
-    for (var i = 0; i < Entities.length; i++) {
-        if (Entities[i].Type == "Player") {
-
-            // Player move
-            window.addEventListener("keydown", function (e) {
+    
+    window.addEventListener("keydown", function (e) {
+        for (var i = 0; i < Entities.length; i++) {
+            if (Entities[i].Type == "Player") {
                 if (e.keyCode === 87) {
                     Entities[i].YVel = -1000/FPS;
                 }
@@ -150,30 +150,73 @@ function Refresh () {
                 if (e.keyCode === 68) {
                     Entities[i].XVel = 1000/FPS;
                 }
-            });
-            
+
+                i = Entities.length;
+            }
+        }
+    });
+
+    for (var i = 0; i < Entities.length; i++) {
+        if (Entities[i].Type == "Player") {
+            // Player move
             Entities[i].X += Entities[i].XVel;
             Entities[i].Y += Entities[i].YVel;
 
             Entities[i].XVel = Entities[i].XVel * 0.9;
             Entities[i].YVel = Entities[i].YVel * 0.9;
 
+            // Player collide with other entity
+            for (var x = 0; x < Entities.length; x++) {
+                if (Entities[x].Type.charAt(0) != "B") { // Bullets have no width or height, bullet collision will be dealt in the bullet sccript
+                    var Touching = function (i, x) { // Simplify
+                        return Math.abs(Entities[x].X - Entities[i].X) < Entities[x].Width/2 + Entities[i].Width/2 || Math.abs(Entities[x].Y - Entities[i].Y) < Entities[x].Height/2 + Entities[i].Height/2;
+                    }
+
+                    if (Touching(i, x)) {
+                        while (Touching(i, x)) {
+                            Entities[i].X -= Math.sign(Entities[i].XVel);
+                            Entities[i].Y -= Math.sign(Entities[i].YVel);
+                        }
+
+                        Entities[i].XVel = Entities[i].YVel = 0;
+                    }
+                }
+            }
+
+            // Player collide with edge
             Entities[i].X = Math.min(Math.max(Entities[i].X, 10), Canvas.width - 10);
             Entities[i].Y = Math.min(Math.max(Entities[i].Y, 10), Canvas.height - 10);
         } else if (Entities[i].Type.charAt(0) == "B") {
-            for (var x = 0; Entities[x].Type == "Player"; x++) {
-                let PlayerIndex = x;
-            }
-
-            if (Entities[i].Type.charAt(1) == "1") { // Pistol
+            if (Entities[i].XVel == 0) {
+                Entities.splice(i, 1);
+            } else if (Entities[i].Type.charAt(1) == "1") { // Pistol
                 Entities[i].X0 = Entities[i].X1;
                 Entities[i].Y0 = Entities[i].Y1;
                 Entities[i].X1 += Entities[i].XVel;
                 Entities[i].Y1 += Entities[i].YVel;
 
                 for (var x = 0; x < Math.abs(Entities[i].XVel); x++) {
-                    Entities[i].XVel += Entities
+                    Entities[i].X1 += 1;
+                    Entities[i].Y1 += Entities[i].YVel/Entities[i].XVel;
+
+                    for (var y = 0; y < Entities.length; y++) {
+                        if (Entities[y].Type.charAt(0) != "B") {
+                            if (Math.abs(Entities[y].X - Entities[i].X1) < Entities[x].Width/2) {
+                                if (Math.abs(Entities[y].Y - Entities[i].Y1) < Entities[i].Height/2) {
+                                    Entities[y].Health -= 1;
+
+                                    Entities[i].XVel = Entities[i].YVel = 0;
+
+                                    x = y = Entities.length;
+                                }
+                            } 
+                        }
+                    }
                 }
+            }
+        } else if (Entities[i].Type.charAt(0) == "E") {
+            if (Entities[i].Type.charAt(1) == "0") {
+
             }
         }
     }
@@ -190,9 +233,9 @@ function Refresh () {
 
     Canvas.style.cursor = "none";
 
-    Refresh();
+    Render();
 
-    window.requestAnimationFrame(Tick);
+    window.requestAnimationFrame(Refresh);
 }
 
 function Render () {
@@ -222,8 +265,13 @@ function Render () {
             ctx.moveTo(Entities[i].X0, Entities[i].Y0);
             ctx.lineTo(Entities[i].X1, Entities[i].Y1);
             ctx.stroke();
+        } else if (Entities[i].Type.charAt(0) == "E") {
+            if (Entities[i].Type.charAt(1) == "0") {
+                ctx.fillStyle = "rgb(0, 255, 100)";
+                ctx.fillRect(Entities[i].X - Entities[i].Width/2, Entities[i].Y - Entities[i].Height/2, Entities[i].Width, Entities[i].Width);
+            }
         }
-    }
+}
 
 
     // Gun
