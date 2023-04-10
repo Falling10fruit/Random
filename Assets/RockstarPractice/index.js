@@ -1,5 +1,11 @@
 var Canvas = document.getElementById("Canvas");
 var ctx = Canvas.getContext("2d");
+var Coordinates = document.getElementById("Coordinates");
+var Scene = "Loading";
+var Loaded = 0;
+var FPS = 60;
+var Counter = 0;
+var Tick = 0;
 var mouseX = 0;
 var mouseY = 0;
 var Entities = [{
@@ -7,14 +13,14 @@ var Entities = [{
     Width: 20,
     Height: 20,
     Health: 10,
-    X: 0,
-    Y: 0,
+    X: Canvas.width/2,
+    Y: Canvas.height/2,
     XVel: 0,
     YVel: 0,
     Skin: 0,
     Gun: 0,
 }, {
-    Type: "B0",
+    Type: "Bullet0",
     X0: 100,
     Y0: 100,
     X1: 200,
@@ -22,40 +28,38 @@ var Entities = [{
     XVel: 10,
     YVel: 0
 }, {
-    Type: "E0",
+    Type: "Enemy0",
     Width: 20,
     Height: 20,
     Health: 5,
-    X: 200,
-    Y: 200,
+    X: Canvas.width/2 - 100,
+    Y: Canvas.height/2,
     XVel: 0,
     YVel: 0,
     AnimDelay: 1
 }];
 var Skin0 = new Image();
 var Gun0 = new Image();
-var E00 = new Image();
-var E01 = new Image();
-var E02 = new Image();
-var E03 = new Image();
-var Coordinates = document.getElementById("Coordinates");
-var Scene = "Loading";
-var Loaded = 0;
-var FPS = 60;
-var Counter = 0;
-var Tick = 0;
+var Enemy00 = new Image();
+var Enemy01 = new Image();
+var Enemy02 = new Image();
+var Enemy03 = new Image();
+var Touching = function (i, x) { // Simplify
+    return Math.abs(Entities[x].X - Entities[i].X) < Entities[x].Width/2 + Entities[i].Width/2 && Math.abs(Entities[x].Y - Entities[i].Y) < Entities[x].Height/2 + Entities[i].Height/2;
+}
+var DealCollisions = function () {
+
+}
 
 Canvas.width = Canvas.height = window.innerWidth/2;
 ctx.imageSmoothingEnabled = false;
 ctx.imageRendering = 'pixelated';
-Entities[0].X = Canvas.width/2;
-Entities[0].Y = Canvas.height/2;
 Skin0.src = "Assets/Skin0.png";
 Gun0.src = "Assets/Gun0.png";
-E00.src = "Assets/E00.png";
-E01.src = "Assets/E01.png";
-E02.src = "Assets/E02.png";
-E03.src = "Assets/E03.png";
+Enemy00.src = "Assets/E00.png";
+Enemy01.src = "Assets/E01.png";
+Enemy02.src = "Assets/E02.png";
+Enemy03.src = "Assets/E03.png";
 
 for (var i = 0; i < 1000; i++) {
     if (i == 688) {
@@ -89,13 +93,13 @@ Skin0.onload = function () {
     Loaded++;
     Gun0.onload = function () {
         Loaded++;
-        E00.onload = function () {
+        Enemy00.onload = function () {
             Loaded++;
-            E01.onload = function () {
+            Enemy01.onload = function () {
                 Loaded++;
-                E02.onload = function () {
+                Enemy02.onload = function () {
                     Loaded++;
-                    E03.onload = function () {
+                    Enemy03.onload = function () {
                         Loaded++;
                         Scene = "Play";
                         Refresh();
@@ -136,19 +140,19 @@ function Refresh () {
         for (var i = 0; i < Entities.length; i++) {
             if (Entities[i].Type == "Player") {
                 if (e.keyCode === 87) {
-                    Entities[i].YVel = -1000/FPS;
+                    Entities[i].YVel = -500/FPS;
                 }
 
                 if (e.keyCode === 65) {
-                    Entities[i].XVel = -1000/FPS;
+                    Entities[i].XVel = -500/FPS;
                 }
                 
                 if (e.keyCode === 83) {
-                    Entities[i].YVel = 1000/FPS;
+                    Entities[i].YVel = 500/FPS;
                 }
 
                 if (e.keyCode === 68) {
-                    Entities[i].XVel = 1000/FPS;
+                    Entities[i].XVel = 500/FPS;
                 }
 
                 i = Entities.length;
@@ -167,11 +171,7 @@ function Refresh () {
 
             // Player collide with other entity
             for (var x = 0; x < Entities.length; x++) {
-                if (Entities[x].Type.charAt(0) != "B") { // Bullets have no width or height, bullet collision will be dealt in the bullet sccript
-                    var Touching = function (i, x) { // Simplify
-                        return Math.abs(Entities[x].X - Entities[i].X) < Entities[x].Width/2 + Entities[i].Width/2 || Math.abs(Entities[x].Y - Entities[i].Y) < Entities[x].Height/2 + Entities[i].Height/2;
-                    }
-
+                if (Entities[x].Type.charAt(0) != "B" && Entities[x].Type != "Player") { // Bullets have no width or height, bullet collision will be dealt in the bullet sccript
                     if (Touching(i, x)) {
                         while (Touching(i, x)) {
                             Entities[i].X -= Math.sign(Entities[i].XVel);
@@ -215,9 +215,53 @@ function Refresh () {
                 }
             }
         } else if (Entities[i].Type.charAt(0) == "E") {
-            if (Entities[i].Type.charAt(1) == "0") {
 
+            Entities[i].X += Entities[i].XVel;
+            Entities[i].Y += Entities[i].YVel;
+
+            for (var x = 0; x < Entities.length; x++) {
+                if (Entities[x].Type == "Player") {
+                    var PID = x;
+                    x = Entities.length;
+                }
             }
+
+            if (Entities[i].Type.charAt(1) == "0") {
+                let XDist = Entities[PID].X - Entities[i].X;
+                let YDist = Entities[PID].Y - Entities[i].Y;
+                let Angle = Math.atan(YDist/XDist)*180/Math.PI;
+
+                if (Math.sign(YDist) == 1) {
+                    Entities[i].YVel = 1800/FPS * Math.sin(Angle)/Math.PI;
+                } else {
+                    Entities[i].YVel = -1800/FPS * Math.sin(Angle)/Math.PI;
+                }
+
+                if (Math.sign(XDist) == 1) {
+                    Entities[i].XVel = 1800/FPS * Math.cos(Angle)/Math.PI;
+                } else {
+                    Entities[i].XVel = -1000/FPS * Math.cos(Angle)/Math.PI;
+                }
+
+                console.log("XDist: " + XDist + " YDist: " + YDist + " Angle: " + Angle + " XVel: " + Entities[i].XVel + " YVel: " + Entities[i].YVel);
+            }
+
+            for (var x = 0; x < Entities.length; x++) {
+                if (Entities[x].Type.charAt(0) != "B" && x != i) {
+                    if (Touching(i, x)) {
+                        while (Touching(i, x)) {
+                            Entities[i].X -= Math.sign(Entities[i].XVel);
+                            Entities[i].Y -= Math.sign(Entities[i].YVel);
+                        }
+
+                        Entities[i].XVel = Entities[i].YVel = 0;
+                    }
+                }
+            }
+
+            
+            Entities[i].X = Math.min(Math.max(Entities[i].X, 10), Canvas.width - Entities[i].Width/2);
+            Entities[i].Y = Math.min(Math.max(Entities[i].Y, 10), Canvas.height - Entities[i].Height/2);
         }
     }
 
