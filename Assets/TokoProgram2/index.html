@@ -10,33 +10,27 @@
             <div class="Tab">Produk</div>
         </div>
 
-        <div id="Reciept" style="visibility: hidden; position: fixed">
+        <div id="Reciept" style="position: fixed">
             <div class="Left">
                 <div class="Add">+</div>
             </div>
 
             <div class="Right">
-                <div class="Row">
-                    <h1>Nama</h1>
-                    <h1>Berapa</h1>
-                    <h1>Harga</h1>
-                </div>
-
                 <div id="Items" class="Row" style="flex-direction: column;">
                     <div id="Example" style="display: flex; justify-content: space-around;">
-                        <div><select class="Names"></select></div>
-                        <div><input type="text" placeholder="666"></div>
+                        <div><select class="Names" aria-placeholder="Produk"></select></div>
+                        <div><input type="text" placeholder="Berapa"></div>
                         <div><p>R.p. 0</p></div>
                     </div>
                 </div>
 
-                <div class="Row">
+                <div id="Total">
                     <h1>Total: R.p. 0</h1>
                 </div>
             </div>
         </div>
 
-        <div id="DataBase" style="visibility: hidden; position: fixed">
+        <div id="DataBase" style="position: fixed">
             <div class="Left">
                 <div class="Add">+</div>
             </div>

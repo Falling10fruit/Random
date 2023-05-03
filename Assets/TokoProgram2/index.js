@@ -3,6 +3,7 @@ var Add = document.getElementsByClassName("Add");
 var Left = document.getElementsByClassName("Left");
 var Right = document.getElementsByClassName("Right");
 var TableRow = document.getElementsByClassName("TableRow");
+var Tabs = document.getElementById("Tabs");
 var Reciept = document.getElementById("Reciept");
 var DataBase = document.getElementById("DataBase");
 var Items = document.getElementById("Items");
@@ -11,6 +12,9 @@ var TabMode;
 
 document.body.style.height = window.innerHeight + "px";
 Reciept.style.height = DataBase.style.height = window.innerHeight - Tab[0].getBoundingClientRect().height + "px";
+Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height;
+Reciept.style.left = "0px";
+DataBase.style.left = Reciept.getBoundingClientRect().width;
 
 window.addEventListener("resize", function () {
     document.body.style.height = window.innerHeight + "px";
@@ -45,22 +49,12 @@ Tab[0].addEventListener("click", function (e) {
     TabMode = 0;
     Tab[0].style.backgroundColor = "rgb(200, 200, 200)";
     Tab[1].style.backgroundColor = "rgb(255, 255, 255)";
-
-    Reciept.style.visibility = "visible";
-    Reciept.style.position = "relative";
-    DataBase.style.visibility = "hidden";
-    DataBase.style.position = "fixed";
 });
 
 Tab[1].addEventListener("click", function (e) {
     TabMode = 1;
     Tab[1].style.backgroundColor = "rgba(200, 200, 200, 1)";
     Tab[0].style.backgroundColor = "rgba(255, 255, 255, 1)";
-    
-    DataBase.style.visibility = "visible";
-    DataBase.style.position = "relative";
-    Reciept.style.visibility = "hidden";
-    Reciept.style.position = "fixed";
 });
 
 for (var i = 0; i < Add.length; i++) {
@@ -103,3 +97,12 @@ Add[0].addEventListener("mousedown", function () {
     NewItem.removeAttribute("id");
     Items.appendChild(NewItem);
 });
+
+function Tick () {
+    let newX = -(Tab[0].getBoundingClientRect().width) * TabMode;
+
+    Tab[0].style.left = (newX - Tab[0].style.left)/10;
+    Tab[1].style.left = Tab[0].getBoundingClientRect().right;
+
+    requestAnimationFrame(Tick);
+}

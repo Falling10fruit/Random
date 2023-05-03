@@ -50,6 +50,7 @@ body {
 
 #Reciept {
     border-collapse: collapse;
+    overflow: hidden;
 }
 
 #Reciept .right {
