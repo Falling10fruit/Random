@@ -8,17 +8,26 @@ var Reciept = document.getElementById("Reciept");
 var DataBase = document.getElementById("DataBase");
 var Items = document.getElementById("Items");
 var Example = document.getElementById("Example");
-var TabMode;
+var TabMode = 0;
 
 document.body.style.height = window.innerHeight + "px";
-Reciept.style.height = DataBase.style.height = window.innerHeight - Tab[0].getBoundingClientRect().height + "px";
+Reciept.style.height = DataBase.style.height = window.innerHeight - Tabs.getBoundingClientRect().height + "px";
 Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height;
 Reciept.style.left = "0px";
 DataBase.style.left = Reciept.getBoundingClientRect().width;
+for (let i = 0; i < 2; i++) {
+    Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right - 1 + "px";
+}
 
 window.addEventListener("resize", function () {
     document.body.style.height = window.innerHeight + "px";
     Reciept.style.height = DataBase.style.height = window.innerHeight - Tab[0].getBoundingClientRect().height + "px";
+    Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height;
+    Reciept.style.left = "0px";
+    DataBase.style.left = Reciept.getBoundingClientRect().width;
+    for (let i = 0; i < 2; i++) {
+        Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right - 1 + "px";
+    }
 });
 
 Tab[0].addEventListener("mouseover", function (e) {
@@ -98,11 +107,14 @@ Add[0].addEventListener("mousedown", function () {
     Items.appendChild(NewItem);
 });
 
-function Tick () {
-    let newX = -(Tab[0].getBoundingClientRect().width) * TabMode;
+Tick();
 
-    Tab[0].style.left = (newX - Tab[0].style.left)/10;
-    Tab[1].style.left = Tab[0].getBoundingClientRect().right;
+function Tick () {
+    let newX = -(Reciept.getBoundingClientRect().width) * TabMode;
+    newX = Reciept.getBoundingClientRect().x + (newX - Reciept.getBoundingClientRect().x)/5
+
+    Reciept.style.left = newX + "px";
+    DataBase.style.left = Reciept.getBoundingClientRect().right + "px";
 
     requestAnimationFrame(Tick);
 }

@@ -33,6 +33,7 @@ body {
 .Right {
     float: right;
     height: 100%;
+    margin:5%
 }
 
 .Add {
@@ -50,7 +51,6 @@ body {
 
 #Reciept {
     border-collapse: collapse;
-    overflow: hidden;
 }
 
 #Reciept .right {
