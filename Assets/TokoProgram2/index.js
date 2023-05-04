@@ -11,8 +11,6 @@ var Example = document.getElementById("Example");
 var Total = document.getElementById("Total");
 var TabMode = 0;
 
-Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
-
 document.body.style.height = window.innerHeight + "px";
 Reciept.style.height = DataBase.style.height = window.innerHeight - Tabs.getBoundingClientRect().height + "px";
 Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height + "px";
@@ -20,6 +18,7 @@ Reciept.style.width = DataBase.style.width = window.innerWidth + "px";
 DataBase.style.left = Reciept.getBoundingClientRect().width + "px";
 Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
 Total.style.width = window.innerWidth - 100 + "px";
+Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
 for (let i = 0; i < 2; i++) {
     Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right + "px";
     Right[i].style.left = Left[i].getBoundingClientRect().right + "px";
@@ -32,6 +31,7 @@ window.addEventListener("resize", function () {
     Reciept.style.width = DataBase.style.width = window.innerWidth + "px";
     DataBase.style.left = Reciept.getBoundingClientRect().width + "px";
     Total.style.width = window.innerWidth - 100 + "px";
+    Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
     for (let i = 0; i < 2; i++) {
         Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right + "px";
         Right[i].style.left = Left[i].getBoundingClientRect().right + "px";
