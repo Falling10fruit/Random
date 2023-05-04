@@ -10,19 +10,23 @@
             <div class="Tab">Produk</div>
         </div>
 
-        <div id="Reciept" style="position: fixed">
+        <div id="Cashier" style="position: fixed">
             <div class="Left">
                 <div class="Add">+</div>
+                <div id="Clear">x</div>
             </div>
 
             <div class="Right">
-                <div id="Items" class="Row" style="flex-direction: column;">
-                    <div id="Example" style="display: flex; justify-content: space-around;">
-                        <div><select class="Names" aria-placeholder="Produk"></select></div>
-                        <div><input type="text" placeholder="Berapa"></div>
-                        <div><p>R.p. 0</p></div>
-                    </div>
-                </div>
+                <table id="Reciept">
+                    <tbody id="Items">
+                        <tr class="Row" id="Example">
+                            <td><select class="Names" aria-placeholder="Produk"></select></td>
+                            <td><input type="text" placeholder="Berapa"></td>
+                            <td><p class="SubTotal">R.p. 0</p></td>
+                            <td><button class="Close">X</button></td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <div id="Total">
                     <h1>Total: R.p. 0</h1>

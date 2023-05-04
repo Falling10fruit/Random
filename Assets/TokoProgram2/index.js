@@ -3,8 +3,11 @@ var Add = document.getElementsByClassName("Add");
 var Left = document.getElementsByClassName("Left");
 var Right = document.getElementsByClassName("Right");
 var TableRow = document.getElementsByClassName("TableRow");
+var SubTotal = document.getElementsByClassName("SubTotal");
+var Close = document.getElementsByClassName("Close");
+var Clear = document.getElementById("Clear");
 var Tabs = document.getElementById("Tabs");
-var Reciept = document.getElementById("Reciept");
+var Cashier = document.getElementById("Cashier");
 var DataBase = document.getElementById("DataBase");
 var Items = document.getElementById("Items");
 var Example = document.getElementById("Example");
@@ -12,29 +15,34 @@ var Total = document.getElementById("Total");
 var TabMode = 0;
 
 document.body.style.height = window.innerHeight + "px";
-Reciept.style.height = DataBase.style.height = window.innerHeight - Tabs.getBoundingClientRect().height + "px";
-Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height + "px";
-Reciept.style.width = DataBase.style.width = window.innerWidth + "px";
-DataBase.style.left = Reciept.getBoundingClientRect().width + "px";
-Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
+Cashier.style.height = DataBase.style.height = window.innerHeight - Tabs.getBoundingClientRect().height + "px";
+Cashier.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height + "px";
+Cashier.style.width = DataBase.style.width = window.innerWidth + "px";
+DataBase.style.left = Cashier.getBoundingClientRect().width + "px";
 Total.style.width = window.innerWidth - 100 + "px";
 Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
 for (let i = 0; i < 2; i++) {
     Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right + "px";
     Right[i].style.left = Left[i].getBoundingClientRect().right + "px";
+    Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().width + "px";
+    Add[i].style.width = Add[i].getBoundingClientRect().height + "px";
+    Clear.style.width = Clear.getBoundingClientRect().height + "px";
 }
 
 window.addEventListener("resize", function () {
     document.body.style.height = window.innerHeight + "px";
-    Reciept.style.height = DataBase.style.height = window.innerHeight - Tabs.getBoundingClientRect().height + "px";
-    Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height + "px";
-    Reciept.style.width = DataBase.style.width = window.innerWidth + "px";
-    DataBase.style.left = Reciept.getBoundingClientRect().width + "px";
+    Cashier.style.height = DataBase.style.height = window.innerHeight - Tabs.getBoundingClientRect().height + "px";
+    Cashier.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height + "px";
+    Cashier.style.width = DataBase.style.width = window.innerWidth + "px";
+    DataBase.style.left = Cashier.getBoundingClientRect().width + "px";
     Total.style.width = window.innerWidth - 100 + "px";
     Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
     for (let i = 0; i < 2; i++) {
         Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right + "px";
         Right[i].style.left = Left[i].getBoundingClientRect().right + "px";
+        Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().width + "px";
+        Add[i].style.width = Add[i].getBoundingClientRect().height + "px";
+        Clear.style.width = Clear.getBoundingClientRect().height + "px";
     }
 });
 
@@ -74,16 +82,6 @@ Tab[1].addEventListener("click", function (e) {
     Tab[0].style.backgroundColor = "rgba(255, 255, 255, 1)";
 });
 
-for (var i = 0; i < Add.length; i++) {
-    Add[i].style.width = Add[i].getBoundingClientRect().height + "px";
-    Add[i].style.height = Add[i].style.width;
-}
-
-for (var i = 0; i < Left.length; i++) {
-    Left[i].style.width = "100px";
-    Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().width + "px";
-}
-
 for (var i = 0; i < TableRow.length; i++) {
     TableRow[i].style.height = "50px";
 
@@ -118,11 +116,11 @@ Add[0].addEventListener("mousedown", function () {
 Tick();
 
 function Tick () {
-    let newX = -(Reciept.getBoundingClientRect().width) * TabMode;
-    newX = Reciept.getBoundingClientRect().x + (newX - Reciept.getBoundingClientRect().x)/5
+    let newX = -(Cashier.getBoundingClientRect().width) * TabMode;
+    newX = Cashier.getBoundingClientRect().x + (newX - Cashier.getBoundingClientRect().x)/5
 
-    Reciept.style.left = newX + "px";
-    DataBase.style.left = Reciept.getBoundingClientRect().right + "px";
+    Cashier.style.left = newX + "px";
+    DataBase.style.left = Cashier.getBoundingClientRect().right + "px";
 
     requestAnimationFrame(Tick);
 }
