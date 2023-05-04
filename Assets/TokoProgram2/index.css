@@ -9,6 +9,21 @@ body {
     height: 10%;
 }
 
+#Reciept {
+    border-collapse: collapse;
+}
+
+#Reciept .right {
+    display: flex;
+    flex-direction: column;
+}
+
+#Total {
+    text-align: center;
+    background-color: rgb(150, 150, 150);
+    position: fixed;
+}
+
 .Tab {
     display: flex;
     justify-content: center;
@@ -33,7 +48,8 @@ body {
 .Right {
     float: right;
     height: 100%;
-    margin:5%
+    position: absolute;
+    overflow-y: auto;
 }
 
 .Add {
@@ -47,15 +63,6 @@ body {
     align-items: center;
     cursor: pointer;
     transition-duration: 0.2s;
-}
-
-#Reciept {
-    border-collapse: collapse;
-}
-
-#Reciept .right {
-    display: flex;
-    flex-direction: column;
 }
 
 .Row {

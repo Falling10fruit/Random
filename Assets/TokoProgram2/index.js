@@ -8,25 +8,33 @@ var Reciept = document.getElementById("Reciept");
 var DataBase = document.getElementById("DataBase");
 var Items = document.getElementById("Items");
 var Example = document.getElementById("Example");
+var Total = document.getElementById("Total");
 var TabMode = 0;
+
+Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
 
 document.body.style.height = window.innerHeight + "px";
 Reciept.style.height = DataBase.style.height = window.innerHeight - Tabs.getBoundingClientRect().height + "px";
-Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height;
-Reciept.style.left = "0px";
-DataBase.style.left = Reciept.getBoundingClientRect().width;
+Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height + "px";
+Reciept.style.width = DataBase.style.width = window.innerWidth + "px";
+DataBase.style.left = Reciept.getBoundingClientRect().width + "px";
+Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
+Total.style.width = window.innerWidth - 100 + "px";
 for (let i = 0; i < 2; i++) {
-    Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right - 1 + "px";
+    Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right + "px";
+    Right[i].style.left = Left[i].getBoundingClientRect().right + "px";
 }
 
 window.addEventListener("resize", function () {
     document.body.style.height = window.innerHeight + "px";
-    Reciept.style.height = DataBase.style.height = window.innerHeight - Tab[0].getBoundingClientRect().height + "px";
-    Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height;
-    Reciept.style.left = "0px";
-    DataBase.style.left = Reciept.getBoundingClientRect().width;
+    Reciept.style.height = DataBase.style.height = window.innerHeight - Tabs.getBoundingClientRect().height + "px";
+    Reciept.style.top = DataBase.style.top = Tabs.getBoundingClientRect().height + "px";
+    Reciept.style.width = DataBase.style.width = window.innerWidth + "px";
+    DataBase.style.left = Reciept.getBoundingClientRect().width + "px";
+    Total.style.width = window.innerWidth - 100 + "px";
     for (let i = 0; i < 2; i++) {
-        Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right - 1 + "px";
+        Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right + "px";
+        Right[i].style.left = Left[i].getBoundingClientRect().right + "px";
     }
 });
 
