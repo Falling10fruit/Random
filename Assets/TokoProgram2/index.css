@@ -49,6 +49,11 @@ td p {
     transition-duration: 0.2s;
 }
 
+#Example {
+    position: fixed;
+    visibility: hidden;
+}
+
 .Tab {
     display: flex;
     justify-content: center;
