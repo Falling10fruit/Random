@@ -13,6 +13,7 @@ var Items = document.getElementById("Items");
 var Example = document.getElementById("Example");
 var Total = document.getElementById("Total");
 var TabMode = 0;
+var Undo = [];
 
 manuallyPlaceEverythingInPlaceOhMyGoshHowDoesCSSWork();
 
@@ -82,7 +83,6 @@ Add[0].addEventListener("mousedown", function () {
 });
 
 Clear.addEventListener("mousedown", function () {
-    for ()
 });
 
 Tick();
