@@ -2,7 +2,10 @@ var Tab = document.getElementsByClassName("Tab");
 var Add = document.getElementsByClassName("Add");
 var Left = document.getElementsByClassName("Left");
 var Right = document.getElementsByClassName("Right");
+var TableRow = document.getElementsByClassName("TableRow");
 var RecieptRow = document.getElementsByClassName("RecieptRow");
+var ReciepetSelect = document.getElementsByClassName("RecieptSelect");
+var RecieptAmount = document.getElementsByClassName("RecieptAmount");
 var SubTotal = document.getElementsByClassName("SubTotal");
 var Close = document.getElementsByClassName("Close");
 var Clear = document.getElementById("Clear");
@@ -10,10 +13,28 @@ var Tabs = document.getElementById("Tabs");
 var Cashier = document.getElementById("Cashier");
 var DataBase = document.getElementById("DataBase");
 var Items = document.getElementById("Items");
-var Example = document.getElementById("Example");
+var RecieptExample = document.getElementById("RecieptExample");
 var Total = document.getElementById("Total");
 var TabMode = 0;
+var Database = [
+    /*
+    {
+        ProductName: "BTSHappyMeal",
+        Price: 50000 
+    }
+    */
+];
+var Reciept = [
+    /*
+    {
+        ProductIndex: 0,
+        Amount: 1
+    }
+    */
+];
 var Undo = [];
+
+Undo = [DataBase, Reciept];
 
 manuallyPlaceEverythingInPlaceOhMyGoshHowDoesCSSWork();
 
@@ -73,13 +94,10 @@ addButtonStyleThing(Add[1]);
 addButtonStyleThing(Clear);
 
 Add[0].addEventListener("mousedown", function () {
-    var NewItem = Example.cloneNode(true);
-    NewItem.removeAttribute("id");
-    Items.appendChild(NewItem);
-
-    Close[Close.length - 1].addEventListener("click", function () {
-        NewItem.remove();
-    });
+    Reciept.push({
+        Index: 0,
+        Amount: 1
+    })
 });
 
 Clear.addEventListener("mousedown", function () {
@@ -131,3 +149,28 @@ function addButtonStyleThing (Element) {
         Element.style.backgroundColor = "rgb(70, 70, 70)";
     });
 };
+
+function renderReciept () {
+    RecieptRow.splice(0, RecieptRow.length);
+
+    for (let i = 0; i < Reciept.length; i++) {
+        let NewItem = RecieptExample.cloneNode(true);
+        NewItem.removeAttribute("id");
+        Items.appendChild(NewItem);
+
+        ReciepetSelect[i].addEventListener("focus", function () {
+        });
+        
+        RecieptAmount[i].addEventListener("input", function (e) {
+            Reciept[i].Amount = e.target.value;
+        });
+    
+        RecieptClose[i].addEventListener("click", function () {
+            NewItem.remove();
+        });
+    }
+}
+
+function renderDatabase () {
+
+}
