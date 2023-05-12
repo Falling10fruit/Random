@@ -49,7 +49,7 @@ td p {
     transition-duration: 0.2s;
 }
 
-#Example {
+.Example {
     position: fixed;
     visibility: hidden;
 }

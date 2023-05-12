@@ -4,7 +4,7 @@ var Left = document.getElementsByClassName("Left");
 var Right = document.getElementsByClassName("Right");
 var TableRow = document.getElementsByClassName("TableRow");
 var RecieptRow = document.getElementsByClassName("RecieptRow");
-var ReciepetSelect = document.getElementsByClassName("RecieptSelect");
+var RecieptSelect = document.getElementsByClassName("RecieptSelect");
 var RecieptAmount = document.getElementsByClassName("RecieptAmount");
 var SubTotal = document.getElementsByClassName("SubTotal");
 var Close = document.getElementsByClassName("Close");
@@ -97,7 +97,9 @@ Add[0].addEventListener("mousedown", function () {
     Reciept.push({
         Index: 0,
         Amount: 1
-    })
+    });
+
+    renderReciept();
 });
 
 Clear.addEventListener("mousedown", function () {
@@ -151,21 +153,29 @@ function addButtonStyleThing (Element) {
 };
 
 function renderReciept () {
-    RecieptRow.splice(0, RecieptRow.length);
+    for (let i = 1; i < RecieptRow.length; i++) {
+        RecieptRow[1].remove();
+    }
+
+    console.log(Reciept.length);
 
     for (let i = 0; i < Reciept.length; i++) {
         let NewItem = RecieptExample.cloneNode(true);
         NewItem.removeAttribute("id");
         Items.appendChild(NewItem);
 
-        ReciepetSelect[i].addEventListener("focus", function () {
+        let ElementIndex = i + 1;
+
+        console.log(ElementIndex);
+
+        RecieptSelect[ElementIndex].addEventListener("focus", function () {
         });
         
-        RecieptAmount[i].addEventListener("input", function (e) {
+        RecieptAmount[ElementIndex].addEventListener("input", function (e) {
             Reciept[i].Amount = e.target.value;
         });
     
-        RecieptClose[i].addEventListener("click", function () {
+        RecieptClose[ElementIndex].addEventListener("click", function () {
             NewItem.remove();
         });
     }
