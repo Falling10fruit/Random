@@ -7,24 +7,25 @@ var RecieptRow = document.getElementsByClassName("RecieptRow");
 var RecieptSelect = document.getElementsByClassName("RecieptSelect");
 var RecieptAmount = document.getElementsByClassName("RecieptAmount");
 var SubTotal = document.getElementsByClassName("SubTotal");
-var Close = document.getElementsByClassName("Close");
+var RecieptClose = document.getElementsByClassName("Close");
 var Clear = document.getElementById("Clear");
 var Tabs = document.getElementById("Tabs");
+var Reciept = document.getElementById("Reciept");
 var Cashier = document.getElementById("Cashier");
 var DataBase = document.getElementById("DataBase");
 var Items = document.getElementById("Items");
 var RecieptExample = document.getElementById("RecieptExample");
 var Total = document.getElementById("Total");
 var TabMode = 0;
-var Database = [
+var StorageData = [
     /*
     {
         ProductName: "BTSHappyMeal",
-        Price: 50000 
+        ProductPrice: 50000 
     }
     */
 ];
-var Reciept = [
+var RecieptData = [
     /*
     {
         ProductIndex: 0,
@@ -34,7 +35,7 @@ var Reciept = [
 ];
 var Undo = [];
 
-Undo = [DataBase, Reciept];
+Undo = [StorageData.slice(), RecieptData.slice()];
 
 manuallyPlaceEverythingInPlaceOhMyGoshHowDoesCSSWork();
 
@@ -94,7 +95,7 @@ addButtonStyleThing(Add[1]);
 addButtonStyleThing(Clear);
 
 Add[0].addEventListener("mousedown", function () {
-    Reciept.push({
+    RecieptData.push({
         Index: 0,
         Amount: 1
     });
@@ -126,6 +127,7 @@ function manuallyPlaceEverythingInPlaceOhMyGoshHowDoesCSSWork () {
     Total.style.width = window.innerWidth - 100 + "px";
     Total.style.top = window.innerHeight - Total.getBoundingClientRect().height + "px";
     Clear.style.width = Clear.getBoundingClientRect().height + "px";
+    Reciept.style.height = window.innerHeight - Tabs.getBoundingClientRect().height - Total.getBoundingClientRect().height + "px";
     for (let i = 0; i < 2; i++) {
         Right[i].style.width = window.innerWidth - Left[i].getBoundingClientRect().right + "px";
         Right[i].style.left = Left[i].getBoundingClientRect().right + "px";
@@ -157,26 +159,25 @@ function renderReciept () {
         RecieptRow[1].remove();
     }
 
-    console.log(Reciept.length);
-
-    for (let i = 0; i < Reciept.length; i++) {
+    for (let i = 0; i < RecieptData.length; i++) {
         let NewItem = RecieptExample.cloneNode(true);
         NewItem.removeAttribute("id");
+        NewItem.className = "RecieptRow";
         Items.appendChild(NewItem);
 
         let ElementIndex = i + 1;
-
         console.log(ElementIndex);
 
         RecieptSelect[ElementIndex].addEventListener("focus", function () {
         });
         
         RecieptAmount[ElementIndex].addEventListener("input", function (e) {
-            Reciept[i].Amount = e.target.value;
+            RecieptData[i].Amount = e.target.value;
         });
     
         RecieptClose[ElementIndex].addEventListener("click", function () {
             NewItem.remove();
+            RecieptData.splice(i, 1);
         });
     }
 }
