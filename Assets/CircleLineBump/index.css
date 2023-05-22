@@ -1,0 +1,17 @@
+body {
+    margin: 5%;
+    font-family: sans-serif;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#Canvas {
+    border: 5px solid black;
+}
+
+#Descriptoon {
+    display: flex;
+    justify-content: center;
+}
