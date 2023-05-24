@@ -1,3 +1,4 @@
+const DebigButton = document.getElementById("Debug");
 const Canvas = document.getElementById("Canvas");
 const CTX = Canvas.getContext("2d");
 
@@ -27,10 +28,25 @@ var NewLine = {
     },
     Touched: true
 };
+var Intersection = [/*
+    {
+        X: 100,
+        Y: 100
+    }*/
+];
+var DebugMode = false;
 var MouseX;
 var MouseY;
-var X;
-var Y;
+
+DebigButton.addEventListener("click", function () {
+    if (DebugMode) {
+        DebugMode = false;
+        DebigButton.innerText = "Debug: Off";
+    } else {
+        DebugMode = true;
+        DebigButton.innerText = "Debug: On";
+    }
+});
 
 Canvas.addEventListener("mousemove", function (e) {
     MouseX = e.clientX - Canvas.getBoundingClientRect().x - 5;
@@ -55,6 +71,8 @@ Tick();
 
 function Tick () {
     if (NewLine.Touched == true) {
+        Intersection.splice(0, Intersection.length);
+
         for (let i = 0; i < Lines.length; i++) {
             let X1, X2, Y1, Y2;
 
@@ -70,12 +88,21 @@ function Tick () {
                 Y2 = Lines[i].FirstDot.Y - MouseY;
             }
 
-            let M = (Y2 - Y1)/(X2 - X1);
-            let K = X1*-M + Y1;
+            let X, Y;
 
-            let Denominator = M*M + 1;
-            X = -M*K/Denominator + MouseX;
-            Y = K/Denominator + MouseY;
+            if (X2 - X1 != 0) {
+                let M = (Y2 - Y1)/(X2 - X1);
+                let K = X1*-M + Y1;
+
+                let Denominator = M*M + 1;
+                X = -M*K/Denominator + MouseX;
+                Y = K/Denominator + MouseY;
+            } else {
+                X = MouseX;
+                Y = MouseY;
+            }
+
+            Intersection.push({X: X, Y: Y});
 
             X = Math.max(X1 + MouseX, Math.min(X, X2 + MouseX));
 
@@ -92,7 +119,7 @@ function Tick () {
             let XDistance = X - MouseX;
             let YDistance = Y - MouseY;
 
-            if (Math.sqrt(XDistance*XDistance + YDistance*YDistance) < 5) {
+            if (Math.sqrt(XDistance*XDistance + YDistance*YDistance) <= 10) {
                 Lines[i].Touched = true;
             } else {
                 Lines[i].Touched = false;
@@ -109,23 +136,22 @@ function Render () {
     CTX.fillStyle = "rgb(255, 255, 255)";
     CTX.fillRect(0, 0, Canvas.width, Canvas.height);
 
-    CTX.beginPath();
     
     for (let i = 0; i < Lines.length; i++) {
         if (Lines[i].Touched) {
             CTX.strokeStyle = "rgb(255, 100, 0)";
-            console.log("Oof");
         } else {
             CTX.strokeStyle = "rgb(0, 0, 0)";
         }
 
+        CTX.beginPath();
         CTX.moveTo(Lines[i].FirstDot.X, Lines[i].FirstDot.Y);
         CTX.lineTo(Lines[i].SecondDot.X, Lines[i].SecondDot.Y);
+        CTX.stroke();
     }
 
     CTX.strokeStyle = "rgb(0, 0, 0)";
 
-    CTX.stroke();
 
     if (NewLine.Touched == false) {
         CTX.beginPath();
@@ -136,8 +162,13 @@ function Render () {
         CTX.beginPath();
         CTX.ellipse(MouseX, MouseY, 10, 10, 0, 0, Math.PI * 2);
         CTX.stroke();
-        CTX.beginPath();
-        CTX.ellipse(X, Y, 10, 10, 0, 0, Math.PI * 2);
-        CTX.stroke();
+
+        if (DebugMode) {
+            CTX.beginPath();
+            for (let i = 0; i < Intersection.length; i++) {
+                CTX.ellipse(Intersection[i].X, Intersection[i].Y, 10, 10, 0, 0, Math.PI*2);
+            }
+            CTX.stroke();
+        }
     }
 };

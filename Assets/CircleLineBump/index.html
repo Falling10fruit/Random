@@ -13,17 +13,26 @@
 
         <button onclick="Lines.splice(0, Lines.length)">Reset</button>
 
-        <button>Debug: Off</button>
+        <button id="Debug">Debug: Off</button>
 
         <div id="Descriptoon">
             <div style="width: 60%">
                 <h2>Credit</h2>
 
-                <p>Me and <a href="">this guy</a>, pretty cool number tutor. Funny man, always happy even when I always get answers wrong and seem to watch YouTube during class
+                <p>Me and <a id="PhoneNumberLink" onclick="document.getElementById('PhoneNumberContainer').style.visibility = 'visible';">this guy</a>, pretty cool number tutor. Funny man, always happy even when I always get answers wrong and seem to watch YouTube during class
                 <br>
             <br>Oh yeah and my parents, for giving him money</p>
 
-                <div id="PhoneNumber" style="visibility: hidden"><h2>Pak Sugeng +62 815-7426-5422</h2></div>
+                <div id="PhoneNumberContainer" style="visibility: hidden">
+                    <h2 id="PhoneNumber">Pak Sugeng +62 815-7426-5422</h2>
+                    <div>
+                        <button onclick="navigator.clipboard.writeText('+62 815-7426-5422'); alert('Number copied')">Copy number</button>
+
+                        <button onclick="document.getElementById('PhoneNumberContainer').style.visibility = 'hidden';">Close</button>
+
+                    </div>
+
+                </div>
 
                 <h2>How work?</h2>
                 
@@ -41,13 +50,24 @@
                         <br>
                         <br>For the computer, I just throw in an equation to immediately get the dot, whose equation is built upon the concept
                         <br>
-                        <br>Here equation for finding:
+                        <br>Here equation for finding, imma gonna call him Billy:
                         <br><img src="Web capture_23-5-2023_23423_jamboard.google.com.jpeg" alt="X=K*-M/(M^2 + 1) and Y = K/(M^2 + 1)" width="100%">
                         <br>I'm using this linear equation: y = mx + k
                         <br>
                         <br>Before I got anywhere close to making the above, I was Google searching "How to solve two linear equations in Javascript" and almost made a Stack Overflow question, which I clearly doubted doing because it seemed more like a math problem and might lose me some reputation.
                         <br>
-                        <br>Afterwards, I substracted the coordinates of the two points, that make up the line. So relatively, where the mouse used to be is now located in the middle
+                        <br>Anyways, back to how computer do it, it substracts the coordinates of the two points, that make up the line, by the coordinates of the mouse (X - MouseX, Y - MouseY). So relatively, where the mouse used to be is now located in the middle.
+                        <br><img src="Web capture_24-5-2023_145231_jamboard.google.com.jpeg" alt="Read ylu\\\" width="100%">
+                        <br>
+                        <br>Then I use the new cooridnates and shoot Billy at it and grabs the intersection point's coordinates. Yes I knoe the image above is ahead of me.
+                        <br>
+                        <br>All there's left to do is to grab the sum of the point's coordinates and the mouse's, which I then decided to visually show it when you click the "Debug: Off" (Or "Debug: On", if you already turned it on);
+                        <br>
+                        <br>And nail Pythagoras to get the distance from the point to the mouse to see if it's close enough to be colliding.
+                        <br>
+                        <br>The end
+                        <br>
+                        <br>Assuming you know how to get m and k, but they teach you that in 6-7th grade
                     </p>
                 </details>
             </div>
@@ -55,6 +75,17 @@
                 <h2>Log: </h2>
                 
                 <ul>
+                    <li>
+                        <h3>24 May 2022</h3>
+                        <p>EYO ID FREAKING DID IT
+                            <br>I can color red lines
+                            <br>Expanded on the Descriptoon
+                            <br>Made the link work
+                            <br>Debug button work
+                            <br>I'm done
+                        </p>
+                    </li>
+
                     <li>
                         <h3>23 May 2022</h3>
                         <p>EYO ID FREAKING DID IT
