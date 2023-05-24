@@ -9,7 +9,7 @@
         <h1>I see if sting touch a circle</h1>
         <h3>Click and drag to draw a line, line gets red if touched</h3>
 
-        <canvas id="Canvas"></canvas>
+        <canvas id="Canvas">Move on, get a better browser</canvas>
 
         <button onclick="Lines.splice(0, Lines.length)">Reset</button>
 
@@ -23,17 +23,54 @@
                 <br>
             <br>Oh yeah and my parents, for giving him money</p>
 
-                <div id="PhoneNumber" style="visibility: hidden">Pak Sugeng +62 815-7426-5422</div>
+                <div id="PhoneNumber" style="visibility: hidden"><h2>Pak Sugeng +62 815-7426-5422</h2></div>
+
+                <h2>How work?</h2>
+                
+                <p>When you draw line, computer find the linear equation version of line. Computer play "pretend you're in the middle of the universe" and draw a perpidicular line that crosses your mouse point. Then grabs the intersection point of the perpindicylar line and see if the point is close to your circle mouse to bump.</p>
+
+                <details>
+                    <summary>
+                        <h2>I don't want to decipher the Rosseta Stone that is your code, to find out how this really works</h2>
+                    </summary>
+                    
+                    <p>
+                        No living human would actually want to know and read through all this, but I like explaining things and put some meaningful comments in my github commit.
+                        <br>
+                        <br>Uh, so I don't actually need to "simulate" two perpindicular lines, that's just the concept of how a human would do it.
+                        <br>
+                        <br>For the computer, I just throw in an equation to immediately get the dot, whose equation is built upon the concept
+                        <br>
+                        <br>Here equation for finding:
+                        <br><img src="Web capture_23-5-2023_23423_jamboard.google.com.jpeg" alt="X=K*-M/(M^2 + 1) and Y = K/(M^2 + 1)" width="100%">
+                        <br>I'm using this linear equation: y = mx + k
+                        <br>
+                        <br>Before I got anywhere close to making the above, I was Google searching "How to solve two linear equations in Javascript" and almost made a Stack Overflow question, which I clearly doubted doing because it seemed more like a math problem and might lose me some reputation.
+                        <br>
+                        <br>Afterwards, I substracted the coordinates of the two points, that make up the line. So relatively, where the mouse used to be is now located in the middle
+                    </p>
+                </details>
             </div>
             <div style="width: 35%">
                 <h2>Log: </h2>
                 
                 <ul>
                     <li>
+                        <h3>23 May 2022</h3>
+                        <p>EYO ID FREAKING DID IT
+                            <br>But I can't color red lines
+                            <br>Expanded on the Descriptoon
+                            <br>It was a struggle of laziness
+                        </p>
+                    </li>
+
+                    <li>
                         <h3>22 May 2022</h3>
-                        <p>Initial commit
-                            <br>Can't properly size canvas
-                            <br>At least I got the style of the sdiscirption right, sort of
+                        <p>tyleing ndone
+                            <br>You can draw lines
+                            <br>Intersection point sorta working
+                            <br>I have no idea what I'm doing wrong
+                            <br>Reset button working, Debug no.
                         </p>
                     </li>
 

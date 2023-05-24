@@ -3,7 +3,7 @@ const CTX = Canvas.getContext("2d");
 
 Canvas.width = Canvas.height = window.innerHeight/2;
 
-var Lines = [
+var Lines = [/*
     {
         FirstDot: {
             X: 25,
@@ -14,7 +14,7 @@ var Lines = [
             Y: 100
         },
         Touched: false
-    }
+    }*/
 ];
 var NewLine = {
     FirstDot: {
@@ -29,6 +29,8 @@ var NewLine = {
 };
 var MouseX;
 var MouseY;
+var X;
+var Y;
 
 Canvas.addEventListener("mousemove", function (e) {
     MouseX = e.clientX - Canvas.getBoundingClientRect().x - 5;
@@ -51,9 +53,6 @@ Canvas.addEventListener("mouseup", function (e) {
 
 Tick();
 
-var X;
-var Y;
-
 function Tick () {
     if (NewLine.Touched == true) {
         for (let i = 0; i < Lines.length; i++) {
@@ -75,8 +74,29 @@ function Tick () {
             let K = X1*-M + Y1;
 
             let Denominator = M*M + 1;
-            X = -M*K/Denominator;
-            Y = K/Denominator;
+            X = -M*K/Denominator + MouseX;
+            Y = K/Denominator + MouseY;
+
+            X = Math.max(X1 + MouseX, Math.min(X, X2 + MouseX));
+
+            if (Lines[i].FirstDot.Y < Lines[i].SecondDot.Y) {
+                Y1 = Lines[i].FirstDot.Y - MouseY;
+                Y2 = Lines[i].SecondDot.Y - MouseY;
+            } else {
+                Y1 = Lines[i].SecondDot.Y - MouseY;
+                Y2 = Lines[i].FirstDot.Y - MouseY;
+            }
+
+            Y = Math.max(Y1 + MouseY, Math.min(Y, Y2 + MouseY));
+
+            let XDistance = X - MouseX;
+            let YDistance = Y - MouseY;
+
+            if (Math.sqrt(XDistance*XDistance + YDistance*YDistance) < 5) {
+                Lines[i].Touched = true;
+            } else {
+                Lines[i].Touched = false;
+            }
         }
     }
 
@@ -92,9 +112,18 @@ function Render () {
     CTX.beginPath();
     
     for (let i = 0; i < Lines.length; i++) {
+        if (Lines[i].Touched) {
+            CTX.strokeStyle = "rgb(255, 100, 0)";
+            console.log("Oof");
+        } else {
+            CTX.strokeStyle = "rgb(0, 0, 0)";
+        }
+
         CTX.moveTo(Lines[i].FirstDot.X, Lines[i].FirstDot.Y);
         CTX.lineTo(Lines[i].SecondDot.X, Lines[i].SecondDot.Y);
     }
+
+    CTX.strokeStyle = "rgb(0, 0, 0)";
 
     CTX.stroke();
 
