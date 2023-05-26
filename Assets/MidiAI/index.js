@@ -1,7 +1,7 @@
 var http = require("http");
 var fs = require("fs");
 var midiParser = require("midi-parser-js");
-var Students = [/*Brain: [ Layer: [ Nodes: [Connections(Acts like weight): []]]]*/];
+var Students = [/*Brain: [ Layer: [ Nodes: [Connections(Acts like weight): [], Storage: ]]]*/];
 var Answers = [
     [ // Example 0
         "0010",//         _         _     _ _ _ _ _     _             _             _ _ _ _ _
