@@ -119,7 +119,7 @@ function Tick () {
             let XDistance = X - MouseX;
             let YDistance = Y - MouseY;
 
-            if (Math.sqrt(XDistance*XDistance + YDistance*YDistance) <= 10) {
+            if (Math.sqrt(XDistance*XDistance + YDistance*YDistance) <= 11) {
                 Lines[i].Touched = true;
             } else {
                 Lines[i].Touched = false;
