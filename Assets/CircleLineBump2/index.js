@@ -119,8 +119,8 @@ function SimulateBall(i) {
         Balls[i].Y += Balls[i].YVel/10;
 
         for (let x = 0; x < Lines.length; x++) {
-            let IntersectionX = FindPerpindicularIntersectionCoordinatesForBall(i, x).X;
-            let IntersectionY = FindPerpindicularIntersectionCoordinatesForBall(i, x).Y;
+            let IntersectionX = GetIntelAboutCollidingline(i, x).X;
+            let IntersectionY = GetIntelAboutCollidingline(i, x).Y;
 
             if (DistanceBetween(IntersectionX, IntersectionY, Balls[i].X, Balls[i].Y) <= Balls[i].Radius + 1) {
                 BallLineBump(i, x);
@@ -134,7 +134,7 @@ function SimulateBall(i) {
     Balls[i].YVel = Balls[i].YVel * 0.9;   
 }
 
-function FindPerpindicularIntersectionCoordinatesForBall (i, x) {
+function GetIntelAboutCollidingline (i, x) {
     let X1, X2, Y1, Y2;
     let IntersectionX, IntersectionY;
     let M, K, Denominator;
@@ -187,11 +187,11 @@ function DistanceBetween(X1, Y1, X2, Y2) {
 }
 
 function BallLineBump (i, x) {
-    let M = FindPerpindicularIntersectionCoordinatesForBall(i, x).M;
+    let M = GetIntelAboutCollidingline(i, x).M;
 
     if (Lines[x].SecondDot.X - Lines[x].FirstDot.X == 0) {
         Balls[i].XVel = -1*Balls[i].XVel;
     } else {
-        Math.tan(M) - Math.tan(Balls[i].YVel/Balls[i].XVel);
+        2*Math.tan(M) - Math.tan(Balls[i].YVel/Balls[i].XVel);
     }
 }
