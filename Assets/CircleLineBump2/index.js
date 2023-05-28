@@ -120,10 +120,11 @@ function SimulateBall(i) {
 
         for (let x = 0; x < Lines.length; x++) {
             let IntersectionX = GetIntelAboutCollidingline(i, x).X;
-            let IntersectionY = GetIntelAboutCollidingline(i, x).Y;
+            let IntersectionY =  GetIntelAboutCollidingline(i, x).Y;
 
             if (DistanceBetween(IntersectionX, IntersectionY, Balls[i].X, Balls[i].Y) <= Balls[i].Radius + 1) {
                 BallLineBump(i, x);
+                console.log("nss");
             }
         }
     } 
@@ -188,10 +189,17 @@ function DistanceBetween(X1, Y1, X2, Y2) {
 
 function BallLineBump (i, x) {
     let M = GetIntelAboutCollidingline(i, x).M;
+    console.log("ddddd");
 
     if (Lines[x].SecondDot.X - Lines[x].FirstDot.X == 0) {
         Balls[i].XVel = -1*Balls[i].XVel;
     } else {
-        2*Math.tan(M) - Math.tan(Balls[i].YVel/Balls[i].XVel);
+        console.log("AJuudn");
+        let Speed = DistanceBetween(0, 0, Balls[i].XVel, Balls[i].YVel);
+
+        let Angle = 2*Math.tan(M) - Math.tan(Balls[i].YVel/Balls[i].XVel);
+
+        Balls[i].XVel = Math.acos(Angle)*Speed;
+        Balls[i].YVel = Math.asin(Angle)*Speed;
     }
 }
