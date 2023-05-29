@@ -35,6 +35,12 @@ var NewLine = {
         Y: 0
     }
 };
+var Intersections = [/*
+    {
+        X: 0,
+        Y: 0
+    }*/
+];
 var MouseX;
 var MouseY;
 var PastMouseX;
@@ -75,6 +81,8 @@ Canvas.addEventListener("mouseup", function () {
 Tick();
 
 function Tick () {
+    Intersections.splice(0, Intersections.length);
+
     for (let i = 0; i < Balls.length; i++) {
         if (Balls[i].Y > Canvas.height + 100) {
             Balls.splice(i, 1);
@@ -111,6 +119,12 @@ function Render () {
         CTX.ellipse(Balls[i].X, Balls[i].Y, Balls[i].Radius, Balls[i].Radius, 0, 0, Math.PI*2);
         CTX.stroke();
     }
+
+    for (let i = 0; i < Intersections.length; i++) {
+        CTX.beginPath();
+        CTX.ellipse(Intersections[i].X, Intersections[i].Y, 10, 10, 0, 0, Math.PI*2);
+        CTX.stroke();
+    }
 }
 
 function SimulateBall(i) {
@@ -120,7 +134,9 @@ function SimulateBall(i) {
 
         for (let x = 0; x < Lines.length; x++) {
             let IntersectionX = GetIntelAboutCollidingline(i, x).X;
-            let IntersectionY =  GetIntelAboutCollidingline(i, x).Y;
+            let IntersectionY = GetIntelAboutCollidingline(i, x).Y;
+
+            Intersections.push({X: IntersectionX, Y: IntersectionY});
 
             if (DistanceBetween(IntersectionX, IntersectionY, Balls[i].X, Balls[i].Y) <= Balls[i].Radius + 1) {
                 BallLineBump(i, x);
@@ -140,16 +156,16 @@ function GetIntelAboutCollidingline (i, x) {
     let IntersectionX, IntersectionY;
     let M, K, Denominator;
 
-    if (Lines[x].FirstDot < Lines[x].SecondDot) {
-        X1 = Lines[x].FirstDot.X - MouseX;
-        X2 = Lines[x].SecondDot.X - MouseX;
-        Y1 = Lines[x].FirstDot.Y - MouseY;
-        Y2 = Lines[x].SecondDot.Y - MouseY;
+    if (Lines[x].FirstDot.X < Lines[x].SecondDot.X) {
+        X1 = Lines[x].FirstDot.X - Balls[i].X;
+        X2 = Lines[x].SecondDot.X - Balls[i].X;
+        Y1 = Lines[x].FirstDot.Y - Balls[i].Y;
+        Y2 = Lines[x].SecondDot.Y - Balls[i].Y;
     } else {
-        X1 = Lines[x].SecondDot.X - MouseX;
-        X2 = Lines[x].FirstDot.X - MouseX;
-        Y1 = Lines[x].SecondDot.Y - MouseY;
-        Y2 = Lines[x].FirstDot.Y - MouseY;
+        X1 = Lines[x].SecondDot.X - Balls[i].X;
+        X2 = Lines[x].FirstDot.X - Balls[i].X;
+        Y1 = Lines[x].SecondDot.Y - Balls[i].Y;
+        Y2 = Lines[x].FirstDot.Y - Balls[i].Y;
     }
 
 
@@ -161,11 +177,11 @@ function GetIntelAboutCollidingline (i, x) {
         K = X1*-M + Y1;
         Denominator = M*M + 1;
 
-        IntersectionX = -M*K/Denominator + MouseX;
-        IntersectionY = K/Denominator + MouseY;
+        IntersectionX = -M*K/Denominator + Balls[i].X;
+        IntersectionY = K/Denominator + Balls[i].Y;
     }
 
-    IntersectionX = Math.min(X2 + MouseX, Math.max(IntersectionX, X1 + MouseX));
+    IntersectionX = Math.min(X2 + Balls[i].X, Math.max(IntersectionX, X1 + Balls[i].X));
 
     if (Lines[x].FirstDot.Y < Lines[x].SecondDot.Y) {
         Y1 = Lines[x].FirstDot.Y;
