@@ -4,6 +4,11 @@ const CTX = Canvas.getContext("2d");
 Canvas.width = window.innerWidth;
 Canvas.height = window.innerHeight*3/4;
 
+window.addEventListener("resize", function () {
+    Canvas.width = window.innerWidth;
+    Canvas.height = window.innerHeight*3/4;
+});
+
 var Balls = [/*
     {
         X: 0,
@@ -244,16 +249,17 @@ function DebugButtonFunction () {
 
     if (Debug) {
         Debug = false;
-        DebugButton = "Never again";
+        DebugButton.innerText = "Never again";
     } else {
         Debug = true;
-        DebugButton = "Spamming now lags";
+        DebugButton.innerText = "Spamming now lags";
         Render();
     }
 }
 
 function RemoveLinesButtonFunction () {
-    
+    HisStory.push(Lines.slice());
+    Lines.splice(0, Lines.length);
 }
 
 function PauseButtonFunction () {
