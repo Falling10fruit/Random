@@ -25,6 +25,20 @@ var Lines = [/*
         }
     }*/
 ];
+var HisStory = [/*
+    [
+        {
+            FirstDot: {
+                X: 0,
+                Y: 0
+            },
+            SecondDot: {
+                X: 0,
+                Y: 0
+            }
+        }
+    ]*/
+];
 var NewLine = {
     FirstDot: {
         X: -1,
@@ -45,6 +59,8 @@ var MouseX;
 var MouseY;
 var PastMouseX;
 var PastMouseY;
+var Pause = false;
+var Debug = false;
 
 window.addEventListener("mousemove", function (e) {
     PastMouseX = MouseX;
@@ -71,6 +87,8 @@ Canvas.addEventListener("mousedown", function () {
 });
 
 Canvas.addEventListener("mouseup", function () {
+    HisStory.push(Lines.slice());
+
     NewLine.SecondDot.X = MouseX;
     NewLine.SecondDot.Y = MouseY;
 
@@ -93,7 +111,9 @@ function Tick () {
 
     Render();
 
-    requestAnimationFrame(Tick);
+    if (!Pause) {
+        requestAnimationFrame(Tick);
+    }
 }
 
 function Render () {
@@ -120,10 +140,12 @@ function Render () {
         CTX.stroke();
     }
 
-    for (let i = 0; i < Intersections.length; i++) {
-        CTX.beginPath();
-        CTX.ellipse(Intersections[i].X, Intersections[i].Y, 10, 10, 0, 0, Math.PI*2);
-        CTX.stroke();
+    if (Debug) {
+         for (let i = 0; i < Intersections.length; i++) {
+            CTX.beginPath();
+            CTX.ellipse(Intersections[i].X, Intersections[i].Y, 10, 10, 0, 0, Math.PI*2);
+            CTX.stroke();
+        }
     }
 }
 
@@ -140,7 +162,6 @@ function SimulateBall(i) {
 
             if (DistanceBetween(IntersectionX, IntersectionY, Balls[i].X, Balls[i].Y) <= Balls[i].Radius + 1) {
                 BallLineBump(i, x);
-                console.log("nss");
             }
         }
     } 
@@ -205,17 +226,52 @@ function DistanceBetween(X1, Y1, X2, Y2) {
 
 function BallLineBump (i, x) {
     let M = GetIntelAboutCollidingline(i, x).M;
-    console.log("ddddd");
 
     if (Lines[x].SecondDot.X - Lines[x].FirstDot.X == 0) {
         Balls[i].XVel = -1*Balls[i].XVel;
     } else {
-        console.log("AJuudn");
         let Speed = DistanceBetween(0, 0, Balls[i].XVel, Balls[i].YVel);
 
-        let Angle = 2*Math.tan(M) - Math.tan(Balls[i].YVel/Balls[i].XVel);
+        let Angle = 2*Math.atan(M * Math.PI/180) - Math.atan(Balls[i].YVel/Balls[i].XVel * Math.PI/180);
 
-        Balls[i].XVel = Math.acos(Angle)*Speed;
-        Balls[i].YVel = Math.asin(Angle)*Speed;
+        Balls[i].XVel = Math.cos(Angle * Math.PI/180) * Speed;
+        Balls[i].YVel = Math.sin(Angle * Math.PI/180) * Speed;
+    }
+}
+
+function DebugButtonFunction () {
+    let DebugButton = document.getElementById("DebugButton");
+
+    if (Debug) {
+        Debug = false;
+        DebugButton = "Never again";
+    } else {
+        Debug = true;
+        DebugButton = "Spamming now lags";
+        Render();
+    }
+}
+
+function RemoveLinesButtonFunction () {
+    
+}
+
+function PauseButtonFunction () {
+    let PauseButton = document.getElementById("PauseButton");
+
+    if (Pause) {
+        Pause = false;
+        requestAnimationFrame(Tick);
+        PauseButton.innerText = "Whonna staph euogain?";
+    } else {
+        Pause = true;
+        PauseButton.innerText = "Sthapped";
+    }
+}
+
+function UndoButtonFunction () {
+    if (HisStory.length > 0) {
+        Lines = HisStory[HisStory.length - 1].slice();
+        HisStory.splice(HisStory.length - 1, 1);
     }
 }
