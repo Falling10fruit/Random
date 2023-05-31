@@ -8,11 +8,12 @@
     <body>
         <canvas id="Canvas"></canvas>
         
-        <button id="DebugButton" onclick="DebugButtonFunction()">Gimmie La Lag</button>
+        <button onclick="DebugButtonFunction()" id="DebugButton">Gimmie La Lag</button>
         <button onclick="RemoveLinesButtonFunction()">sPPIKEyBYE</button>
-        <button onclick="Balls.splice(0, Balls.length);">The Hoo Hahs</button>
-        <button id="PauseButton" onclick="PauseButtonFunction()">Sthap</button>
+        <button onclick="Balls.splice(0, Balls.length); Render();">The Hoo Hahs</button>
+        <button onclick="PauseButtonFunction()" id="PauseButton">Sthap</button>
         <button onclick="UndoButtonFunction()">Abortion</button>
+        <button onclick="AnalysisButtonFunction()" id="AnalysisButton">Peek at ball</button>
 
         <h1>Eyoboy me parents go "Oh cool, but what line bump for?" EAUGH</h1>
         

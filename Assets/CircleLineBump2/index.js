@@ -44,6 +44,12 @@ var HisStory = [/*
         }
     ]*/
 ];
+var Intersections = [/*
+    {
+        X: 0,
+        Y: 0
+    }*/
+];
 var NewLine = {
     FirstDot: {
         X: -1,
@@ -54,18 +60,17 @@ var NewLine = {
         Y: 0
     }
 };
-var Intersections = [/*
-    {
-        X: 0,
-        Y: 0
-    }*/
-];
+var Analysis = {
+    CurrentlyAnalyzing: false,
+    Id: 0
+};
 var MouseX;
 var MouseY;
 var PastMouseX;
 var PastMouseY;
 var Pause = false;
 var Debug = false;
+var Scene = "Simulate";
 
 window.addEventListener("mousemove", function (e) {
     PastMouseX = MouseX;
@@ -83,7 +88,12 @@ window.addEventListener("keypress", function (e) {
             YVel: MouseY - PastMouseY,
             Radius: 10
         });
-    }
+    } else if (e.key === "Space") {
+        console.log("Ohio");
+        PauseButtonFunction();
+    } else if (e.key === "z" && e.ctrlKey) {
+        UndoButtonFunction();
+    };
 });
 
 Canvas.addEventListener("mousedown", function () {
@@ -123,7 +133,28 @@ function Tick () {
 
 function Render () {
     CTX.fillStyle = "rgba(255, 255, 255, 0.1)";
-    CTX.fillRect(0, 0, Canvas.width, Canvas.height);
+    if (Pause) {
+        for (let i = 0; i < 20; i++) {
+            CTX.fillRect(0, 0, Canvas.width, Canvas.height);
+        }
+    } else {
+        CTX.fillRect(0, 0, Canvas.width, Canvas.height);
+    }
+
+    if (Scene == "Analysis") {
+        CTX.fillStyle = "rgba(150, 150, 150, 0.2)";
+        CTX.fillRect(0, 0, Canvas.width, Canvas.height);
+
+        CTX.fillStyle = "rgb(255, 255, 255)";
+        for (let i = 0; i < Balls.length; i++) {
+            CTX.ellipse(Balls[i].X, Balls[i].Y, Balls[i].Radius, Balls[i].Radius, 0, 0, Math.PI*2);
+        }
+        CTX.fill();
+
+        CTX.fillStyle = "rgb(0, 0, 0)";
+        CTX.fillText("Click on circle you wanna analyze");
+    }
+
 
     if (NewLine.FirstDot.X != -1) {
         CTX.beginPath();
@@ -143,6 +174,10 @@ function Render () {
         CTX.beginPath();
         CTX.ellipse(Balls[i].X, Balls[i].Y, Balls[i].Radius, Balls[i].Radius, 0, 0, Math.PI*2);
         CTX.stroke();
+
+        if (Analysis.CurrentlyAnalyzing) {
+            CTX.beginPath();
+        }
     }
 
     if (Debug) {
@@ -253,13 +288,16 @@ function DebugButtonFunction () {
     } else {
         Debug = true;
         DebugButton.innerText = "Spamming now lags";
-        Render();
     }
+
+    Render();
 }
 
 function RemoveLinesButtonFunction () {
     HisStory.push(Lines.slice());
     Lines.splice(0, Lines.length);
+    
+    Render();
 }
 
 function PauseButtonFunction () {
@@ -269,6 +307,15 @@ function PauseButtonFunction () {
         Pause = false;
         requestAnimationFrame(Tick);
         PauseButton.innerText = "Whonna staph euogain?";
+
+        if (Scene == "Analysis") {
+            let AnalysisButton = document.getElementById("AnalysisButton");
+
+            Scene = "Simulate";
+
+            PauseButton.innerText = "HAH, YOU CLICKED ME INSTEAD OF HIM";
+            AnalysisButton.innerText = "He thinks my non existant insecurity is funny, how sad";
+        }
     } else {
         Pause = true;
         PauseButton.innerText = "Sthapped";
@@ -279,5 +326,34 @@ function UndoButtonFunction () {
     if (HisStory.length > 0) {
         Lines = HisStory[HisStory.length - 1].slice();
         HisStory.splice(HisStory.length - 1, 1);
+    }
+    
+    Render();
+}
+
+function AnalysisButtonFunction () {
+    let AnalysisButton = document.getElementById("AnalysisButton");
+    let PauseButton = document.getElementById("PauseButton");
+
+    if (Scene == "Simulate") {
+        Scene = "Analysis";
+
+        if (Pause) {
+            PauseButton.innerText = "HA, even if pressing you would cause the same thing, he pressed me first";
+            AnalysisButton.innerText = "Maybe the user changed his mind";
+        } else {
+            Pause = true;
+        
+            PauseButton.innerText = "Ah analysis, now both me and the analysis button are basically unpause";
+            AnalysisButton.innerText = "Don't listen to him, he's just being mean about my practicality";
+        }
+    } else if (Scene == "Analysis") {
+        Scene = "Simulate";
+        Pause = false;
+
+        requestAnimationFrame(Tick);
+
+        PauseButton.innerText = "We could have a pause menu if you didn't exist";
+        AnalysisButton.innerText = "You talk too much";
     }
 }
