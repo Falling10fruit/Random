@@ -1,12 +1,14 @@
 const Canvas = document.getElementById("Canvas");
 const CTX = Canvas.getContext("2d");
 
-Canvas.width = window.innerWidth;
+Canvas.width = document.body.clientWidth;
 Canvas.height = window.innerHeight*3/4;
 
 window.addEventListener("resize", function () {
-    Canvas.width = window.innerWidth;
+    Canvas.width = document.body.clientWidth;
     Canvas.height = window.innerHeight*3/4;
+
+    Render();
 });
 
 var Balls = [/*
@@ -62,7 +64,7 @@ var NewLine = {
 };
 var Analysis = {
     CurrentlyAnalyzing: false,
-    Id: 0
+    Id: -1
 };
 var MouseX;
 var MouseY;
@@ -71,16 +73,54 @@ var PastMouseY;
 var Pause = false;
 var Debug = false;
 var Scene = "Simulate";
+var Frames = 0;
 
 window.addEventListener("mousemove", function (e) {
     PastMouseX = MouseX;
     PastMouseY = MouseY;
     MouseX = e.clientX;
     MouseY = e.clientY;
+
+    if (Scene == "Analysis") {
+        let AnyBallsHovered = false;
+
+        for (let i = 0; i < Balls.length; i++) {
+            if (DistanceBetween(MouseX, MouseY, Balls[i].X, Balls[i].Y) <= Balls[i].Radius + 10) {
+                Analysis.Id = i;
+                AnyBallsHovered = true;
+
+                console.log(Analysis.Id);
+            }
+        }
+
+        if (!AnyBallsHovered) {
+            Analysis.Id = -1;
+            
+            console.log(-1);
+        }
+
+        Render();
+    }
 });
 
 window.addEventListener("keypress", function (e) {
     if (e.key == 1) {
+        Balls.push({
+            X: MouseX,
+            Y: MouseY,
+            XVel: MouseX - PastMouseX,
+            YVel: MouseY - PastMouseY,
+            Radius: 2
+        });
+    } else if (e.key == 2) {
+        Balls.push({
+            X: MouseX,
+            Y: MouseY,
+            XVel: MouseX - PastMouseX,
+            YVel: MouseY - PastMouseY,
+            Radius: 5
+        });
+    } else if (e.key == 3) {
         Balls.push({
             X: MouseX,
             Y: MouseY,
@@ -97,18 +137,38 @@ window.addEventListener("keypress", function (e) {
 });
 
 Canvas.addEventListener("mousedown", function () {
-    NewLine.FirstDot.X = MouseX;
-    NewLine.FirstDot.Y = MouseY;
+    console.log(Analysis.Id);
+
+    if (Scene == "Simulate") {
+        NewLine.FirstDot.X = MouseX;
+        NewLine.FirstDot.Y = MouseY;
+    } else if (Scene == "Analysis" && Analysis.Id != -1) {
+        if (Analysis.Id != -1) {
+            Analysis.CurrentlyAnalyzing = true;
+        }
+
+        Scene = "Simulate"
+        Pause = false;
+        requestAnimationFrame(Tick);
+        
+        let PauseButton = document.getElementById("PauseButton");
+        let AnalysisButton = document.getElementById("AnalysisButton");
+        
+        PauseButton.innerText = "You're just a cell lab rip off";
+        AnalysisButton.innerText = "Change ball?";
+    }
 });
 
 Canvas.addEventListener("mouseup", function () {
-    HisStory.push(Lines.slice());
+    if (NewLine.FirstDot.X != -1) {
+        HisStory.push(Lines.slice());
 
-    NewLine.SecondDot.X = MouseX;
-    NewLine.SecondDot.Y = MouseY;
+        NewLine.SecondDot.X = MouseX;
+        NewLine.SecondDot.Y = MouseY;
 
-    Lines.push(JSON.parse(JSON.stringify(NewLine)));
-    NewLine.FirstDot.X = -1;
+        Lines.push(JSON.parse(JSON.stringify(NewLine)));
+        NewLine.FirstDot.X = -1;
+    }
 });
 
 Tick();
@@ -119,12 +179,21 @@ function Tick () {
     for (let i = 0; i < Balls.length; i++) {
         if (Balls[i].Y > Canvas.height + 100) {
             Balls.splice(i, 1);
+
+            if (Analysis.Id == i) {
+                Analysis.CurrentlyAnalyzing = false;
+                Analysis.Id = -1;
+            } else if (Analysis.Id >= i) {
+                Analysis.Id--
+            }
         } else {
             SimulateBall(i);
         }
     }
 
     Render();
+
+    Frames++
 
     if (!Pause) {
         requestAnimationFrame(Tick);
@@ -142,17 +211,31 @@ function Render () {
     }
 
     if (Scene == "Analysis") {
-        CTX.fillStyle = "rgba(150, 150, 150, 0.2)";
+        CTX.fillStyle = "rgba(75, 75, 75, 0.2)";
         CTX.fillRect(0, 0, Canvas.width, Canvas.height);
 
-        CTX.fillStyle = "rgb(255, 255, 255)";
         for (let i = 0; i < Balls.length; i++) {
-            CTX.ellipse(Balls[i].X, Balls[i].Y, Balls[i].Radius, Balls[i].Radius, 0, 0, Math.PI*2);
+            CTX.fillStyle = "rgb(255, 255, 255)";
+            CTX.beginPath();
+            CTX.ellipse(Balls[i].X, Balls[i].Y, Balls[i].Radius + 10, Balls[i].Radius + 10, 0, 0, Math.PI*2);
+            
+            if (Analysis.Id == i) {
+                CTX.fillStyle = "rgb(225, 225, 100)";
+                CTX.fill();
+
+                CTX.fillStyle = "rgb(0, 0, 0)";
+                CTX.textAlign = "left";
+                CTX.font = "15px Arial";
+                CTX.fillText("Id:" + i, MouseX + 10, MouseY - 20);
+            } else {
+                CTX.fill();
+            }
         }
-        CTX.fill();
 
         CTX.fillStyle = "rgb(0, 0, 0)";
-        CTX.fillText("Click on circle you wanna analyze");
+        CTX.textAlign = "center";
+        CTX.font = "30px Arial";
+        CTX.fillText("Click on circle you wanna analyze", Canvas.width/2, 50, Canvas.width);
     }
 
 
@@ -175,8 +258,12 @@ function Render () {
         CTX.ellipse(Balls[i].X, Balls[i].Y, Balls[i].Radius, Balls[i].Radius, 0, 0, Math.PI*2);
         CTX.stroke();
 
-        if (Analysis.CurrentlyAnalyzing) {
+        if (Analysis.CurrentlyAnalyzing && Analysis.Id == i) {
+            CTX.setLineDash([5, 5]);
             CTX.beginPath();
+            CTX.ellipse(Balls[i].X, Balls[i].Y, Balls[i].Radius + 5, Balls[i].Radius + 5, Frames, 0, Math.PI*2);
+            CTX.stroke();
+            CTX.setLineDash([]);
         }
     }
 
@@ -186,6 +273,16 @@ function Render () {
             CTX.ellipse(Intersections[i].X, Intersections[i].Y, 10, 10, 0, 0, Math.PI*2);
             CTX.stroke();
         }
+    }
+
+    if (Analysis.CurrentlyAnalyzing) {
+        CTX.fillStyle = "rgb(0, 0, 0)";
+        CTX.textAlign = "left";
+        CTX.font = Canvas.height/25 + "px Arial";
+        CTX.fillText("Ball's XVel: " + Balls[Analysis.Id].XVel, 10, Canvas.height - Canvas.height/25*3 - 10);
+        CTX.fillText("Ball's YVel: " + Balls[Analysis.Id].YVel, 10, Canvas.height - Canvas.height/25*2 - 10);
+        CTX.fillText("Ball's Speed: " + DistanceBetween(0, 0, Balls[Analysis.Id].XVel, Balls[Analysis.Id].YVel), 10, Canvas.height - Canvas.height/25 - 10);
+        CTX.fillText("Ball's Angle: " + Math.atan(Balls[Analysis.Id].YVel/Balls[Analysis.Id].XVel), 10, Canvas.height - 10);
     }
 }
 
@@ -276,6 +373,18 @@ function BallLineBump (i, x) {
 
         Balls[i].XVel = Math.cos(Angle * Math.PI/180) * Speed;
         Balls[i].YVel = Math.sin(Angle * Math.PI/180) * Speed;
+
+        if (Angle >= 90) {
+            Balls[i].XVel = -1*Balls[i].XVel;
+        }
+
+        if (Angle >= 180) {
+            Balls[i].YVel = -1*Balls[i].YVel;
+        }
+
+        if (Angle >= 270) {
+            Balls[i].XVel = -1*Balls[i].XVel;
+        }
     }
 }
 
@@ -297,6 +406,13 @@ function RemoveLinesButtonFunction () {
     HisStory.push(Lines.slice());
     Lines.splice(0, Lines.length);
     
+    Render();
+}
+
+function RemoveBallsButtonFunction () {
+    Balls.splice(0, Balls.length);
+    Analysis.CurrentlyAnalyzing = false;
+    Analysis.Id = -1;
     Render();
 }
 
@@ -347,6 +463,8 @@ function AnalysisButtonFunction () {
             PauseButton.innerText = "Ah analysis, now both me and the analysis button are basically unpause";
             AnalysisButton.innerText = "Don't listen to him, he's just being mean about my practicality";
         }
+
+        Render();
     } else if (Scene == "Analysis") {
         Scene = "Simulate";
         Pause = false;
