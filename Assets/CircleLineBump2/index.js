@@ -88,15 +88,11 @@ window.addEventListener("mousemove", function (e) {
             if (DistanceBetween(MouseX, MouseY, Balls[i].X, Balls[i].Y) <= Balls[i].Radius + 10) {
                 Analysis.Id = i;
                 AnyBallsHovered = true;
-
-                console.log(Analysis.Id);
             }
         }
 
         if (!AnyBallsHovered) {
             Analysis.Id = -1;
-            
-            console.log(-1);
         }
 
         Render();
@@ -137,8 +133,6 @@ window.addEventListener("keypress", function (e) {
 });
 
 Canvas.addEventListener("mousedown", function () {
-    console.log(Analysis.Id);
-
     if (Scene == "Simulate") {
         NewLine.FirstDot.X = MouseX;
         NewLine.FirstDot.Y = MouseY;
@@ -368,8 +362,9 @@ function BallLineBump (i, x) {
         Balls[i].XVel = -1*Balls[i].XVel;
     } else {
         let Speed = DistanceBetween(0, 0, Balls[i].XVel, Balls[i].YVel);
-
-        let Angle = 2*Math.atan(M * Math.PI/180) - Math.atan(Balls[i].YVel/Balls[i].XVel * Math.PI/180);
+        let LineAngle = Math.atan(M * Math.PI/180) + Math.sign(Math.sign(M) - 1)*90;
+        let BallAngle = Math.atan(Balls[i].YVel/Balls[i].XVel * Math.PI/180) +  + Math.sign(Math.sign(Balls[i].YVel/Balls[i].XVel) - 1)*90;
+        let Angle = 2*LineAngle - BallAngle;
 
         Balls[i].XVel = Math.cos(Angle * Math.PI/180) * Speed;
         Balls[i].YVel = Math.sin(Angle * Math.PI/180) * Speed;
