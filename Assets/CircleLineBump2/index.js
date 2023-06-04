@@ -363,7 +363,22 @@ function BallLineBump (i, x) {
     } else {
         let Speed = DistanceBetween(0, 0, Balls[i].XVel, Balls[i].YVel);
         let LineAngle = Math.atan(M * Math.PI/180) + Math.sign(Math.sign(M) - 1)*90;
-        let BallAngle = Math.atan(Balls[i].YVel/Balls[i].XVel * Math.PI/180) +  + Math.sign(Math.sign(Balls[i].YVel/Balls[i].XVel) - 1)*90;
+        let BallAngle;
+
+        if (Balls[i].YVel > 0) {
+            if (Balls[i].XVel > 0) {
+                BallAngle = Math.atan(Balls[i].YVel/Balls[i].XVel * Math.PI/180);
+            } else {
+                BallAngle = Math.atan(Math.abs(Balls[i].XVel)/Balls[i].YVel * Math.PI/180) + 90;
+            }
+        } else {
+            if (Balls[i].XVel > 0) {
+                BallAngle = Math.atan(Math.abs(Balls[i].YVel)/Math.abs(Balls[i].XVel) * Math.PI/180) + 180;
+            } else {
+                BallAngle = Math.atan(Balls[i].XVel/Math.abs(Balls[i].YVel) * Math.PI/180) + 270;
+            }
+        }
+
         let Angle = 2*LineAngle - BallAngle;
 
         Balls[i].XVel = Math.cos(Angle * Math.PI/180) * Speed;
