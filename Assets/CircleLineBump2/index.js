@@ -72,6 +72,7 @@ var PastMouseX;
 var PastMouseY;
 var Pause = false;
 var Debug = false;
+var ToggleBackgroundOpacity = true;
 var Scene = "Simulate";
 var Frames = 0;
 
@@ -157,8 +158,19 @@ Canvas.addEventListener("mouseup", function () {
     if (NewLine.FirstDot.X != -1) {
         HisStory.push(Lines.slice());
 
-        NewLine.SecondDot.X = MouseX;
-        NewLine.SecondDot.Y = MouseY;
+        let SecondMouseX = MouseX;
+        let SecondMouseY = MouseY;
+
+
+        if (NewLine.SecondDot.X < NewLine.FirstDot.X) {
+            NewLine.SecondDot.X = NewLine.FirstDot.X;
+            NewLine.SecondDot.Y = NewLine.FirstDot.Y;
+            NewLine.FirstDot.X = SecondMouseX;
+            NewLine.FirstDot.Y = SecondMouseY;
+        } else {
+            NewLine.SecondDot.X = SecondMouseX;
+            NewLine.SecondDot.Y = SecondMouseY;
+        }
 
         Lines.push(JSON.parse(JSON.stringify(NewLine)));
         NewLine.FirstDot.X = -1;
@@ -195,7 +207,12 @@ function Tick () {
 }
 
 function Render () {
-    CTX.fillStyle = "rgba(255, 255, 255, 0.1)";
+    if (ToggleBackgroundOpacity) {
+        CTX.fillStyle = "rgba(255, 255, 255, 0.1)";
+    } else {
+        CTX.fillStyle = "rgb(255, 255, 255)";
+    }
+
     if (Pause) {
         for (let i = 0; i < 20; i++) {
             CTX.fillRect(0, 0, Canvas.width, Canvas.height);
@@ -255,7 +272,7 @@ function Render () {
         if (Analysis.CurrentlyAnalyzing && Analysis.Id == i) {
             CTX.setLineDash([5, 5]);
             CTX.beginPath();
-            CTX.ellipse(Balls[i].X, Balls[i].Y, Balls[i].Radius + 5, Balls[i].Radius + 5, Frames, 0, Math.PI*2);
+            CTX.ellipse(Balls[i].X, Balls[i].Y, Balls[i].Radius + 5, Balls[i].Radius + 5,   Math.floor(Frames/10), 0, Math.PI*2);
             CTX.stroke();
             CTX.setLineDash([]);
         }
@@ -304,22 +321,12 @@ function SimulateBall(i) {
 }
 
 function GetIntelAboutCollidingline (i, x) {
-    let X1, X2, Y1, Y2;
+    let X1 = Lines[x].FirstDot.X - Balls[i].X;
+    let X2 = Lines[x].SecondDot.X - Balls[i].X;
+    let Y1 = Lines[x].FirstDot.Y - Balls[i].Y;
+    let Y2 = Lines[x].SecondDot.Y - Balls[i].Y;
     let IntersectionX, IntersectionY;
     let M, K, Denominator;
-
-    if (Lines[x].FirstDot.X < Lines[x].SecondDot.X) {
-        X1 = Lines[x].FirstDot.X - Balls[i].X;
-        X2 = Lines[x].SecondDot.X - Balls[i].X;
-        Y1 = Lines[x].FirstDot.Y - Balls[i].Y;
-        Y2 = Lines[x].SecondDot.Y - Balls[i].Y;
-    } else {
-        X1 = Lines[x].SecondDot.X - Balls[i].X;
-        X2 = Lines[x].FirstDot.X - Balls[i].X;
-        Y1 = Lines[x].SecondDot.Y - Balls[i].Y;
-        Y2 = Lines[x].FirstDot.Y - Balls[i].Y;
-    }
-
 
     if (Lines[x].SecondDot.X - Lines[x].FirstDot.X == 0) {
         IntersectionX = Lines[x].SecondDot.X;
@@ -362,8 +369,8 @@ function BallLineBump (i, x) {
         Balls[i].XVel = -1*Balls[i].XVel;
     } else {
         let Speed = DistanceBetween(0, 0, Balls[i].XVel, Balls[i].YVel);
-        let LineAngle = Math.atan(M * Math.PI/180) + Math.sign(Math.sign(M) - 1)*90;
         let BallAngle;
+        let LineAngle;
 
         if (Balls[i].YVel > 0) {
             if (Balls[i].XVel > 0) {
@@ -377,6 +384,12 @@ function BallLineBump (i, x) {
             } else {
                 BallAngle = Math.atan(Balls[i].XVel/Math.abs(Balls[i].YVel) * Math.PI/180) + 270;
             }
+        }
+
+        if (M > 0) {
+            LineAngle = Math.atan(M * Math.PI/180);
+        } else {
+            LineAngle = Math.atan((Lines[x].SecondDot.X - Lines[x].FirstDot.X)/Math.abs(Lines[x].SecondDot.Y - Lines[x].FirstDot.Y) * Math.PI/180) + 90;
         }
 
         let Angle = 2*LineAngle - BallAngle;
@@ -483,5 +496,19 @@ function AnalysisButtonFunction () {
 
         PauseButton.innerText = "We could have a pause menu if you didn't exist";
         AnalysisButton.innerText = "You talk too much";
+    }
+}
+
+function BackgroundButtonFunction () {
+    let BackgroundButton = document.getElementById("BackgroundButton");
+
+    if (ToggleBackgroundOpacity) {
+        ToggleBackgroundOpacity = false;
+
+        BackgroundButton.innerText = "No more shadow";
+    } else {
+        ToggleBackgroundOpacity = true;
+
+        BackgroundButton.innerText = "You see past";
     }
 }
