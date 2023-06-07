@@ -162,7 +162,7 @@ Canvas.addEventListener("mouseup", function () {
         let SecondMouseY = MouseY;
 
 
-        if (NewLine.SecondDot.X < NewLine.FirstDot.X) {
+        if (SecondMouseX < NewLine.FirstDot.X) {
             NewLine.SecondDot.X = NewLine.FirstDot.X;
             NewLine.SecondDot.Y = NewLine.FirstDot.Y;
             NewLine.FirstDot.X = SecondMouseX;
@@ -306,7 +306,9 @@ function SimulateBall(i) {
             let IntersectionX = GetIntelAboutCollidingline(i, x).X;
             let IntersectionY = GetIntelAboutCollidingline(i, x).Y;
 
-            Intersections.push({X: IntersectionX, Y: IntersectionY});
+            if (MoveInTenSmallerStepsToNotMissLines == 9) {
+                Intersections.push({X: IntersectionX, Y: IntersectionY});
+            }
 
             if (DistanceBetween(IntersectionX, IntersectionY, Balls[i].X, Balls[i].Y) <= Balls[i].Radius + 1) {
                 BallLineBump(i, x);
@@ -393,6 +395,10 @@ function BallLineBump (i, x) {
         }
 
         let Angle = 2*LineAngle - BallAngle;
+
+        if (Angle < 0) {
+            Angle = 360 - Math.abs(Angle);
+        }
 
         Balls[i].XVel = Math.cos(Angle * Math.PI/180) * Speed;
         Balls[i].YVel = Math.sin(Angle * Math.PI/180) * Speed;
