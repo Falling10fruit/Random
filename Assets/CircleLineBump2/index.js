@@ -388,7 +388,7 @@ function BallLineBump (i, x) {
             }
         }
 
-        if (M > 0) {
+        if (!(M <= 0)) {
             LineAngle = Math.atan(M * Math.PI/180);
         } else {
             LineAngle = Math.atan((Lines[x].SecondDot.X - Lines[x].FirstDot.X)/Math.abs(Lines[x].SecondDot.Y - Lines[x].FirstDot.Y) * Math.PI/180) + 90;
@@ -398,6 +398,17 @@ function BallLineBump (i, x) {
 
         if (Angle < 0) {
             Angle = 360 - Math.abs(Angle);
+        }
+
+        if (Angle > 90) {
+            Angle -= 90;
+        }
+
+        if (Angle > 180) {
+            Angle -= 90;
+        }
+        if (Angle > 270) {
+            Angle -= 90;
         }
 
         Balls[i].XVel = Math.cos(Angle * Math.PI/180) * Speed;

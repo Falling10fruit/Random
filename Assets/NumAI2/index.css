@@ -1,0 +1,11 @@
+body {
+    margin: 5%;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+#Canvas {
+    border: 5px solid black;
+    margin-right: 10px;
+}
