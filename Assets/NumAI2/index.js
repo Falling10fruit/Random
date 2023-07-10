@@ -2,6 +2,7 @@ var Canvas = document.getElementById("Canvas");
 var CTX = Canvas.getContext("2d");
 var UndoButton = document.getElementById("UndoButton");
 var ClearButton = document.getElementById("ClearButton");
+var RunBrainsButton = docuemnt.getElementById("RunBrainsButton");
 
 Canvas.width = Canvas.height = window.innerWidth/5*2;
 
@@ -10,7 +11,7 @@ var Grid = [[]];
 var UndoHistory = [];
 var Brains = [];
 var Answers = [];
-var GridLength = 50;
+var GridLength = 20;
 var CellLength = Canvas.width/GridLength;
 var PaintSize = 10;
 var IsMouseDown = false;
@@ -33,6 +34,16 @@ Canvas.addEventListener("mousedown", function () {
 
     PaintCells(MouseX, MouseY);
 });
+
+window.addEventListener("mouseup", function () {IsMouseDown = false;});
+
+UndoButton.addEventListener("click", function () {Undo();});
+
+ClearButton.addEventListener("click", function () {ClearGrid();});
+
+RunBrainsButton.addEventListener("click", function () {
+    
+})
 
 for (var BrainNo = 0; BrainNo < 10; BrainNo++) {
     Brains.push([]);
@@ -58,19 +69,13 @@ for (var BrainNo = 0; BrainNo < 10; BrainNo++) {
                     Weights: []
                 });
 
-                for (var WeightNo = 0; WeightNo < GridLength*GridLength; WeightNo++) {
+                for (var WeightNo = 0; WeightNo < 500; WeightNo++) {
                     Brains[BrainNo][LayerNo][NeuronNo].Weights.push(Math.random()*2);
                 }
             }
         }
     }
 }
-
-window.addEventListener("mouseup", function () {IsMouseDown = false;});
-
-UndoButton.addEventListener("click", function () {Undo();});
-
-ClearButton.addEventListener("click", function () {ClearGrid();});
 
 ClearGrid();
 
