@@ -3,10 +3,20 @@ var CTX = Canvas.getContext("2d");
 var UndoButton = document.getElementById("UndoButton");
 var ClearButton = document.getElementById("ClearButton");
 var RunBrainsButton = docuemnt.getElementById("RunBrainsButton");
+var Answer0 = document.getElementById("Answer0");
+var Answer1 = document.getElementById("Answer1");
+var Answer2 = document.getElementById("Answer2");
+var Answer3 = document.getElementById("Answer3");
+var Answer4 = document.getElementById("Answer4");
+var Answer5 = document.getElementById("Answer5");
+var Answer6 = document.getElementById("Answer6");
+var Answer7 = document.getElementById("Answer7");
+var Answer8 = document.getElementById("Answer8");
+var Answer9 = document.getElementById("Answer9");
 
 Canvas.width = Canvas.height = window.innerWidth/5*2;
 
-var MouseX, MouseY, PastMouseX, PastMouseY;
+var MouseX, MouseY, PastMouseX, PastMouseY, CurrentBrain;
 var Grid = [[]];
 var UndoHistory = [];
 var Brains = [];
@@ -42,8 +52,18 @@ UndoButton.addEventListener("click", function () {Undo();});
 ClearButton.addEventListener("click", function () {ClearGrid();});
 
 RunBrainsButton.addEventListener("click", function () {
-    
-})
+    for (var BrainNo = 0; BrainNo < Brains.length; BrainNo++) {
+        for (var LayerNo = 0; LayerNo < Brains[BrainNo].length; LayerNo++) {
+            for (var NeuronNo = 0; NeuronNo < Brains[BrainNo][LayerNo].length; NeuronNo++) {
+                Brains[BrainNo][LayerNo][NeuronNo].Bucket = 0;
+            }
+        }
+    }
+
+    CurrentBrain = 0;
+
+    GetTheBrainsAnswersWithoutCrashingByDistributingTheWorkloadToTenTicks();
+});
 
 for (var BrainNo = 0; BrainNo < 10; BrainNo++) {
     Brains.push([]);
@@ -69,7 +89,7 @@ for (var BrainNo = 0; BrainNo < 10; BrainNo++) {
                     Weights: []
                 });
 
-                for (var WeightNo = 0; WeightNo < 500; WeightNo++) {
+                for (var WeightNo = 0; WeightNo < GridLength*GridLength; WeightNo++) {
                     Brains[BrainNo][LayerNo][NeuronNo].Weights.push(Math.random()*2);
                 }
             }
@@ -96,6 +116,32 @@ function Tick () {
 
     requestAnimationFrame(Tick);
 }
+
+function GetTheBrainsAnswersWithoutCrashingByDistributingTheWorkloadToTenTicks () {
+    let BestAnswer = -999;
+
+    for (var LayerNo = 0; LayerNo < Brains[CurrentBrain].length; LayerNo++) {
+        for (var NeuronNo = 0; NeuronNo < Brains[CurrentBrain][LayerNo].length; NeuronNo++) {
+            for (var WeightNo = 0; WeightNo < Brains[CurrentBrain][LayerNo][NeuronNo].Weights.length; WeightNo++) {
+                if (LayerNo < 0) {
+                    Brains[CurrentBrain][LayerNo][NeuronNo].Bucket += Brains[CurrentBrain][LayerNo][NeuronNo].Weights[WeightNo]*Grid[Math.floor(WeightNo/CellLength)][WeightNo%CellLength];
+                } else {
+                    Brains[CurrentBrain][LayerNo][NeuronNo].Bucket += Brains[CurrentBrain][LayerNo][NeuronNo].Weights[WeightNo]*Brains[CurrentBrain][LayerNo - 1][WeightNo].Bucket;
+
+                    if (LayerNo == 3 && WeightNo == Brains[CurrentBrain][LayerNo][NeuronNo].Weights.length - 1) {
+                        if (Brains[CurrentBrain][LayerNo][NeuronNo].Bucket > BestAnswer) {
+                            BestAnswer = NeuronNo + 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (CurrentBrain < Brains.length) {
+        window.requestAnimationFrame(GetTheBrainsAnswersWithoutCrashingByDistributingTheWorkloadToTenTicks);
+    }
+} 
 
 function ClearGrid () {
     var Row = [];
