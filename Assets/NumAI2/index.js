@@ -16,7 +16,7 @@ var Answer9 = document.getElementById("Answer9");
 
 Canvas.width = Canvas.height = window.innerWidth/5*2;
 
-var MouseX, MouseY, PastMouseX, PastMouseY, CurrentBrain;
+var MouseX, MouseY, PastMouseX, PastMouseY;
 var Grid = [[]];
 var UndoHistory = [];
 var Brains = [];
@@ -60,9 +60,8 @@ RunBrainsButton.addEventListener("click", function () {
         }
     }
 
-    CurrentBrain = 0;
-
-    GetTheBrainsAnswersWithoutCrashingByDistributingTheWorkloadToTenTicks();
+    for (var AnswerNo = Answers.length; AnswerNo > -1; Answer--) 
+    AnswerFromBrainNo(BrainNo);
 });
 
 for (var BrainNo = 0; BrainNo < 10; BrainNo++) {
@@ -117,8 +116,11 @@ function Tick () {
     requestAnimationFrame(Tick);
 }
 
-function GetTheBrainsAnswersWithoutCrashingByDistributingTheWorkloadToTenTicks () {
-    let BestAnswer = -999;
+function AnswerFromBrainNo (CurrentBrain) {
+    let BestAnswer = {
+        Answer: 0,
+        Confidence: -999
+    };
 
     for (var LayerNo = 0; LayerNo < Brains[CurrentBrain].length; LayerNo++) {
         for (var NeuronNo = 0; NeuronNo < Brains[CurrentBrain][LayerNo].length; NeuronNo++) {
@@ -129,8 +131,9 @@ function GetTheBrainsAnswersWithoutCrashingByDistributingTheWorkloadToTenTicks (
                     Brains[CurrentBrain][LayerNo][NeuronNo].Bucket += Brains[CurrentBrain][LayerNo][NeuronNo].Weights[WeightNo]*Brains[CurrentBrain][LayerNo - 1][WeightNo].Bucket;
 
                     if (LayerNo == 3 && WeightNo == Brains[CurrentBrain][LayerNo][NeuronNo].Weights.length - 1) {
-                        if (Brains[CurrentBrain][LayerNo][NeuronNo].Bucket > BestAnswer) {
-                            BestAnswer = NeuronNo + 1;
+                        if (Brains[CurrentBrain][LayerNo][NeuronNo].Bucket > BestAnswer.Confidence) {
+                            BestAnswer.Answer = NeuronNo;
+                            BestAnswer.Confidence = Brains[CurrentBrain][LayerNo][NeuronNo].Bucket;
                         }
                     }
                 }
@@ -138,10 +141,16 @@ function GetTheBrainsAnswersWithoutCrashingByDistributingTheWorkloadToTenTicks (
         }
     }
 
-    if (CurrentBrain < Brains.length) {
-        window.requestAnimationFrame(GetTheBrainsAnswersWithoutCrashingByDistributingTheWorkloadToTenTicks);
+    return BestAnswer;
+}
+
+function RadiateTheBrainSoItAnswersCorrectlyTo (BrainNo, AnswerNo) {
+    while (AnswerFromBrainNo(BrainNo) != Answers[AnswerNo].Answer) {
+        for (var LayerNo = 0; LayerNo < Brains[BrainNo].length; LayerNo++) {
+            for (var NeuronNo = 0; )
+        }
     }
-} 
+}
 
 function ClearGrid () {
     var Row = [];
