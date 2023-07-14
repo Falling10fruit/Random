@@ -60,8 +60,17 @@ RunBrainsButton.addEventListener("click", function () {
         }
     }
 
-    for (var AnswerNo = Answers.length; AnswerNo > -1; Answer--) 
-    AnswerFromBrainNo(BrainNo);
+    for (var AnswerNo = Answers.length; AnswerNo > -1; Answer--) {
+        for (var BrainNo = 0; BrainNo < Brains.length; BrainNo++) {
+            if (AnswerFromBrainNo(BrainNo) != Answers[AnswerNo].Answer) {
+                RadiateTheBrainSoItAnswersCorrectlyTo(BrainNo, AnswerNo);
+            } 
+            
+            if (AnswerNo <= Answers.length - 2) {
+
+            }
+        }
+    } 
 });
 
 for (var BrainNo = 0; BrainNo < 10; BrainNo++) {
@@ -147,7 +156,31 @@ function AnswerFromBrainNo (CurrentBrain) {
 function RadiateTheBrainSoItAnswersCorrectlyTo (BrainNo, AnswerNo) {
     while (AnswerFromBrainNo(BrainNo) != Answers[AnswerNo].Answer) {
         for (var LayerNo = 0; LayerNo < Brains[BrainNo].length; LayerNo++) {
-            for (var NeuronNo = 0; )
+            for (var NeuronNo = 0; NeuronNo < GridLength*GridLength; NeuronNo++) {
+                for (var WeightNo = 0; WeightNo < GridLength*GridLength; WeightNo++) {
+                    Brains[BrainNo][LayerNo][NeuronNo].Weights[WeightNo] += Math.random();
+                }
+            }
+        }
+
+        let ListOfConnectedNeuronsthatSayYes = [];
+
+        for (var LayerNo = Brains[BrainNo].length - 1; LayerNo > -1; LayerNo--) {
+            if (LayerNo = Brains[BrainNo].length - 1) {
+                for (var WeightNo = 0; WeightNo < GridLength*GridLength; WeightNo++) {
+                    if (Brains[LayerNo][Answers[AnswerNo].Answer].Weights[WeightNo] > 0) {
+                         ListOfConnectedNeuronsthatSayYes.push(WeightNo);
+                    }
+                }
+            } else {
+                ListOfConnectedNeuronsthatSayYes.splice(0, ListOfConnectedNeuronsthatSayYes.length);
+
+                for (var NeuronNo = 0; NeuronNo < Brains[BrainNo][LayerNo].length; NeuronNo++) {
+                    for (var WeightNo = 0; WeightNo < GridLength*GridLength; WeightNo++) {
+
+                    }
+                }
+            }
         }
     }
 }
