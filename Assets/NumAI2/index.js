@@ -164,20 +164,22 @@ function RadiateTheBrainSoItAnswersCorrectlyTo (BrainNo, AnswerNo) {
         }
 
         let ListOfConnectedNeuronsthatSayYes = [];
+        let OldLength;
 
         for (var LayerNo = Brains[BrainNo].length - 1; LayerNo > -1; LayerNo--) {
             if (LayerNo = Brains[BrainNo].length - 1) {
                 for (var WeightNo = 0; WeightNo < GridLength*GridLength; WeightNo++) {
                     if (Brains[LayerNo][Answers[AnswerNo].Answer].Weights[WeightNo] > 0) {
-                         ListOfConnectedNeuronsthatSayYes.push(WeightNo);
+                        Brains[BrainNo][LayerNo - 1][WeightNo]
+
+                        ListOfConnectedNeuronsthatSayYes.push(WeightNo);
                     }
                 }
             } else {
-                ListOfConnectedNeuronsthatSayYes.splice(0, ListOfConnectedNeuronsthatSayYes.length);
+                OldLength = ListOfConnectedNeuronsthatSayYes.length;
 
-                for (var NeuronNo = 0; NeuronNo < Brains[BrainNo][LayerNo].length; NeuronNo++) {
+                for (var NeuronInListNo = 0; NeuronInListNo < OldLength; NeuronInListNo++) {
                     for (var WeightNo = 0; WeightNo < GridLength*GridLength; WeightNo++) {
-
                     }
                 }
             }
