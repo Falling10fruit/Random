@@ -21,8 +21,10 @@ var TraitLimit = 8;
 var SelectPrimaryTraits = document.getElementById("SelectPrimaryTraits");
 var SelectTargetTraits = document.getElementById("SelectTargetTraits");
 var SelectTraitLimit = document.getElementById("SelectTraitLimit");
+var SelectStartingPopulation = document.getElementById("SelectStartingPopulation");
+var SelectKidAmount = document.getElementById("SelectKidAmount");
 var PrimaryTraitOptions = document.getElementsByClassName("PrimaryTraitOptions");
-var PrimaryTraitOptions = document.getElementsByClassName("PrimaryTraitOptions");
+var TargetTraitOptions = document.getElementsByClassName("PrimaryTraitOptions");
 
 function ResetTraitOptions () {
     let TraitOption = document.createElement("input");
