@@ -11,27 +11,40 @@
         <h3>See probability something has traits</h3>
 
         <div id="SimUI">
-            <div>
-                <button id="StartSim">Start</button>
+            <div id="Border">
+                <div>
+                    <button id="StartSim">Start</button>
+                    
+                    <div>
+                        <label>Starting Population</label> <input id="SelectStartingPopulation" type="range"> <label></label>
+                    </div>
 
-                <label>Starting Population</label><input id="SelectStartingPopulation" type="range">
+                    <div>
+                        <label>Kid amount</label> <input id="SelectKidAmount" type="range" min="3" max="7" value="3"> <label></label>
+                    </div>
 
-                <label>Kid amount</label><input id="SelectKidAmount" type="range" min="3" max="7" value="3">
+                    <div>
+                        <label>Trait Limit</label> <input id="SelectTraitLimit" type="range" min="2" value=""> <label></label>
+                    </div>
 
-                <label>Trait Limit</label><input id="SelectTraitLimit" type="range" min="2" value="">
+                    <div style="
+                        display: flex;
+                        gap: 10px
+                    ">
+                        <details id="SelectPrimaryTraits">
+                            <summary>Select primary traits</summary>
+                        </details>
 
-                <details id="SelectPrimaryTraits">
-                    <summary>Select primary traits</summary>
-                </details>
-
-                <details id="SelectTargetTraits">
-                    <summary>Select target traits</summary>
-                </details>
-            </div>
-            <div>
-                <h3>CurrentBest
-                    <ul id="ULBestCreatureTraits"></ul>
-                </h3>
+                        <details id="SelectTargetTraits">
+                            <summary>Select target traits</summary>
+                        </details>
+                    </div>
+                </div>
+                <div>
+                    <h3>CurrentBest
+                        <ul id="ULBestCreatureTraits"></ul>
+                    </h3>
+                </div>
             </div>
         </div>
 

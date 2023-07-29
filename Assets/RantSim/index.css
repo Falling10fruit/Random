@@ -3,3 +3,31 @@ body {
     font-family: sans-serif;
 }
 
+#SimUI {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 10px
+}
+
+#SimUI #Border {
+    display: flex;
+    border: 5px solid black;
+}
+
+#Border div {
+    padding: 10px;
+}
+
+#Details {
+    display: flex;
+    justify-content: space-between;
+}
+
+#Description {
+    width: 50%;
+}
+
+#Log {
+    width: 30%;
+}
