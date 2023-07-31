@@ -23,14 +23,59 @@ var TraitLimit = 8;
 var SelectStartingPopulation = document.getElementById("SelectStartingPopulation");
 var SelectKidAmount = document.getElementById("SelectKidAmount");
 var SelectTraitLimit = document.getElementById("SelectTraitLimit");
+var StartingPopulationLabel = document.getElementById("StartingPopulationLabel");
+var KidAmountLabel = document.getElementById("KidAmountLabel");
+var TraitLimitLabel = document.getElementById("TraitLimitLabel");
+var StartSimButton = document.getElementById("StartSimButton");
 var SelectPrimaryTraits = document.getElementById("SelectPrimaryTraits");
 var SelectTargetTraits = document.getElementById("SelectTargetTraits");
 var PrimaryTraitOptions = document.getElementsByClassName("PrimaryTraitOptions");
 var TargetTraitOptions = document.getElementsByClassName("TargetTraitOptions");
 
-SelectStartingPopulation.addEventListener("")
-SelectKidAmount.addEventListener("")
-SelectTraitLimit.addEventListener("")
+SelectStartingPopulation.addEventListener("input", function () {
+    StartingPopulation = SelectStartingPopulation.value;
+    StartingPopulationLabel.innerHTML = StartingPopulation;
+});
+
+SelectKidAmount.addEventListener("input", function () {
+    KidAmount = SelectKidAmount.value;
+    KidAmountLabel.innerHTML = KidAmount;
+});
+
+SelectTraitLimit.addEventListener("input", function () {
+    TraitLimit = SelectTraitLimit.value;
+    TraitLimitLabel.innerHTML = TraitLimit;
+});
+
+StartSimButton.addEventListener("click", function () {
+    Creatures.Female.push({
+        Age: 0,
+        Pregnant: false,
+        Traits: PrimaryTraits.slice()
+    });
+    
+    Creatures.Male.push({
+        Age: 0,
+        Traits: PrimaryTraits.slice()
+    });
+
+    for (var i = 0; i < StartingPopulation - 2; i++) {
+        if (Math.floor(Math.random()*5) < 3) {
+            Creatures.Female.push({
+                Age: 0,
+                Pregnant: false,
+                Traits: PrimaryTraits.slice()
+            });
+        } else {
+            Creatures.Male.push({
+                Age: 0,
+                Traits: PrimaryTraits.slice()
+            });
+        }
+    }
+
+    while ()
+});
 
 ResetTraitOptions();
 
@@ -86,4 +131,8 @@ function ResetTraitOptions () {
             }
         })
     }
+}
+
+function IsTargetTraitsAchieved () {
+    for (var i = 0; i < Creatures.Male.length)
 }
