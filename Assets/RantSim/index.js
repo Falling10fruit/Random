@@ -14,18 +14,48 @@ var Creatures = {
     ]
 
 };
-var Traits = ["OpposableThumbs", "Tools", "Lungs", "ToughSkin", "ToughStomach", "StrongArms", "ShortTermMemory", "Fur", "Communication", "Tail", "Gills", "WebbedFeet", "Scales", "GrassStomach", "Social", "Wings", "Echolocation", "Beaks", "Claws", "Mane", "NoLimbs", "Fins"];
-var PrimaryTraits = [0, 1, 2, 3, 7, 12];
-var TargetTraits = [0, 1, 2, 3, 4, 5, 6]
+var Traits = [
+    "OpposableThumbs", // 0
+    "Tools", // 1
+    "Lungs", // 2
+    "ToughSkin", // 3
+    "OpposableToes", // 4
+    "StrongArms", // 5
+    "ShortTermMemory", // 6
+    "Fur", // 7
+    "Communication", // 8
+    "WeakStomach", // 9
+    "PassDownInfo", // 10
+    "Farming", // 11
+    "Taming", // 12
+    "GrassStomach", // 13
+    "Social", // 14
+    "Wings", // 15
+    "Echolocation", // 16
+    "Beaks", // 17
+    "Claws", // 18
+    "Mane", // 19
+    "NoLimbs", // 20
+    "Fins", // 21
+    "Tails", // 22
+    "Gills", // 23
+    "WebbedFeet", // 24
+    "Scales" // 25
+];
+var PrimaryTraits = [0, 1, 2, 3, 4, 5, 6, 7];
+var TargetTraits = [0, 1, 2, 8, 9, 10, 11, ];
 var StartingPopulation = 2;
 var KidAmount = 3;
 var TraitLimit = 8;
+var AgeDeath = 10;
 var SelectStartingPopulation = document.getElementById("SelectStartingPopulation");
 var SelectKidAmount = document.getElementById("SelectKidAmount");
 var SelectTraitLimit = document.getElementById("SelectTraitLimit");
+var SelectAgeDeath = document.getElementById("SelectAgeDeath");
 var StartingPopulationLabel = document.getElementById("StartingPopulationLabel");
 var KidAmountLabel = document.getElementById("KidAmountLabel");
 var TraitLimitLabel = document.getElementById("TraitLimitLabel");
+var AgeDeathLabel = document.getElementById("AgeDeathLabel");
 var StartSimButton = document.getElementById("StartSimButton");
 var SelectPrimaryTraits = document.getElementById("SelectPrimaryTraits");
 var SelectTargetTraits = document.getElementById("SelectTargetTraits");
@@ -47,10 +77,14 @@ SelectTraitLimit.addEventListener("input", function () {
     TraitLimitLabel.innerHTML = TraitLimit;
 });
 
+SelectAgeDeath.addEventListener("input", function () {
+    AgeDeath = SelectAgeDeath.value;
+    AgeDeathLabel.innerHTML = AgeDeath;
+});
+
 StartSimButton.addEventListener("click", function () {
     Creatures.Female.push({
         Age: 0,
-        Pregnant: false,
         Traits: PrimaryTraits.slice()
     });
     
@@ -63,7 +97,6 @@ StartSimButton.addEventListener("click", function () {
         if (Math.floor(Math.random()*5) < 3) {
             Creatures.Female.push({
                 Age: 0,
-                Pregnant: false,
                 Traits: PrimaryTraits.slice()
             });
         } else {
@@ -74,7 +107,56 @@ StartSimButton.addEventListener("click", function () {
         }
     }
 
-    while ()
+    while (!IsTargetTraitsAchieved) {
+        for (var i = 0; i < Creatures.Female.length; i++) {
+            if (Creatures.Female[i].Age == AgeDeath) {
+                Creatures.Female.splice(i, 1);
+            } else {
+                Creatures.Female[i].Age++;
+            }
+        }
+
+        for (var i = 0; i < Creatures.Male.length; i++) {
+            if (Creatures.Male[i].Age == AgeDeath) {
+                Creatures.Male.splice(i, 1);
+            } else {
+                Creatures.Male[i].Age++;
+            }
+        }
+
+        let AreThereNoFemaleChildren = true;
+        let AreTheroMaleChildren = false;
+        let OldFemaleArrayLength = Creatures.Female.length;
+
+        for (var FemaleNo = 0; FemaleNo < OldFemaleArrayLength; FemaleNo++) {
+            let FatherNo = Math.floor(Math.random()*Creatures.Male.length);
+            let ChildTraits = [];
+
+            for (var TraitNo = 0; TraitNo < TraitLimit; TraitNo++) {
+                if (Math.floor(Math.random()*2) < 1) {
+                    ChildTraits.push(Creatures.Female[FemaleNo].Traits[TraitNo]);
+                } else {
+                    ChildTraits.push(Creatures.Male[FatherNo].Traits[TraitNo]);
+                }
+            }
+
+            if ((Math.floor(Math.random()*5) < 3 && AreTheroMaleChildren) || AreThereNoFemaleChildren) {
+                Creatures.Female.push({
+                    Age: 0,
+                    Traits: []
+                });
+
+                AreThereNoFemaleChildren = false;
+            } else {
+                Creatures.Male.push({
+                    Age: 0,
+                    Traits: []
+                });
+
+                AreTheroMaleChildren = true;
+            }
+        }
+    }
 });
 
 ResetTraitOptions();
@@ -134,5 +216,17 @@ function ResetTraitOptions () {
 }
 
 function IsTargetTraitsAchieved () {
-    for (var i = 0; i < Creatures.Male.length)
+    for (var i = 0; i < Creatures.Male.length; i++) {
+        if (TargetTraits.toString() == Creatures.Male[i].Traits.toString()) {
+            return true;
+        }
+    }
+    
+    for (var i = 0; i < Creatures.Female.length; i++) {
+        if (TargetTraits.toString() == Creatures.Female[i].Traits.toString()) {
+            return true;
+        }
+    }
+
+    return false;
 }
