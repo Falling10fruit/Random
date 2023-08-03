@@ -61,6 +61,9 @@ var SelectPrimaryTraits = document.getElementById("SelectPrimaryTraits");
 var SelectTargetTraits = document.getElementById("SelectTargetTraits");
 var PrimaryTraitOptions = document.getElementsByClassName("PrimaryTraitOptions");
 var TargetTraitOptions = document.getElementsByClassName("TargetTraitOptions");
+var CurrentBestUI = document.getElementsByClassName("CurrentBestUI");
+var ULBestCreatureTraits = document.getElementById("ULBestCreatureTraits");
+var LIBestCreatureTraits = document.getElementById("LIBestCreatureTraits");
 
 SelectStartingPopulation.addEventListener("input", function () {
     StartingPopulation = SelectStartingPopulation.value;
@@ -107,7 +110,7 @@ StartSimButton.addEventListener("click", function () {
         }
     }
 
-    while (!IsTargetTraitsAchieved) {
+    while (!IsTargetTraitsAchieved()) {
         for (var i = 0; i < Creatures.Female.length; i++) {
             if (Creatures.Female[i].Age == AgeDeath) {
                 Creatures.Female.splice(i, 1);
@@ -129,39 +132,53 @@ StartSimButton.addEventListener("click", function () {
         let OldFemaleArrayLength = Creatures.Female.length;
 
         for (var FemaleNo = 0; FemaleNo < OldFemaleArrayLength; FemaleNo++) {
-            let FatherNo = Math.floor(Math.random()*Creatures.Male.length);
-            let ChildTraits = [];
+            for (var ChildNo = 0; ChildNo < KidAmount; ChildNo++) {
+                let FatherNo = Math.floor(Math.random()*Creatures.Male.length);
+                let ChildTraits = [];
 
-            for (var TraitNo = 0; TraitNo < TraitLimit; TraitNo++) {
-                if (Math.floor(Math.random()*2) < 1) {
-                    ChildTraits.push(Creatures.Female[FemaleNo].Traits[TraitNo]);
-                } else {
-                    ChildTraits.push(Creatures.Male[FatherNo].Traits[TraitNo]);
+                for (var TraitNo = 0; TraitNo < TraitLimit; TraitNo++) {
+                    if (Math.floor(Math.random()*2) < 1) {
+                        ChildTraits.push(Creatures.Female[FemaleNo].Traits[TraitNo]);
+                    } else {
+                        ChildTraits.push(Creatures.Male[FatherNo].Traits[TraitNo]);
+                    }
                 }
-            }
 
-            if ((Math.floor(Math.random()*5) < 3 && AreTheroMaleChildren) || AreThereNoFemaleChildren) {
-                Creatures.Female.push({
-                    Age: 0,
-                    Traits: []
-                });
+                let AllowedTraitsToMutateTo = Traits.slice();
 
-                AreThereNoFemaleChildren = false;
-            } else {
-                Creatures.Male.push({
-                    Age: 0,
-                    Traits: []
-                });
+                for (var ChildTraitNo = 0; ChildTraitNo < ChildTraits.length; ChildTraitNo++) {
+                    AllowedTraitsToMutateTo[ChildTraits[ChildTraitNo]] = "EMPTY";
+                }
 
-                AreTheroMaleChildren = true;
-            }
+                for (var i = AllowedTraitsToMutateTo.length - 1; i >= 0; i--) {
+                    if (AllowedTraitsToMutateTo[i] == "EMPTY") {
+                        AllowedTraitsToMutateTo.splice(i, 1);
+                    }
+                }
+
+                if ((Math.floor(Math.random()*5) < 3 && AreTheroMaleChildren) || AreThereNoFemaleChildren) {
+                    Creatures.Female.push({
+                        Age: 0,
+                        Traits: ChildTraits.slice()
+                    });
+
+                    AreThereNoFemaleChildren = false;
+                } else {
+                    Creatures.Male.push({
+                        Age: 0,
+                        Traits: ChildTraits.slice()
+                    });
+
+                    AreTheroMaleChildren = true;
+                }
+            }    
         }
     }
 });
 
-ResetTraitOptions();
+SetUpTraitOptions();
 
-function ResetTraitOptions () {
+function SetUpTraitOptions () {
     let TraitOption = document.createElement("input");
     TraitOption.setAttribute("type", "checkbox");
 
@@ -174,6 +191,7 @@ function ResetTraitOptions () {
 
         let PrimaryTraitOption = TraitOption.cloneNode(true);
         PrimaryTraitOption.setAttribute("class", "PrimaryTraitOptions");
+        PrimaryTraitOption.setAttribute("id", "PrimaryTraitOptionNo" + i);
         for (var x = 0; x < PrimaryTraits.length; x++) {
             if (i == PrimaryTraits[x]) {
                 PrimaryTraitOption.setAttribute("checked", true);
@@ -183,6 +201,7 @@ function ResetTraitOptions () {
 
         let TargetTraitOption = TraitOption.cloneNode(true);
         TargetTraitOption.setAttribute("class", "TargetTraitOptions");
+        TargetTraitOption.setAttribute("class", "TargetTraitOptionNo" + i);
         for (var x = 0; x < TargetTraits.length; x++) {
             if (i == PrimaryTraits[x]) {
                 TargetTraitOption.setAttribute("checked", true);
@@ -192,26 +211,44 @@ function ResetTraitOptions () {
 
         let Label = document.createElement("label");
         Label.innerHTML = Traits[i];
+        Label.setAttribute("for", "PrimaryTraitOptionNo" + i);
         SelectPrimaryTraits.appendChild(Label.cloneNode(true));
+        Label.setAttribute("for", "TargetTraitOptionNo" + i);
         SelectTargetTraits.appendChild(Label.cloneNode(true));
     }
 
-    for (var i = 0; i < PrimaryTraitOptions.length; i++) {
+    for (let i = 0; i < PrimaryTraitOptions.length; i++) {
         PrimaryTraitOptions[i].addEventListener("click", function () {
-            if (!PrimaryTraitOptions[i].selected) {
+            if (PrimaryTraitOptions[i].selected) {
+                for (let x = 0; x < PrimaryTraits.length; x++) {
+                    if (i == PrimaryTraits[x]) {
+                        PrimaryTraits.splice(x, 1);
+                    }
+                }
+            } else {
                 PrimaryTraits.splice(0, 1);
                 PrimaryTraits.push(i);
             }
-        })
+
+            ResetSelectedCheckboxes();
+        });
     }
 
-    for (var i = 0; i < TargetTraitOptions.length; i++) {
+    for (let i = 0; i < TargetTraitOptions.length; i++) {
         TargetTraitOptions[i].addEventListener("click", function () {
-            if (!TargetTraitOptions[i].selected) {
+            if (TargetTraitOptions[i].selected) {
+                for (let x = 0; x < TargetTraits.length; x++) {
+                    if (i == TargetTraits[x]) {
+                        TargetTraits.splice(x, 1);
+                    }
+                }
+            } else {
                 TargetTraits.splice(0, 1);
                 TargetTraits.push(i);
             }
-        })
+        
+            ResetSelectedCheckboxes();  
+        });
     }
 }
 
@@ -229,4 +266,47 @@ function IsTargetTraitsAchieved () {
     }
 
     return false;
+}
+
+function ResetSelectedCheckboxes () {
+    for (let i = 0; i < PrimaryTraitOptions.length; i++) {
+        PrimaryTraitOptions[i].setAttribute("checked", "false");
+
+        for (let x = 0; x < PrimaryTraits.length; x++) {
+            if (i == PrimaryTraits[x]) {
+                PrimaryTraitOptions[i].setAttribute("checked", "true");
+            }
+        }
+    }
+
+    for (let i = 0; i < TargetTraitOptions.length; i++) {
+        TargetTraitOptions[i].setAttribute("checked", "false");
+
+        for (let x = 0; x < TargetTraits.length; x++) {
+            if (i == TargetTraits[x]) {
+                TargetTraitOptions[i].setAttribute("checked", "true");
+            }
+        }
+    }
+}
+
+function SetBestCreatureTraits () {
+    for (var i = 0; i < LIBestCreatureTraits.length; i++) {
+        LIBestCreatureTraits[i].remove();
+    }
+
+    let BestCreatureTraits = {
+        NumberOfMatchingTraits: 0,
+        TraitArray: [0, 1, 2, 3, 4, 5, 6, 7]
+    }
+
+    for (var i = 0; i < Creatures[0].length; i++) {
+        for (var TraitNo = 0; i < TraitLimit; i++) {
+            for (var TargetTraitNo = 0; TargetTraitNo < TargetTraits.length; TargetTraitNo++) {
+
+            }
+        }
+    }
+
+    ULBestCreatureTraits
 }

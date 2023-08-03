@@ -20,6 +20,12 @@ body {
     font-size: 10px;
 }
 
+#SimResultsUI {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
 #Details {
     display: flex;
     justify-content: space-between;
