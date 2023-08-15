@@ -43,19 +43,23 @@ var Traits = [
     "Scales" // 25
 ];
 var PrimaryTraits = [0, 1, 2, 3, 4, 5, 6, 7];
-var TargetTraits = [0, 1, 2, 8, 9, 10, 11, ];
+var TargetTraits = [0, 1, 2, 8, 9, 10, 11, 12];
+var HowManyGenerationsItTook = [];
 var StartingPopulation = 2;
 var KidAmount = 3;
 var TraitLimit = 8;
 var AgeDeath = 10;
+var MutationChance = 5;
 var SelectStartingPopulation = document.getElementById("SelectStartingPopulation");
 var SelectKidAmount = document.getElementById("SelectKidAmount");
 var SelectTraitLimit = document.getElementById("SelectTraitLimit");
 var SelectAgeDeath = document.getElementById("SelectAgeDeath");
+var SelectMutationChance = document.getElementById("SelectMutationChance");
 var StartingPopulationLabel = document.getElementById("StartingPopulationLabel");
 var KidAmountLabel = document.getElementById("KidAmountLabel");
 var TraitLimitLabel = document.getElementById("TraitLimitLabel");
 var AgeDeathLabel = document.getElementById("AgeDeathLabel");
+var MutationChanceLabel = document.getElementById("MutationChanceLabel");
 var StartSimButton = document.getElementById("StartSimButton");
 var SelectPrimaryTraits = document.getElementById("SelectPrimaryTraits");
 var SelectTargetTraits = document.getElementById("SelectTargetTraits");
@@ -64,6 +68,8 @@ var TargetTraitOptions = document.getElementsByClassName("TargetTraitOptions");
 var CurrentBestUI = document.getElementsByClassName("CurrentBestUI");
 var ULBestCreatureTraits = document.getElementById("ULBestCreatureTraits");
 var LIBestCreatureTraits = document.getElementById("LIBestCreatureTraits");
+
+SelectTraitLimit.setAttribute("max", Traits.length);
 
 SelectStartingPopulation.addEventListener("input", function () {
     StartingPopulation = SelectStartingPopulation.value;
@@ -83,6 +89,11 @@ SelectTraitLimit.addEventListener("input", function () {
 SelectAgeDeath.addEventListener("input", function () {
     AgeDeath = SelectAgeDeath.value;
     AgeDeathLabel.innerHTML = AgeDeath;
+});
+
+SelectMutationChance.addEventListener("input", function () {
+    MutationChance = SelectMutationChance.value;
+    MutationChanceLabel.innerText = MutationChance + "%";
 });
 
 StartSimButton.addEventListener("click", function () {
@@ -110,44 +121,54 @@ StartSimButton.addEventListener("click", function () {
         }
     }
 
-    while (!IsTargetTraitsAchieved()) {
-        for (var i = 0; i < Creatures.Female.length; i++) {
-            if (Creatures.Female[i].Age == AgeDeath) {
-                Creatures.Female.splice(i, 1);
-            } else {
-                Creatures.Female[i].Age++;
-            }
+    SimulateGeneration();
+});
+
+SetUpTraitOptions();
+
+function SimulateGeneration () {
+    for (var i = 0; i < Creatures.Female.length; i++) {
+        if (Creatures.Female[i].Age == AgeDeath) {
+            Creatures.Female.splice(i, 1);
+        } else {
+            Creatures.Female[i].Age++;
         }
+    }
 
-        for (var i = 0; i < Creatures.Male.length; i++) {
-            if (Creatures.Male[i].Age == AgeDeath) {
-                Creatures.Male.splice(i, 1);
-            } else {
-                Creatures.Male[i].Age++;
-            }
+    for (var i = 0; i < Creatures.Male.length; i++) {
+        if (Creatures.Male[i].Age == AgeDeath) {
+            Creatures.Male.splice(i, 1);
+        } else {
+            Creatures.Male[i].Age++;
         }
+    }
 
-        let AreThereNoFemaleChildren = true;
-        let AreTheroMaleChildren = false;
-        let OldFemaleArrayLength = Creatures.Female.length;
+    let AreThereNoFemaleChildren = true;
+    let AreTheroMaleChildren = false;
+    let OldFemaleArrayLength = Creatures.Female.length;
 
-        for (var FemaleNo = 0; FemaleNo < OldFemaleArrayLength; FemaleNo++) {
-            for (var ChildNo = 0; ChildNo < KidAmount; ChildNo++) {
-                let FatherNo = Math.floor(Math.random()*Creatures.Male.length);
-                let ChildTraits = [];
+    for (var FemaleNo = 0; FemaleNo < OldFemaleArrayLength; FemaleNo++) {
+        for (var ChildNo = 0; ChildNo < KidAmount; ChildNo++) {
+            let FatherNo = Math.floor(Math.random()*Creatures.Male.length);
+            let ChildTraits = [];
 
-                for (var TraitNo = 0; TraitNo < TraitLimit; TraitNo++) {
-                    if (Math.floor(Math.random()*2) < 1) {
-                        ChildTraits.push(Creatures.Female[FemaleNo].Traits[TraitNo]);
-                    } else {
-                        ChildTraits.push(Creatures.Male[FatherNo].Traits[TraitNo]);
-                    }
+            for (var TraitNo = 0; TraitNo < TraitLimit; TraitNo++) {
+                if (Math.floor(Math.random()*2) < 1) {
+                    ChildTraits.push(Creatures.Female[FemaleNo].Traits[TraitNo]);
+                } else {
+                    ChildTraits.push(Creatures.Male[FatherNo].Traits[TraitNo]);
                 }
+            }
 
+            if (Math.floor(Math.random()*5) < 4) {
                 let AllowedTraitsToMutateTo = Traits.slice();
 
-                for (var ChildTraitNo = 0; ChildTraitNo < ChildTraits.length; ChildTraitNo++) {
-                    AllowedTraitsToMutateTo[ChildTraits[ChildTraitNo]] = "EMPTY";
+                for (var i = 0; i < AllowedTraitsToMutateTo.length; i++) {
+                    if (ChildTraits.includes(AllowedTraitsToMutateTo[i])) {
+                        AllowedTraitsToMutateTo[i] = "EMPTY";
+                    } else {
+                        AllowedTraitsToMutateTo[i] = i;
+                    }
                 }
 
                 for (var i = AllowedTraitsToMutateTo.length - 1; i >= 0; i--) {
@@ -156,27 +177,31 @@ StartSimButton.addEventListener("click", function () {
                     }
                 }
 
-                if ((Math.floor(Math.random()*5) < 3 && AreTheroMaleChildren) || AreThereNoFemaleChildren) {
-                    Creatures.Female.push({
-                        Age: 0,
-                        Traits: ChildTraits.slice()
-                    });
+                ChildTraits[Math.floor(Math.random()*ChildTraits.length)] = AllowedTraitsToMutateTo[Math.floor(Math.random()*AllowedTraitsToMutateTo.length)]; 
+            }
 
-                    AreThereNoFemaleChildren = false;
-                } else {
-                    Creatures.Male.push({
-                        Age: 0,
-                        Traits: ChildTraits.slice()
-                    });
+            if ((Math.floor(Math.random()*5) < 3 && AreTheroMaleChildren) || AreThereNoFemaleChildren) {
+                Creatures.Female.push({
+                    Age: 0,
+                    Traits: ChildTraits.slice()
+                });
 
-                    AreTheroMaleChildren = true;
-                }
-            }    
-        }
+                AreThereNoFemaleChildren = false;
+            } else {
+                Creatures.Male.push({
+                    Age: 0,
+                    Traits: ChildTraits.slice()
+                });
+
+                AreTheroMaleChildren = true;
+            }
+        }    
     }
-});
 
-SetUpTraitOptions();
+    if (IsTargetTraitsAchieved()) {
+        window.requestAnimationFrame(SimulateGeneration);
+    }
+}
 
 function SetUpTraitOptions () {
     let TraitOption = document.createElement("input");
@@ -300,13 +325,17 @@ function SetBestCreatureTraits () {
         TraitArray: [0, 1, 2, 3, 4, 5, 6, 7]
     }
 
-    for (var i = 0; i < Creatures[0].length; i++) {
+    for (let CreatureNo = 0; CreatureNo < Creatures[0].length; CreatureNo++) {
         for (var TraitNo = 0; i < TraitLimit; i++) {
-            for (var TargetTraitNo = 0; TargetTraitNo < TargetTraits.length; TargetTraitNo++) {
-
+            if (Creatures[0][i].Traits[TraitNo] == TargetTraits[0]) {
+                BestCreatureTraits.NumberOfMatchingTraits = StartCheckingifRestOfTraitsAreSimilarEnough(CreatureNo).NumberOfMatchingTraits;
             }
         }
     }
 
     ULBestCreatureTraits
+}
+
+function StartCheckingifRestOfTraitsAreSimilarEnough () {
+    
 }

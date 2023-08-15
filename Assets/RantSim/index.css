@@ -13,6 +13,7 @@ body {
 #SimUI #Border {
     display: flex;
     border: 5px solid black;
+    width: 75%;
 }
 
 #Border div {
@@ -23,7 +24,13 @@ body {
 #SimResultsUI {
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: space-between;
+}
+
+#Graph {
+    border: 2px dotted black;
+    width: 100%;
+    height: 70%;
 }
 
 #Details {
