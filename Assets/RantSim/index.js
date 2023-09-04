@@ -8,12 +8,14 @@ var Creatures = {
     Female: [/*
         {
             Age: 0,
-            Pregnant: false,
             Traits: [] List of numbers indicates indexNo for the Traits array
         }*/
     ]
-
 };
+var BestCreatureTraits = {
+    NumberOfMatchingTraits: 0,
+    TraitList: []
+}
 var Traits = [
     "OpposableThumbs", // 0
     "Tools", // 1
@@ -44,7 +46,9 @@ var Traits = [
 ];
 var PrimaryTraits = [0, 1, 2, 3, 4, 5, 6, 7];
 var TargetTraits = [0, 1, 2, 8, 9, 10, 11, 12];
-var HowManyGenerationsItTook = [];
+var Data = [];
+var Pause = false;
+var GenerationNo = 0;
 var StartingPopulation = 2;
 var KidAmount = 3;
 var TraitLimit = 8;
@@ -61,13 +65,18 @@ var TraitLimitLabel = document.getElementById("TraitLimitLabel");
 var AgeDeathLabel = document.getElementById("AgeDeathLabel");
 var MutationChanceLabel = document.getElementById("MutationChanceLabel");
 var StartSimButton = document.getElementById("StartSimButton");
+var PauseSimButton = document.getElementById("PauseSimButton");
 var SelectPrimaryTraits = document.getElementById("SelectPrimaryTraits");
 var SelectTargetTraits = document.getElementById("SelectTargetTraits");
 var PrimaryTraitOptions = document.getElementsByClassName("PrimaryTraitOptions");
 var TargetTraitOptions = document.getElementsByClassName("TargetTraitOptions");
+var GenerationNoH3 = document.getElementById("GenerationNoH3");
 var CurrentBestUI = document.getElementsByClassName("CurrentBestUI");
 var ULBestCreatureTraits = document.getElementById("ULBestCreatureTraits");
 var LIBestCreatureTraits = document.getElementById("LIBestCreatureTraits");
+var SimResultsUI = document.getElementById("SimResultsUI");
+var Graph = document.getElementById("Graph");
+var CTX = Graph.getContext("2d");
 
 SelectTraitLimit.setAttribute("max", Traits.length);
 
@@ -96,30 +105,22 @@ SelectMutationChance.addEventListener("input", function () {
     MutationChanceLabel.innerText = MutationChance + "%";
 });
 
-StartSimButton.addEventListener("click", function () {
-    Creatures.Female.push({
-        Age: 0,
-        Traits: PrimaryTraits.slice()
-    });
-    
-    Creatures.Male.push({
-        Age: 0,
-        Traits: PrimaryTraits.slice()
-    });
-
-    for (var i = 0; i < StartingPopulation - 2; i++) {
-        if (Math.floor(Math.random()*5) < 3) {
-            Creatures.Female.push({
-                Age: 0,
-                Traits: PrimaryTraits.slice()
-            });
-        } else {
-            Creatures.Male.push({
-                Age: 0,
-                Traits: PrimaryTraits.slice()
-            });
-        }
+PauseSimButton.addEventListener("click", function () {
+    if (Pause) {
+        SimulateGeneration();
+        PauseSimButton.innerText = "Pause";
+    } else {
+        PauseSimButton.innerText = "Unpause";
     }
+
+    Pause = !Pause;
+});
+
+StartSimButton.addEventListener("click", function () {
+    StartSimButton.innerHTML = "Restart";
+    PauseSimButton.style.visibility = "visible";
+
+    ResetGeneration();
 
     SimulateGeneration();
 });
@@ -198,8 +199,48 @@ function SimulateGeneration () {
         }    
     }
 
-    if (IsTargetTraitsAchieved()) {
+    RenderGraph();
+
+    if (!IsTargetTraitsAchieved() && !Pause) {
         window.requestAnimationFrame(SimulateGeneration);
+        GenerationNoH3.innerText = parseInt(GenerationNoH3) + 1;
+    } else {
+        ResetGeneration();
+
+        GenerationNoH3.innerText = "0";
+
+        for (let i = 0; i < Data.length; i++) {
+
+        }
+    }
+}
+
+function ResetGeneration () {
+    Creatures.Male.splice(0, Creatures.Male.length);
+    Creatures.Female.splice(0, Creatures.Female.length);
+
+    Creatures.Female.push({
+        Age: 0,
+        Traits: PrimaryTraits.slice()
+    });
+
+    Creatures.Male.push({
+        Age: 0,
+        Traits: PrimaryTraits.slice()
+    });
+
+    for (var i = 0; i < StartingPopulation - 2; i++) {
+        if (Math.floor(Math.random()*5) < 3) {
+            Creatures.Female.push({
+                Age: 0,
+                Traits: PrimaryTraits.slice()
+            });
+        } else {
+            Creatures.Male.push({
+                Age: 0,
+                Traits: PrimaryTraits.slice()
+            });
+        }
     }
 }
 
@@ -279,14 +320,31 @@ function SetUpTraitOptions () {
 
 function IsTargetTraitsAchieved () {
     for (var i = 0; i < Creatures.Male.length; i++) {
-        if (TargetTraits.toString() == Creatures.Male[i].Traits.toString()) {
-            return true;
+        let NoOfCurrentMatchingTraits = 0;
+
+        for (var TraitNo = 0; TraitNo < TargetTraits.length; TraitNo++) {
+            if (Creatures.Male[i].Traits.includes(TargetTraits[TraitNo])) {
+                NoOfCurrentMatchingTraits++;
+            }
         }
     }
     
     for (var i = 0; i < Creatures.Female.length; i++) {
-        if (TargetTraits.toString() == Creatures.Female[i].Traits.toString()) {
-            return true;
+        let NoOfCurrentMatchingTraits = 0;
+
+        for (var TraitNo = 0; TraitNo < TargetTraits.length; TraitNo++) {
+            if (Creatures.Female[i].Traits.includes(TargetTraits[TraitNo])) {
+                NoOfCurrentMatchingTraits++;
+            }
+        }
+
+        if (NoOfCurrentMatchingTraits > BestCreatureTraits.NumberOfMatchingTraits) {
+            BestCreatureTraits.NumberOfMatchingTraits = NoOfCurrentMatchingTraits;
+            BestCreatureTraits.TraitList = Creatures.Female[i].Traits.slice();
+
+            if (NoOfCurrentMatchingTraits == TraitLimit) {
+                return true;
+            } 
         }
     }
 
@@ -315,27 +373,58 @@ function ResetSelectedCheckboxes () {
     }
 }
 
-function SetBestCreatureTraits () {
-    for (var i = 0; i < LIBestCreatureTraits.length; i++) {
-        LIBestCreatureTraits[i].remove();
-    }
+function UpdateCurrentBestUI () {
 
-    let BestCreatureTraits = {
-        NumberOfMatchingTraits: 0,
-        TraitArray: [0, 1, 2, 3, 4, 5, 6, 7]
-    }
+}
 
-    for (let CreatureNo = 0; CreatureNo < Creatures[0].length; CreatureNo++) {
-        for (var TraitNo = 0; i < TraitLimit; i++) {
-            if (Creatures[0][i].Traits[TraitNo] == TargetTraits[0]) {
-                BestCreatureTraits.NumberOfMatchingTraits = StartCheckingifRestOfTraitsAreSimilarEnough(CreatureNo).NumberOfMatchingTraits;
-            }
+function InsertData () {
+    for (let i = 0; i < Data.length; i++) {
+        if (Data[i][0] == GenerationNo) {
+            Data[i][1]++;
+
+            return;
         }
     }
 
-    ULBestCreatureTraits
+    Data.push([GenerationNo, 0]);
 }
 
-function StartCheckingifRestOfTraitsAreSimilarEnough () {
-    
+function RenderGraph () {
+    Graph.width = SimResultsUI.getBoundingClientRect().width;
+    Graph.height = SimResultsUI.getBoundingClientRect().height*0.7;
+
+    let HighX = 0;
+    let HighY = 0;
+    let LowX = 0;
+    let LowY = 0;
+
+    for (var i = 0; i < Data.length; i++) {
+        HighX = Math.max(Data[i][0], HighX);
+        HighY = Math.max(Data[i][1], HighY);
+        LowX = Math.max(Data[i][0] -5, LowX);
+        LowY = Math.max(Data[i][1] -5, LowY);
+    }
+
+    HighX += 5;
+    HighY += 5;
+
+    CTX.fillStyle = "rgb(0, 0, 0)";
+    CTX.fillRect(25, 25, 1, Graph.height -50);
+    CTX.fillRect(25, Graph.height -26, Graph.width -50, 1);
+
+    CTX.textAlign = "center";
+    CTX.textBaseline = "top";
+
+    for (i = 1; i < HighX; i++) {
+        CTX.fillRect(25 +i*((Graph.width -50)/HighX), 25, 1, Graph.height -50);
+        CTX.fillText(i, 25 +(Graph.width -50)/(HighX*2) +(i -1)*((Graph.width -50)/HighX), Graph.height -24);
+    }
+
+    CTX.textAlign = "right";
+    CTX.textBaseline = "middle";
+
+    for (i = 1; i < HighY; i++) {
+        CTX.fillRect(24, Graph.height +25 +i*((Graph.width -50)/HighX), 1, Graph.height -50);
+        CTX.fillText(i, 24, Graph.height -25 -(Graph.height -50)/(HighY*2) -i*((Graph.height -50)/HighY));
+    }
 }

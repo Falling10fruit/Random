@@ -14,6 +14,7 @@
             <div id="Border">
                 <div>
                     <button id="StartSimButton">Start</button>
+                    <button id="PauseSimButton" style="visibility: hidden;">Pause</button>
                     
                     <div>
                         <label>Starting Population</label> <input id="SelectStartingPopulation" type="range" min="2" value="2"> <label id="StartingPopulationLabel">2</label>
@@ -50,6 +51,7 @@
                     </div>
                 </div>
                 <div id="SimResultsUI">
+                    <h3 id="GenerationNoH3">0</h3>
                     <h3 id="CurrentBestUI" style="overflow-y: auto">
                         CurrentBest
                         <ul id="ULBestCreatureTraits"></ul>
@@ -65,6 +67,18 @@
                 <img src="Screenshot 2023-07-26 184719.png">
             </div>
             <div id="Log">
+                <p>
+                    18 August 2023
+
+                    <ul>
+                        <li>Remodeled the system to not stop and instead distribute the workflow to a generation each tick</li>
+                        <li>Did not join any lomba, whoops</li>
+                        <li>Pause button</li>
+                        <li>Current best creature system remodeled to be merged with the IsTargetTraitsAchieved function</li>
+                        <li>I finished a graph something in codepen, here: https://codepen.io/Falling10fruit/pen/yLEqOPq</li>
+                    </ul>
+                </p>
+
                 <p>
                     7 August 2023
 
