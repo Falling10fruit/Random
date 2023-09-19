@@ -49,6 +49,8 @@ var TargetTraits = [0, 1, 2, 8, 9, 10, 11, 12];
 var Data = [];
 var Pause = false;
 var GenerationNo = 0;
+var FemaleNo = 0;
+var OldFemaleArrayLength = 1;
 var StartingPopulation = 2;
 var KidAmount = 3;
 var TraitLimit = 8;
@@ -143,12 +145,39 @@ function SimulateGeneration () {
             Creatures.Male[i].Age++;
         }
     }
+}
 
+function SimulateCreatures () {
+    OldFemaleArrayLength = Creatures.Female.length;
+    FemaleNo = 0;
+
+    if (FemaleNo > Math.floor(Creatures.Female.length/2000)*2000) {
+        SimulateHowManyFemale
+    } else {
+        SimulateHowManyFemale(Math.floor(Creatures.Female.length/2000))
+    }
+
+    RenderGraph();
+
+    if (!IsTargetTraitsAchieved() && !Pause) {
+        window.requestAnimationFrame(SimulateGeneration);
+        GenerationNoH3.innerText = parseInt(GenerationNoH3) + 1;
+    } else {
+        ResetGeneration();
+
+        GenerationNoH3.innerText = "0";
+
+        for (let i = 0; i < Data.length; i++) {
+
+        }
+    }
+}
+
+function SimulateHowManyFemale () {
     let AreThereNoFemaleChildren = true;
     let AreTheroMaleChildren = false;
-    let OldFemaleArrayLength = Creatures.Female.length;
 
-    for (var FemaleNo = 0; FemaleNo < OldFemaleArrayLength; FemaleNo++) {
+    for ( FemaleNo = 0; FemaleNo < OldFemaleArrayLength; FemaleNo++) {
         for (var ChildNo = 0; ChildNo < KidAmount; ChildNo++) {
             let FatherNo = Math.floor(Math.random()*Creatures.Male.length);
             let ChildTraits = [];
@@ -199,20 +228,6 @@ function SimulateGeneration () {
         }    
     }
 
-    RenderGraph();
-
-    if (!IsTargetTraitsAchieved() && !Pause) {
-        window.requestAnimationFrame(SimulateGeneration);
-        GenerationNoH3.innerText = parseInt(GenerationNoH3) + 1;
-    } else {
-        ResetGeneration();
-
-        GenerationNoH3.innerText = "0";
-
-        for (let i = 0; i < Data.length; i++) {
-
-        }
-    }
 }
 
 function ResetGeneration () {
@@ -395,36 +410,38 @@ function RenderGraph () {
 
     let HighX = 0;
     let HighY = 0;
-    let LowX = 0;
-    let LowY = 0;
+    let LowX = 9999;
+    let LowY = 9999;
 
     for (var i = 0; i < Data.length; i++) {
-        HighX = Math.max(Data[i][0], HighX);
-        HighY = Math.max(Data[i][1], HighY);
-        LowX = Math.max(Data[i][0] -5, LowX);
-        LowY = Math.max(Data[i][1] -5, LowY);
+        HighX = Math.max(Data[i][0] +5, HighX);
+        HighY = Math.max(Data[i][1] +5, HighY);
+        LowX = Math.max(Math.min(Data[i][0] -5, LowX), 0);
+        LowY = Math.max(Math.min(Data[i][1] -5, LowY), 0);
     }
 
-    HighX += 5;
-    HighY += 5;
-
     CTX.fillStyle = "rgb(0, 0, 0)";
+
     CTX.fillRect(25, 25, 1, Graph.height -50);
     CTX.fillRect(25, Graph.height -26, Graph.width -50, 1);
 
     CTX.textAlign = "center";
     CTX.textBaseline = "top";
 
-    for (i = 1; i < HighX; i++) {
-        CTX.fillRect(25 +i*((Graph.width -50)/HighX), 25, 1, Graph.height -50);
-        CTX.fillText(i, 25 +(Graph.width -50)/(HighX*2) +(i -1)*((Graph.width -50)/HighX), Graph.height -24);
+    for (let i = 0; i < HighX -LowX; i++) {
+        CTX.fillRect(25 +i*((Graph.width -50)/(HighX -LowX)), 25, 1, Graph.height -50);
+        CTX.fillText(i +LowX, 25 +(Graph.width -50)/((HighX -LowX)*2) +i*((Graph.width -50)/(HighX -LowX)), Graph.height -24);
     }
 
     CTX.textAlign = "right";
     CTX.textBaseline = "middle";
 
-    for (i = 1; i < HighY; i++) {
-        CTX.fillRect(24, Graph.height +25 +i*((Graph.width -50)/HighX), 1, Graph.height -50);
-        CTX.fillText(i, 24, Graph.height -25 -(Graph.height -50)/(HighY*2) -i*((Graph.height -50)/HighY));
+    for (let i = 0; i < HighY -LowY; i++) {
+        CTX.fillRect(25, Graph.height -25 -i*((Graph.height -50)/(HighY -LowY)), Graph.width -50, 1);
+        CTX.fillText(i +LowY, 24, Graph.height -25 -(Graph.height -50)/((HighY -LowY)*2) -i*((Graph.height -50)/(HighY -LowY))); 
+    }
+
+    for (let i = 0; i < Data.length; i++) {
+
     }
 }
