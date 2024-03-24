@@ -13,7 +13,7 @@ for (var i = 0; i < 15; i++) {
         var td = document.createElement("td");
         td.className = "Box";
         tr.appendChild(td);
-        console.log("Box created");
+        // console.log("Box created");
     }
 }
 
@@ -73,7 +73,7 @@ HeadPic.style.position = "fixed";
 HeadPic.style.imageRendering = "pixelated";
 document.body.appendChild(HeadPic);
 
-console.log(Scene);
+// console.log(Scene);
 
 for (var i = 0; i < 15; i++) { // Coloring
     for (var x = 0; x < 15; x++) {
