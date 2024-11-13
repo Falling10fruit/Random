@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>I'm too lazy to redo the drawing</title>
+
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            canvas {
+                border: 1px solid black;
+                image-rendering: pixelated;
+            }
+        </style>
+    </head>
+    <body>
+        <p>Input file</p>
+        <input id="fileInput" type="file">
+        <canvas id="canvas"></canvas>
+        <p>Output</p>
+        <img id="outputImg">
+        <script defer>
+            const sourceImg = new Image();
+            const fileInput = document.getElementById("fileInput");
+            const canvas = document.getElementById("canvas");
+            const outputImg = document.getElementById("outputImg");
+
+            sourceImg.onload = () => {
+                canvas.width = sourceImg.naturalWidth;
+                canvas.height = sourceImg.naturalHeight;
+                const ctx = canvas.getContext("2d");
+
+                ctx.drawImage(sourceImg, 0, 0);
+
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                let theActualImageDataWeNeed = imageData.data;
+
+                theActualImageDataWeNeed = theActualImageDataWeNeed.map((value, i) => {
+                    const rgbora = i%4;
+                    if (rgbora == 3) {
+                        return 255
+                    }
+
+                    if (theActualImageDataWeNeed[i] < 100) {
+                        return 0
+                    }
+
+                    return 255
+                });
+
+                imageData.data.set(theActualImageDataWeNeed);
+                ctx.putImageData(imageData, 0, 0);
+                outputImg.src = canvas.toDataURL();
+            };
+
+            fileInput.addEventListener("change", function () {
+                if (!this.files[0]) { return }
+
+                sourceImg.src = URL.createObjectURL(this.files[0]);
+            });
+        </script>
+    </body>
+</html>
